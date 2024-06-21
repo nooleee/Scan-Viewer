@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // jap 아래 주석 달아봄 테스트
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
