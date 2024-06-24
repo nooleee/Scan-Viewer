@@ -5,7 +5,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.5'
 }
 
-group = 'com.example'
+group = 'com.pacs'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -25,25 +25,51 @@ repositories {
 }
 
 dependencies {
-//    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    // jap 아래 주석 달아봄 테스트
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.oracle.database.jdbc:ojdbc8:21.3.0.0'
-
 
     // jsp
     implementation 'javax.servlet:jstl:1.2'
     implementation 'taglibs:standard:1.1.2'
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.87'
+
+
+//    implementation 'mysql:mysql-connector-java:8.0.29'
+
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks.withType(JavaCompile) {
+    options.incremental = true
+}
+
+tasks.withType(AbstractArchiveTask) {
+    outputs.cacheIf { true }
+}
+
+tasks.register('webpackBuild', Exec) {
+    workingDir = file('src/main/resources/static')
+    commandLine 'C:/Program Files/nodejs/npm.cmd', 'run', 'build'
+    environment 'PATH', System.getenv('PATH')
+    inputs.dir 'src/main/resources/static'
+    outputs.dir 'build/resources/main/static'
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput = standardOutput
+    doLast {
+        println standardOutput.toString()
+    }}
+
+processResources.dependsOn tasks.named('webpackBuild')

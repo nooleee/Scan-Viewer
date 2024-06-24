@@ -1,4 +1,4 @@
-package com.example.scanviewer;
+package com.pacs.scanviewer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

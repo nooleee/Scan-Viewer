@@ -1,4 +1,4 @@
-package com.example.scanviewer;
+package com.pacs.scanviewer;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
