@@ -14,7 +14,7 @@ public class StudyService {
 
     private final StudyRepository studyRepository;
 
-    public List<Study> findAll() {
+    public List<Study> getAllStudies() {
         return studyRepository.findAll();
     }
 
