@@ -16,15 +16,4 @@ public class ReportService {
         return reportRepository.findAll();
     }
 
-    public Report save(Report report) {
-        return reportRepository.save(report);
-    }
-
-    public Report update(Report report) {
-        return reportRepository.save(report);
-    }
-
-    public void delete(int userCode) {
-        reportRepository.deleteById(userCode);
-    }
 }
