@@ -62,14 +62,16 @@ tasks.withType(AbstractArchiveTask) {
 
 tasks.register('webpackBuild', Exec) {
     workingDir = file('src/main/resources/static')
-    commandLine 'C:/Program Files/nodejs/npm.cmd', 'run', 'build'
-    environment 'PATH', System.getenv('PATH')
+    commandLine '/opt/homebrew/bin/npm', 'run', 'build'
+    environment 'PATH', System.getenv('PATH') + ':/opt/homebrew/bin'
     inputs.dir 'src/main/resources/static'
     outputs.dir 'build/resources/main/static'
     standardOutput = new ByteArrayOutputStream()
     errorOutput = standardOutput
     doLast {
         println standardOutput.toString()
-    }}
+    }
+}
+
 
 processResources.dependsOn tasks.named('webpackBuild')
