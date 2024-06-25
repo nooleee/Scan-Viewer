@@ -47,4 +47,10 @@ public class StudyController {
 
         return res;
     }
+
+//    @ResponseBody
+//    @GetMapping("/studies/{studykey}")
+//    public ResponseEntity<Study> getStudy(@PathVariable String studykey) {
+//
+//    }
 }
