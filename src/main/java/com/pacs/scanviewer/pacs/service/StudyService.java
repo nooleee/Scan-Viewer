@@ -1,7 +1,7 @@
 package com.pacs.scanviewer.pacs.service;
 
 import com.pacs.scanviewer.pacs.domain.Image;
-import com.pacs.scanviewer.pacs.domain.ImageRepository;
+//import com.pacs.scanviewer.pacs.domain.ImageRepository;
 import com.pacs.scanviewer.pacs.domain.Study;
 import com.pacs.scanviewer.pacs.domain.StudyRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 public class StudyService {
 
     private final StudyRepository studyRepository;
-    private final ImageRepository imageRepository;
+//    private final ImageRepository imageRepository;
 
     public List<Study> getAllStudies() {
         return studyRepository.findAll();
@@ -26,7 +26,7 @@ public class StudyService {
         return studyRepository.findAll(pageable.withPage(page)).getContent();
     }
 
-    public List<Image> findByStudykey(long studykey) {
-        return imageRepository.findAllById(studykey);
-    }
+//    public List<Image> findByStudykey(long studykey) {
+//        return imageRepository.findAllById(studykey);
+//    }
 }
