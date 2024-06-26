@@ -5,12 +5,73 @@
   Time: 오후 12:24
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>의료 보고서</title>
 </head>
 <body>
+<h1>보고서</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>환자 이름</th>
+        <th>환자 아이디</th>
+        <th>검사 날짜</th>
+        <th>검사 설명</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach var="study" items="${studies}">
+        <tr>
+            <td>${study.pname}</td>
+            <td>${study.pid}</td>
+            <td>${study.date}</td>
+            <td>${study.description}</td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
+<h2>의사 소견</h2>
+<div>
+    <label>의사 소견:</label>
+    <textarea rows="4" cols="50">${study.opinion}</textarea>
+</div>
 
+<h2>결론</h2>
+<div>
+    <label>결론:</label>
+    <textarea rows="4" cols="50">${study.conclusion}</textarea>
+</div>
+
+<h2>추천 사항</h2>
+<div>
+    <label>추천 사항:</label>
+    <textarea rows="4" cols="50">${study.recommend}</textarea>
+</div>
+
+<h2>추가 정보</h2>
+<div>
+    <label>판독 매크로:</label>
+    <input type="text" value="${study.macro}" readonly/>
+</div>
+<div>
+    <label>판독의:</label>
+    <input type="text" value="${study.interpreter}" readonly/>
+</div>
+<div>
+    <label>판독 일시:</label>
+    <input type="text" value="${study.interpretationDate}" readonly/>
+</div>
+<div>
+    <label>질병 코드:</label>
+    <input type="text" value="${study.diseaseCode}" readonly/>
+</div>
+
+<div>
+    <button>판독</button>
+    <button>판독 취소</button>
+</div>
 </body>
 </html>
