@@ -19,7 +19,7 @@ public class StudyService {
     private final StudyRepository studyRepository;
     private final ImageRepository imageRepository;
 
-    public List<Study> findAll() {
+    public List<Study> getAllStudies() {
         return studyRepository.findAll();
     }
 
@@ -38,4 +38,6 @@ public class StudyService {
 
         return seriesImages;
     }
+
+
 }
