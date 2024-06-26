@@ -1,11 +1,11 @@
 package com.pacs.scanviewer.pacs.domain;
 
+import com.pacs.scanviewer.pacs.domain.Image;
+import com.pacs.scanviewer.pacs.domain.ImageId;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
-public interface ImageRepository extends JpaRepository<Image, Long> {
-    List<Image> findAllById(long studykey);
+public interface ImageRepository extends JpaRepository<Image, ImageId> {
+    List<Image> findByStudykey(long studykey);
 }
