@@ -33,4 +33,10 @@ public class StudyController {
         List<Study> result = studyService.findAllWithPage(page - 1, pageable);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+//    @ResponseBody
+//    @GetMapping("/studies/{studykey}")
+//    public ResponseEntity<Study> getStudy(@PathVariable String studykey) {
+//
+//    }
 }
