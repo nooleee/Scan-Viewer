@@ -23,7 +23,7 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="study" items="${studies}">
+    <c:forEach var="study" items="${reports}">
         <tr>
             <td>${study.pname}</td>
             <td>${study.pid}</td>
@@ -35,26 +35,22 @@
 </table>
 <h2>의사 소견</h2>
 <div>
-    <textarea rows="4" cols="50">${study.opinion}</textarea>
+    <textarea rows="4" cols="50">${study.content}</textarea>
 </div>
 
 <h2>결론</h2>
 <div>
-    <textarea rows="4" cols="50">${study.conclusion}</textarea>
+    <textarea rows="4" cols="50">${study.patient}</textarea>
 </div>
 
 <h2>추가 정보</h2>
 <div>
-    <label>판독 매크로:</label>
-    <input type="text" value="${study.macro}" readonly/>
-</div>
-<div>
     <label>판독의:</label>
-    <input type="text" value="${study.interpreter}" readonly/>
+    <input type="text" value="${study.userCode}" readonly/>
 </div>
 <div>
     <label>판독 일시:</label>
-    <input type="text" value="${study.interpretationDate}" readonly/>
+    <input type="text" value="${study.date}" readonly/>
 </div>
 <div>
     <label>질병 코드:</label>
