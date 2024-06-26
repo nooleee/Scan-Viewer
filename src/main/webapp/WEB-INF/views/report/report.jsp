@@ -27,28 +27,20 @@
         <tr>
             <td>${study.pname}</td>
             <td>${study.pid}</td>
-            <td>${study.date}</td>
-            <td>${study.description}</td>
+            <td>${study.studydate}</td>
+            <td>${study.studydesc}</td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
 <h2>의사 소견</h2>
 <div>
-    <label>의사 소견:</label>
     <textarea rows="4" cols="50">${study.opinion}</textarea>
 </div>
 
 <h2>결론</h2>
 <div>
-    <label>결론:</label>
     <textarea rows="4" cols="50">${study.conclusion}</textarea>
-</div>
-
-<h2>추천 사항</h2>
-<div>
-    <label>추천 사항:</label>
-    <textarea rows="4" cols="50">${study.recommend}</textarea>
 </div>
 
 <h2>추가 정보</h2>
