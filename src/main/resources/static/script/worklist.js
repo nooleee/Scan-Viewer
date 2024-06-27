@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
             const studyKey = targetRow.querySelector('.studykey').value;
-            const url = `/path/to/detailStudy?studykey=${encodeURIComponent(studyKey)}`;
+            const url = `/consent/${encodeURIComponent(studyKey)}`;
             window.location.href = url;
         }
     });
