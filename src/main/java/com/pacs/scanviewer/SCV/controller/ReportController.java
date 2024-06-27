@@ -27,7 +27,7 @@ public class ReportController {
 
     @GetMapping("/{pid}")
     public ModelAndView getReportsByPid(@PathVariable String pid) {
-        ModelAndView model = new ModelAndView("report/report");
+        ModelAndView model = new ModelAndView("report/reportUpdate");
         List<Study> reportList = studyService.getStudiesByPid(pid);
         model.addObject("reports", reportList);
         return model;
