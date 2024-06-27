@@ -34,7 +34,7 @@
     <c:forEach var="study" items="${reports}">
         <tr>
             <td>${study.pname}</td>
-            <td>${study.pid}</td>
+            <td><a href="/report/${study.pid}">${study.pid}</a></td>
             <td>${study.studydate}</td>
             <td>${study.studydesc}</td>
             <td>
