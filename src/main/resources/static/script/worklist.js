@@ -12,8 +12,10 @@ document.getElementById('loadMoreBtn').addEventListener('click', function() {
 });
 
 document.getElementById('getAllStudiesBtn').addEventListener('click', function() {
+    currentPage = 0;
     clearStudies();
     fetchStudies(currentPage, pageSize);
+    currentSearch = { pid: '', pname: '' };  // Reset current search parameters
     document.querySelector('input[placeholder="환자 아이디"]').value = '';
     document.querySelector('input[placeholder="환자 이름"]').value = '';
 });
