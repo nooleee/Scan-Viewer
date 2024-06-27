@@ -59,7 +59,13 @@
 
 <div>
     <button>리포트 수정</button>
-    <button>취소</button>
+    <button onclick="cancelReport()">리포트 수정 취소</button>
+    <script>
+        function cancelReport() {
+            alert('리포트 수정 취소되었습니다.');
+            window.location.href = '/report';
+        }
+    </script>
 </div>
 </body>
 </html>
