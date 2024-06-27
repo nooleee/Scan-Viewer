@@ -33,6 +33,7 @@
     </c:forEach>
     </tbody>
 </table>
+
 <h2>의사 소견</h2>
 <div>
     <textarea rows="4" cols="50">${study.content}</textarea>
@@ -42,24 +43,36 @@
 <div>
     <textarea rows="4" cols="50">${study.patient}</textarea>
 </div>
-
+<c:if test="${not empty study}">
 <h2>추가 정보</h2>
+<form id="reportForm" action="/report" method="post">
+    <div>
+        <label>판독의:</label>
+        <input type="text" name="userCode" value="${study.userCode}" readonly/>
+    </div>
+    <div>
+        <label>판독 일시:</label>
+        <input type="text" name="date" value="${study.date}" readonly/>
+    </div>
+    <div>
+        <label>질병 코드:</label>
+        <input type="text" name="diseaseCode" value="${study.diseaseCode}" readonly/>
+    </div>
+
+    <div>
+        <button type="submit">판독</button>
+    </div>
+</form>
+</c:if>
 <div>
-    <label>판독의:</label>
-    <input type="text" value="${study.userCode}" readonly/>
-</div>
-<div>
-    <label>판독 일시:</label>
-    <input type="text" value="${study.date}" readonly/>
-</div>
-<div>
-    <label>질병 코드:</label>
-    <input type="text" value="${study.diseaseCode}" readonly/>
+    <button onclick="cancelReport()">판독 취소</button>
 </div>
 
-<div>
-    <button>판독</button>
-    <button>판독 취소</button>
-</div>
+<script>
+    function cancelReport() {
+        // 판독 취소 로직
+        alert('판독이 취소되었습니다.');
+    }
+</script>
 </body>
 </html>
