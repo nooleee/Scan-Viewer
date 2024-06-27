@@ -26,4 +26,10 @@ public class Image {
     private String path;
     private String fname;
 
+    public String getFormattedPath() {
+        return path.replace("\\", "/");
+    }
+
+
+
 }

@@ -6,48 +6,21 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Image List</title>
+    <title>Title</title>
 </head>
 <body>
-<h1>Image List</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Study Key</th>
-        <th>Series Key</th>
-        <th>Image Key</th>
-        <th>Path</th>
-        <th>File Name</th>
-        <th>Image</th>
-    </tr>
-    </thead>
-    <tbody>
+<h1>CornerStone Sample Test</h1>
+<div id="content">
     <c:forEach var="image" items="${images}">
-        <tr>
-            <td>${image.studykey}</td>
-            <td>${image.serieskey}</td>
-            <td>${image.imagekey}</td>
-            <td>${image.path}</td>
-            <td>${image.fname}</td>
-            <td><img src="${pageContext.request.contextPath}/${image.path}/${image.fname}" alt="Image" width="100" height="100"/></td>
-        </tr>
+        <img src="Z:/${image.path}${image.fname}" alt="DICOM Image" width="100" height="100"/>
     </c:forEach>
-    </tbody>
-</table>
-
-<div>
-    <c:if test="${!imagesPage.empty}">
-        <c:if test="${!imagesPage.first}">
-            <a href="${pageContext.request.contextPath}/images/list/page?page=${imagesPage.number - 1}&size=${imagesPage.size}">Previous</a>
-        </c:if>
-        <c:if test="${!imagesPage.last}">
-            <a href="${pageContext.request.contextPath}/images/list/page?page=${imagesPage.number + 1}&size=${imagesPage.size}">Next</a>
-        </c:if>
-    </c:if>
 </div>
+<input id ="file" type="file" accept="application/dicom">
+<script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 </body>
 </html>
 
