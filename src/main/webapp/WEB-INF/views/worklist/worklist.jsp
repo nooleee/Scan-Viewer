@@ -23,8 +23,7 @@
                 <option disabled selected>판독 상태</option>
                 <option>판독 상태</option>
                 <option>읽지않음</option>
-                <option>열람중</option>
-                <option>예비판독</option>
+                <option>판독취소</option>
                 <option>판독</option>
             </select>
             <button class="button" id="getAllStudiesBtn">전체</button>
@@ -32,13 +31,13 @@
             <button>3일</button>
             <button>1주일</button>
             <button class="button">재설정</button>
-            <button class="button search-button">검색</button>
+            <button class="button search-button" id="searchStudies">검색</button>
         </div>
         <div>
             <span class="totalStudies">총 검사 건수 : </span>
             <div>
-                <button>다운로드</button>
-                <button>검사삭제</button>
+                <button class="download">다운로드</button>
+                <button class="deleteStudy">검사삭제</button>
                 <select>
                     <option selected>10개씩보기</option>
                 </select>
@@ -100,7 +99,7 @@
                 <div class="report">
                     <div class="report-title">
                         <h2>Report</h2>
-                        <button class="button">판독지우기</button>
+                        <button class="button">판독 지우기</button>
                     </div>
                     <div class="report-box">
                         <div class="write-box">
@@ -108,15 +107,13 @@
                             <textarea class="quest" placeholder="탐색"></textarea>
                         </div>
                         <div class="input-box">
-                            <label>예비판독의</label>
-                            <input class="inputText" type="text">
-                            <label>판독의1</label>
-                            <input class="inputText" type="text">
-                            <label>판독의2</label>
-                            <input class="inputText" type="text">
+                            <div>판독의</div>
+                            <div>
+                                <p class="reading" id="reading"></p>
+                            </div>
                             <div class="reading-box">
                                 <button class="button blue-button">판독</button>
-                                <button class="button">예비판독</button>
+                                <button class="button">판독취소</button>
                             </div>
                         </div>
                     </div>
