@@ -52,15 +52,15 @@ public class StudyController {
 //        return new ResponseEntity<>(result, HttpStatus.OK);
 //    }
 
-    @ResponseBody
-    @GetMapping("/studies/{studykey}")
-    public ResponseEntity<Map<Long, List<String>>> getStudy(@PathVariable long studykey) {
-        Map<Long, List<String>> imageNamesByStudyKey = studyService.getImageNamesByStudyKey(studykey);
-
-        ResponseEntity<Map<Long, List<String>>> res = new ResponseEntity(imageNamesByStudyKey,HttpStatus.OK);
-
-        return res;
-    }
+//    @ResponseBody
+//    @GetMapping("/studies/{studykey}")
+//    public ResponseEntity<Map<Long, List<String>>> getStudy(@PathVariable long studykey) {
+//        Map<Long, List<String>> imageNamesByStudyKey = studyService.getImageNamesByStudyKey(studykey);
+//
+//        ResponseEntity<Map<Long, List<String>>> res = new ResponseEntity(imageNamesByStudyKey,HttpStatus.OK);
+//
+//        return res;
+//    }
 
 //    @ResponseBody
 //    @GetMapping("/studies/{studykey}")
