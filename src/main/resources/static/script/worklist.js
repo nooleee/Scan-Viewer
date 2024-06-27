@@ -1,9 +1,14 @@
 let currentPage = 0;
 const pageSize = 5;
+let currentSearch = { pid: '', pname: '' };
 
 document.getElementById('loadMoreBtn').addEventListener('click', function() {
-    fetchStudies(currentPage, pageSize);
     currentPage++;
+    if (currentSearch.pid || currentSearch.pname) {
+        searchStudies(currentSearch.pid, currentSearch.pname, currentPage, pageSize);
+    } else {
+        fetchStudies(currentPage, pageSize);
+    }
 });
 
 document.getElementById('getAllStudiesBtn').addEventListener('click', function() {
@@ -17,6 +22,7 @@ document.querySelector('.search-button').addEventListener('click', function() {
     const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
     const pname = document.querySelector('input[placeholder="환자 이름"]').value;
     currentPage = 0;  // Reset page count for new search
+    currentSearch = { pid, pname };  // Store current search
     searchStudies(pid, pname, currentPage, pageSize);
 });
 
@@ -187,7 +193,7 @@ function searchStudies(pid, pname, page, size) {
             }
         })
         .then(data => {
-            clearStudies(); // Clear existing studies
+            if (page === 0) clearStudies();  // Clear existing studies only for the first page
             appendStudies(data.content);
             updateTotalStudiesCount(data.totalElements); // Update total count
             toggleLoadMoreButton(data);
