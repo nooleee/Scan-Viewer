@@ -15,8 +15,8 @@
 <body>
 <h1>CornerStone Sample Test</h1>
 <div id="content">
-    <c:forEach var="image" items="${images}">
-        <img src="Z:/${image.path}${image.fname}" alt="DICOM Image" width="100" height="100"/>
+    <c:forEach var="imagePath" items="${images}">
+        <img src="${imagePath}" alt="DICOM Image" width="100" height="100"/>
     </c:forEach>
 </div>
 <input id ="file" type="file" accept="application/dicom">

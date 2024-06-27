@@ -14,16 +14,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.awt.print.Pageable;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/images")
 @RequiredArgsConstructor
@@ -64,10 +63,33 @@ public class ImageController {
 
     @GetMapping("/study/{studykey}/series/{serieskey}")
     public ModelAndView getImagesByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
-        List<Image> images = imageService.getImagesByStudyKeyAndSeriesKey(studykey, serieskey);
+        Map<Long, List<String>> seriesImages = imageService.getImageNamesByStudyKey(studykey);
+        List<String> images = seriesImages.getOrDefault(serieskey, new ArrayList<>());
+
         ModelAndView mv = new ModelAndView("viewer/viewer");
         mv.addObject("images", images);
         return mv;
+    }
+
+    @GetMapping("/study/{studykey}/series/{serieskey}/dicom-urls")
+    @ResponseBody
+    public ResponseEntity<List<String>> getDicomUrlsByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
+        List<String> dicomUrls = imageService.getDicomUrlsByStudyKeyAndSeriesKey(studykey, serieskey);
+        return new ResponseEntity<>(dicomUrls, HttpStatus.OK);
+    }
+
+    @GetMapping("/dicom-file")
+    @ResponseBody
+    public ResponseEntity<FileSystemResource> getDicomFile(@RequestParam String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getName() + "\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(new FileSystemResource(file));
     }
 
 //    @GetMapping("/list/page")
