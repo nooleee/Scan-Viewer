@@ -35,12 +35,12 @@
 </table>
 <h2>의사 소견</h2>
 <div>
-    <textarea rows="4" cols="50">${study.content}</textarea>
+    <textarea rows="4" cols="50" placeholder="의사 코멘트">${study.content}</textarea>
 </div>
 
 <h2>결론</h2>
 <div>
-    <textarea rows="4" cols="50">${study.patient}</textarea>
+    <textarea rows="4" cols="50" placeholder="결론">${study.patient}</textarea>
 </div>
 
 <h2>추가 정보</h2>
