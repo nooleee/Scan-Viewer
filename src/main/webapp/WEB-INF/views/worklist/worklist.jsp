@@ -11,6 +11,7 @@
 <head>
     <title>Worklist</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/worklist.css">
 </head>
 <body>
 <div class="container">
