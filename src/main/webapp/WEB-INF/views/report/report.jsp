@@ -13,13 +13,6 @@
 </head>
 <body>
 <h1>보고서</h1>
-
-<form action="/report/{pid}" method="get">
-    <label for="pid">환자 아이디:</label>
-    <input type="text" id="pid" name="pid">
-    <button type="submit">조회</button>
-</form>
-
 <table border="1">
     <thead>
     <tr>
