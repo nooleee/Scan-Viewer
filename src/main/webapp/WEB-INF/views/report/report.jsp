@@ -13,13 +13,6 @@
 </head>
 <body>
 <h1>보고서</h1>
-
-<form action="/report/{pid}" method="get">
-    <label for="pid">환자 아이디:</label>
-    <input type="text" id="pid" name="pid">
-    <button type="submit">조회</button>
-</form>
-
 <table border="1">
     <thead>
     <tr>
@@ -34,7 +27,7 @@
     <c:forEach var="study" items="${reports}">
         <tr>
             <td>${study.pname}</td>
-            <td>${study.pid}</td>
+            <td><a href="/report/${study.pid}">${study.pid}</a></td>
             <td>${study.studydate}</td>
             <td>${study.studydesc}</td>
             <td>
