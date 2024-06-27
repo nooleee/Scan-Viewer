@@ -44,6 +44,10 @@ public class StudyService {
         return studyRepository.findAllByPid(pid);
     }
 
+    public Page<Study> findByPidContainingAndPnameContaining(String pid, String pname, PageRequest pageRequest) {
+        return studyRepository.findByPidContainingAndPnameContaining(pid, pname, pageRequest);
+    }
+
 //    public List<Image> findByStudykey(long studykey) {
 //        return imageRepository.findAllById(studykey);
 //    }
