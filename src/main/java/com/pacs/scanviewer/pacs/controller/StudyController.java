@@ -3,15 +3,13 @@ package com.pacs.scanviewer.pacs.controller;
 import com.pacs.scanviewer.pacs.domain.Study;
 import com.pacs.scanviewer.pacs.service.StudyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -24,12 +22,28 @@ public class StudyController {
     private final StudyService studyService;
 
     @GetMapping("/worklist")
-    public ModelAndView getWorklist() {
-        ModelAndView mv = new ModelAndView("worklist/worklist");
-        List<Study> studies = studyService.getAllStudies();
-        mv.addObject("studies", studies);
-        return mv;
+    public String getWorklistPage(){
+        return "worklist/worklist";
     }
+
+    @CrossOrigin
+    @GetMapping("/worklistAllSearch")
+    @ResponseBody
+    public Page<Study> getAllStudies(@RequestParam(defaultValue="0") int page, @RequestParam(defaultValue = "5") int size ) {
+        return studyService.findStudiesWithPage(page, size);
+    }
+
+    @GetMapping("/worklistPrevious/{pid}")
+    @ResponseBody
+    public List<Study> getStudiesByPid(@PathVariable String pid) {
+        return studyService.getStudiesByPid(pid);
+    }
+
+
+
+
+
+
 
 //    @ResponseBody
 //    @GetMapping("/studies/{page}")
@@ -38,15 +52,15 @@ public class StudyController {
 //        return new ResponseEntity<>(result, HttpStatus.OK);
 //    }
 
-    @ResponseBody
-    @GetMapping("/studies/{studykey}")
-    public ResponseEntity<Map<Long, List<String>>> getStudy(@PathVariable long studykey) {
-        Map<Long, List<String>> imageNamesByStudyKey = studyService.getImageNamesByStudyKey(studykey);
-
-        ResponseEntity<Map<Long, List<String>>> res = new ResponseEntity(imageNamesByStudyKey,HttpStatus.OK);
-
-        return res;
-    }
+//    @ResponseBody
+//    @GetMapping("/studies/{studykey}")
+//    public ResponseEntity<Map<Long, List<String>>> getStudy(@PathVariable long studykey) {
+//        Map<Long, List<String>> imageNamesByStudyKey = studyService.getImageNamesByStudyKey(studykey);
+//
+//        ResponseEntity<Map<Long, List<String>>> res = new ResponseEntity(imageNamesByStudyKey,HttpStatus.OK);
+//
+//        return res;
+//    }
 
 //    @ResponseBody
 //    @GetMapping("/studies/{studykey}")
