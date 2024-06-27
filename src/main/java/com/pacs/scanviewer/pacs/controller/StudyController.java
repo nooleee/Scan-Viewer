@@ -4,6 +4,7 @@ import com.pacs.scanviewer.pacs.domain.Study;
 import com.pacs.scanviewer.pacs.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,25 @@ public class StudyController {
         return studyService.getStudiesByPid(pid);
     }
 
+    @CrossOrigin
+    @GetMapping("/searchStudies")
+    @ResponseBody
+    public Page<Study> searchStudies(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) String pid,
+            @RequestParam(required = false) String pname) {
+
+        if (pid != null && !pid.isEmpty() && pname != null && !pname.isEmpty()) {
+            return studyService.findByPidContainingAndPnameContaining(pid, pname, PageRequest.of(page, size));
+        } else if (pid != null && !pid.isEmpty()) {
+            return studyService.findByPidContaining(pid, PageRequest.of(page, size));
+        } else if (pname != null && !pname.isEmpty()) {
+            return studyService.findByPnameContaining(pname, PageRequest.of(page, size));
+        } else {
+            return studyService.findStudiesWithPage(page, size);
+        }
+    }
 
 
 
