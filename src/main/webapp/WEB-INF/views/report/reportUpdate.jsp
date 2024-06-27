@@ -35,28 +35,27 @@
 </table>
 <h2>의사 소견</h2>
 <div>
-    <textarea rows="4" cols="50" placeholder="의사 코멘트">${study.content}</textarea>
+    <textarea rows="4" cols="50" placeholder="의사 코멘트">${report.content}</textarea>
 </div>
 
 <h2>결론</h2>
 <div>
-    <textarea rows="4" cols="50" placeholder="결론">${study.patient}</textarea>
+    <textarea rows="4" cols="50" placeholder="결론">${report.patient}</textarea>
 </div>
 
 <h2>추가 정보</h2>
 <div>
     <label>판독의:</label>
-    <input type="text" value="${study.userCode}" readonly/>
+    <input type="text" value="${report.userCode}" readonly/>
 </div>
 <div>
     <label>판독 일시:</label>
-    <input type="text" value="${study.date}" readonly/>
+    <input type="text" value="${report.date}" readonly/>
 </div>
 <div>
     <label>질병 코드:</label>
-    <input type="text" value="${study.diseaseCode}" readonly/>
+    <input type="text" value="${report.diseaseCode}" readonly/>
 </div>
-
 <div>
     <button>리포트 수정</button>
     <button onclick="cancelReport()">리포트 수정 취소</button>
