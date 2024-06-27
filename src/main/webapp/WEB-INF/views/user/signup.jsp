@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/script/checkUserCode.js"></script>
     <title>회원가입</title>
 </head>
 <body>
@@ -20,6 +21,7 @@
     <div>
         <label for="userCode">유저 ID:</label>
         <input type="text" id="userCode" name="userCode" maxlength="20" required>
+        <span id="userCodeMessage"></span>
     </div>
     <div>
         <label for="password">패스 워드:</label>
