@@ -13,6 +13,13 @@ document.getElementById('getAllStudiesBtn').addEventListener('click', function()
     }
 });
 
+document.querySelector('.search-button').addEventListener('click', function() {
+    const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
+    const pname = document.querySelector('input[placeholder="환자 이름"]').value;
+    currentPage = 0;  // Reset page count for new search
+    searchStudies(pid, pname, currentPage, pageSize);
+});
+
 function fetchStudies(page, size) {
     fetch(`/worklistAllSearch?page=${page}&size=${size}`)
         .then(response => {
@@ -76,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
 
     table.addEventListener('click', function(event) {
-        console.log("click이벤트 발생")
         const targetRow = event.target.closest('tr');
 
         const pid = targetRow.querySelector('td:nth-child(1)').textContent;
@@ -87,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const targetRow = event.target.closest('tr');
         if (targetRow) {
             const studyKey = targetRow.querySelector('.studykey').value;
-            const url = `/path/to/detailStudy?studykey=${encodeURIComponent(studyKey)}`;
+            const url = `/detailStudy?studykey=${encodeURIComponent(studyKey)}`;
             window.location.href = url;
         }
     });
@@ -157,6 +163,70 @@ function toggleLoadMoreButton(data) {
     } else {
         loadMoreBtn.style.display = 'none';
     }
+}
+
+function searchStudies(pid, pname, page, size) {
+    let url = `/searchStudies?page=${page}&size=${size}`;
+    if (pid) {
+        url += `&pid=${pid}`;
+    }
+    if (pname) {
+        url += `&pname=${pname}`;
+    }
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('서버 응답 오류: ' + response.status);
+            }
+            const contentType = response.headers.get('Content-Type');
+            if (contentType && contentType.includes('application/json')) {
+                return response.json();
+            } else {
+                throw new Error('서버에서 올바른 형식의 데이터를 반환하지 않았습니다.');
+            }
+        })
+        .then(data => {
+            clearStudies(); // Clear existing studies
+            appendStudies(data.content);
+            updateTotalStudiesCount(data.totalElements); // Update total count
+            toggleLoadMoreButton(data);
+        })
+        .catch(error => {
+            console.error('오류 발생:', error);
+            alert('데이터를 불러오는 중 오류가 발생했습니다.');
+        });
+}
+
+function clearStudies() {
+    const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+    dataTable.innerHTML = '';
+}
+
+function updateTotalStudiesCount(total) {
+    const totalStudiesElement = document.querySelector('.totalStudies');
+    totalStudiesElement.textContent = `총 검사 건수 : ${total}`;
+}
+
+function populateReportSection(study) { // report 정보 띄우는거 ㅇㅇ
+    //다시. studykey로 report를 먼저! 조회하고, 유무로 갖다박으라고 판독을 ㅆㅂ 똑같은걸 몇번을
+
+    fetch(`/reportByStudyKey?studykey=${study.studykey}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('서버 응답 오류: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(report => {
+            document.getElementById('reading').textContent = report.userCode || '';
+            document.querySelector('.comment').value = report.content || '';
+            // document.querySelector('.quest').value = report.quest || '';
+        })
+        .catch(error => {
+            // console.error('오류 발생:', error);
+            // alert('데이터를 불러오는 중 오류가 발생했습니다.');
+        });
 }
 
 function loadAllStudies() {
