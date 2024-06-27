@@ -26,6 +26,13 @@ document.querySelector('.search-button').addEventListener('click', function() {
     searchStudies(pid, pname, currentPage, pageSize);
 });
 
+document.getElementById('reset').addEventListener('click', function() {
+    clearStudies();
+    document.querySelector('input[placeholder="환자 아이디"]').value = '';
+    document.querySelector('input[placeholder="환자 이름"]').value = '';
+    document.querySelector('.totalStudies').textContent = `총 검사 건수 : `;
+});
+
 function fetchStudies(page, size) {
     fetch(`/worklistAllSearch?page=${page}&size=${size}`)
         .then(response => {
