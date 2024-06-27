@@ -12,10 +12,10 @@ document.getElementById('loadMoreBtn').addEventListener('click', function() {
 });
 
 document.getElementById('getAllStudiesBtn').addEventListener('click', function() {
-    if(currentPage === 0){
-        fetchStudies(currentPage, pageSize);
-        currentPage++;
-    }
+    clearStudies();
+    fetchStudies(currentPage, pageSize);
+    document.querySelector('input[placeholder="환자 아이디"]').value = '';
+    document.querySelector('input[placeholder="환자 이름"]').value = '';
 });
 
 document.querySelector('.search-button').addEventListener('click', function() {
@@ -49,6 +49,7 @@ function fetchStudies(page, size) {
         .then(data => {
             appendStudies(data.content); // 기존 데이터를 지우지 않고 추가 데이터를 테이블에 추가
             toggleLoadMoreButton(data);
+            updateTotalStudiesCount(data.totalElements);
         })
         .catch(error => {
             console.error('오류 발생:', error);
