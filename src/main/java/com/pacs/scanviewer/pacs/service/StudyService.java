@@ -32,6 +32,14 @@ public class StudyService {
         return studyRepository.findAll(PageRequest.of(page, size));
     }
 
+    public Page<Study> findByPidContaining(String pid, PageRequest pageRequest) {
+        return studyRepository.findByPidContaining(pid, pageRequest);
+    }
+
+    public Page<Study> findByPnameContaining(String pname, PageRequest pageRequest) {
+        return studyRepository.findByPnameContaining(pname, pageRequest);
+    }
+
     public List<Study> getStudiesByPid(String pid) {
         return studyRepository.findAllByPid(pid);
     }
