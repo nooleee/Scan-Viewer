@@ -49,35 +49,35 @@
 </table>
 
 <%--<c:if test="${not empty study}">--%>
-    <h2>의사 소견</h2>
+<h2>의사 소견</h2>
+<div>
+    <textarea rows="4" cols="50">${study.content}</textarea>
+</div>
+
+<h2>결론</h2>
+<div>
+    <textarea rows="4" cols="50">${study.patient}</textarea>
+</div>
+
+<h2>추가 정보</h2>
+<form id="reportForm" action="/report" method="post">
     <div>
-        <textarea rows="4" cols="50">${study.content}</textarea>
+        <label>판독의:</label>
+        <input type="text" name="userCode" value="${study.userCode}" readonly/>
+    </div>
+    <div>
+        <label>판독 일시:</label>
+        <input type="text" name="date" value="${study.date}" readonly/>
+    </div>
+    <div>
+        <label>질병 코드:</label>
+        <input type="text" name="diseaseCode" value="${study.diseaseCode}" readonly/>
     </div>
 
-    <h2>결론</h2>
     <div>
-        <textarea rows="4" cols="50">${study.patient}</textarea>
+        <button type="submit">판독</button>
     </div>
-
-    <h2>추가 정보</h2>
-    <form id="reportForm" action="/report" method="post">
-        <div>
-            <label>판독의:</label>
-            <input type="text" name="userCode" value="${study.userCode}" readonly/>
-        </div>
-        <div>
-            <label>판독 일시:</label>
-            <input type="text" name="date" value="${study.date}" readonly/>
-        </div>
-        <div>
-            <label>질병 코드:</label>
-            <input type="text" name="diseaseCode" value="${study.diseaseCode}" readonly/>
-        </div>
-
-        <div>
-            <button type="submit">판독</button>
-        </div>
-    </form>
+</form>
 <%--</c:if>--%>
 
 <div>
