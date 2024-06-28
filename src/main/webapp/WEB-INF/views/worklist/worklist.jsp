@@ -15,6 +15,16 @@
 </head>
 <body>
 <div class="container">
+    <div class="aside">
+        <div class="Menuwrapper">
+            <button>mypage</button>
+            <button>세부검색... 보류..</button>
+        </div>
+        <div class="Settingwrapper">
+            <button>Setting</button>
+            <button>Logout</button>
+        </div>
+    </div>
     <div class="content">
         <div class="search">
             <h3>검색</h3>
@@ -105,7 +115,6 @@
                     <div class="report-box">
                         <div class="write-box">
                             <textarea class="comment" placeholder="코멘트"></textarea>
-                            <textarea class="quest" placeholder="탐색"></textarea>
                         </div>
                         <div class="input-box">
                             <div>판독의</div>
