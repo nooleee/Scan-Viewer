@@ -24,5 +24,6 @@
     <input type="hidden" name="userCode" value="${sessionScope.user.userCode}">
     <input type="submit" value="회원탈퇴">
 </form>
+<button onclick="window.location='/worklist'">워크리스트로 이동 </button>
 </body>
 </html>
