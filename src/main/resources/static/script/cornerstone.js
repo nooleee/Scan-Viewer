@@ -7,7 +7,7 @@ const {
     ZoomTool, ToolGroupManager,
     Enums: csToolsEnums,
     LengthTool, AngleTool,
-    MagnifyTool
+    MagnifyTool,StackScrollMouseWheelTool
 } = cornerstoneTools;
 const {MouseBindings} = csToolsEnums;
 
@@ -27,12 +27,14 @@ cornerstoneTools.addTool(ZoomTool);
 cornerstoneTools.addTool(LengthTool);
 cornerstoneTools.addTool(AngleTool);
 cornerstoneTools.addTool(MagnifyTool);
+cornerstoneTools.addTool(StackScrollMouseWheelTool);
 
 const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
 toolGroup.addTool(ZoomTool.toolName);
 toolGroup.addTool(LengthTool.toolName);
 toolGroup.addTool(AngleTool.toolName);
 toolGroup.addTool(MagnifyTool.toolName);
+toolGroup.addTool(StackScrollMouseWheelTool.toolName);
 
 const render = async (imageIds) => {
     const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
@@ -64,6 +66,8 @@ const render = async (imageIds) => {
     toolGroup.setToolActive(AngleTool.toolName, {
         bindings: [{ mouseButton: MouseBindings.Auxiliary }],
     });
+    toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
+
 };
 
 const loadSeries = async (studykey, serieskey) => {
@@ -72,6 +76,12 @@ const loadSeries = async (studykey, serieskey) => {
 
     const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
     await render(imageIds);
+};
+
+// URL에서 쿼리 파라미터를 추출하는 함수
+const getQueryParams = (param) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
 };
 
 const init = async () => {
@@ -94,10 +104,20 @@ const init = async () => {
     };
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
 
-    // 시리즈 로드 (예시로 studykey와 serieskey를 사용)
-    const studykey = 5;  // 실제 값을 넣어주세요
-    const serieskey = 1;  // 실제 값을 넣어주세요
-    loadSeries(studykey, serieskey);
+    // // 시리즈 로드 (예시로 studykey와 serieskey를 사용)
+    // const studykey = 6;  // 실제 값을 넣어주세요
+    // const serieskey = 2;  // 실제 값을 넣어주세요
+    // loadSeries(studykey, serieskey);
+
+    // URL에서 studykey와 serieskey 파라미터를 가져옴
+    const studykey = getQueryParams('studykey');  // 예: ?studykey=6
+    const serieskey = getQueryParams('serieskey');  // 예: ?serieskey=2
+
+    if (studykey && serieskey) {
+        loadSeries(studykey, serieskey);
+    } else {
+        console.error('studykey와 serieskey가 필요합니다.');
+    }
 };
 
 init();
