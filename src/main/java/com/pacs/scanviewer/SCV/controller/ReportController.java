@@ -26,10 +26,10 @@ public class ReportController {
         return model;
     }
 
-    @PostMapping("/{studyKey}")
+    @PostMapping()
     public String createReport(@ModelAttribute Report report) {
         reportService.save(report);
-        return "redirect:/report";
+        return "redirect:/worklist";
     }
 
     @PutMapping("/update")
