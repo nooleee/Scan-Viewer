@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequestMapping("/images")
 @RequiredArgsConstructor
@@ -43,19 +44,19 @@ public class ImageController {
 
     @GetMapping("/dicom-images")
     public ResponseEntity<List<Image>> getDicomImages() {
-        List<Image> dicomImages = imageService.getDicomImages();
+        List<Image> allImages = imageService.getDicomImages();
+        List<Image> dicomImages = allImages.stream()
+                .filter(image -> image.getFname().endsWith(".dcm"))
+                .collect(Collectors.toList());
         return new ResponseEntity<>(dicomImages, HttpStatus.OK);
     }
 
     @GetMapping("/{studykey}/{serieskey}")
     public ModelAndView getImagesByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
-//        Map<Long, List<String>> seriesImages = imageService.getImageNamesByStudyKey(studykey);
-//        List<String> images = seriesImages.getOrDefault(serieskey, new ArrayList<>());
-//
-//        ModelAndView mv = new ModelAndView("viewer/viewer");
-//        mv.addObject("images", images);
-        List<String> images = imageService.getDicomUrlsByStudyKeyAndSeriesKey(studykey, serieskey);
-        System.out.println("images size : " + images.size());
+        List<Image> imageList = imageService.getDicomUrlsByStudyKeyAndSeriesKey(studykey, serieskey);
+        List<String> images = imageList.stream()
+                .map(image -> "Z:/" + image.getPath() + image.getFname())
+                .collect(Collectors.toList());
         ModelAndView mv = new ModelAndView("viewer/viewer");
         mv.addObject("images", images);
         return mv;
@@ -64,8 +65,11 @@ public class ImageController {
     @GetMapping("/{studykey}/{serieskey}/dicom-urls")
     @ResponseBody
     public ResponseEntity<List<String>> getDicomUrlsByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
-        List<String> dicomUrls = imageService.getDicomUrlsByStudyKeyAndSeriesKey(studykey, serieskey);
-        System.out.println("dicomUrls size : " + dicomUrls.size());
+        List<Image> imageList = imageService.getDicomUrlsByStudyKeyAndSeriesKey(studykey, serieskey);
+        List<String> dicomUrls = imageList.stream()
+                .map(image -> "Z:/" + image.getPath() + image.getFname())
+                .collect(Collectors.toList());
+
         return new ResponseEntity<>(dicomUrls, HttpStatus.OK);
     }
 
