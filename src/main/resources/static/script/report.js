@@ -16,7 +16,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/report/save",
+            url: "/report/{studykey}",
             contentType: "application/json",
             data: JSON.stringify(reportData),
             success: function (response) {
