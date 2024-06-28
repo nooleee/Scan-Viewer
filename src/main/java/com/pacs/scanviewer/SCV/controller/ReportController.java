@@ -21,7 +21,6 @@ public class ReportController {
     public ModelAndView getReportByStudyKey(@PathVariable long studyKey) {
         ModelAndView model = new ModelAndView("report/report");
         List<Study> reportList = studyService.findByStudykey(studyKey);
-        System.out.println("reportList: " + reportList);
         model.addObject("reports", reportList);
         return model;
     }
