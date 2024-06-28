@@ -66,6 +66,13 @@ public class UserController {
         return "redirect:/user/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("user");
+        session.invalidate();
+        return "user/login";
+    }
+
 
     @PostMapping("/loginProcess")
     public ModelAndView loginprocess(@ModelAttribute UserDto userDto, HttpSession session) {
