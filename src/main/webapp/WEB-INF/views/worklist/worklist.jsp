@@ -21,7 +21,6 @@
             <button>세부검색... 보류..</button>
         </div>
         <div class="Settingwrapper">
-            <button>Setting</button>
             <button id="logout">Logout</button>
         </div>
     </div>
