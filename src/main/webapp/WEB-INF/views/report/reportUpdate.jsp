@@ -20,6 +20,7 @@
         <th>환자 아이디</th>
         <th>검사 날짜</th>
         <th>검사 설명</th>
+        <th>판독 상태</th>
     </tr>
     </thead>
     <tbody>
@@ -29,6 +30,19 @@
             <td>${study.pid}</td>
             <td>${study.studydate}</td>
             <td>${study.studydesc}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${study.reportstatus == 3}">
+                        읽지 않음
+                    </c:when>
+                    <c:when test="${study.reportstatus == 6}">
+                        판독 완료
+                    </c:when>
+                    <c:when test="${study.reportstatus == 5}">
+                        판독 보류
+                    </c:when>
+                </c:choose>
+            </td>
         </tr>
     </c:forEach>
     </tbody>
@@ -66,5 +80,6 @@
         }
     </script>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
 </body>
 </html>
