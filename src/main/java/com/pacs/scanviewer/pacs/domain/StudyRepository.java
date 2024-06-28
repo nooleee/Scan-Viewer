@@ -20,4 +20,5 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
 
     List<Study> findAllByPid(String pid);
+    List<Study> findAllByStudykey(long studykey);
 }
