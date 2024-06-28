@@ -1,12 +1,12 @@
 $(document).ready(function () {
-    $('.blue-button').on('click', function (e) {
+    $('.button').on('click', function (e) {
         e.preventDefault();
 
         var reportData = {
             studyKey: $('#studyKey').val(),
-            userCode: $('input[name="userCode"]').val(),
-            date: $('input[name="date"]').val(),
-            diseaseCode: $('input[name="diseaseCode"]').val(),
+            userCode: $('#userCode').val(),
+            date: $('#date').val(),
+            diseaseCode: $('#diseaseCode').val(),
             content: $('.comment').val(),
             patient: $('.quest').val(),
             videoReplay: '읽지않음',  // 필요에 따라 적절한 값을 넣어줍니다.
