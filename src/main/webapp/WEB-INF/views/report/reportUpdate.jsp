@@ -80,5 +80,6 @@
         }
     </script>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
 </body>
 </html>
