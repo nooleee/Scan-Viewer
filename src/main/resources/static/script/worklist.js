@@ -43,6 +43,13 @@ document.getElementById('logout').addEventListener('click', function() {
     window.location.href = '/user/logout';
 });
 
+document.getElementById('pageSizeSelect').addEventListener('change', function() {
+    const pageSize = parseInt(this.value);
+    currentPage = 0;
+    clearStudies();
+    fetchStudies(currentPage, pageSize);
+});
+
 function fetchStudies(page, size) {
     fetch(`/worklistAllSearch?page=${page}&size=${size}`)
         .then(response => {
