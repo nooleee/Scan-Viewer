@@ -15,6 +15,16 @@
 </head>
 <body>
 <div class="container">
+    <div class="aside">
+        <div class="Menuwrapper">
+            <button>mypage</button>
+            <button>세부검색... 보류..</button>
+        </div>
+        <div class="Settingwrapper">
+            <button>Setting</button>
+            <button>Logout</button>
+        </div>
+    </div>
     <div class="content">
         <div class="search">
             <h3>검색</h3>
