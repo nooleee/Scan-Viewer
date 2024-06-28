@@ -39,22 +39,6 @@ public class ImageController {
     }
 
 
-    @GetMapping("/{studykey}/{serieskey}/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<FileSystemResource> getImage(@PathVariable Long studykey,
-                                                       @PathVariable Long serieskey,
-                                                       @PathVariable String filename) throws IOException {
-        File imageFile = new File("Z:/" + File.separator + filename);
-        if (!imageFile.exists()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + filename + "\"")
-                .contentType(MediaType.IMAGE_JPEG)  // 필요한 경우 MediaType 변경
-                .body(new FileSystemResource(imageFile));
-    }
-
     @GetMapping("/dicom-images")
     public ResponseEntity<List<Image>> getDicomImages() {
         List<Image> dicomImages = imageService.getDicomImages();
