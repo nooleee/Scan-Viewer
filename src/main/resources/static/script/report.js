@@ -3,6 +3,7 @@ $(document).ready(function () {
         e.preventDefault();
 
         var reportData = {
+            studyKey: $('#studyKey').val(),
             userCode: $('input[name="userCode"]').val(),
             date: $('input[name="date"]').val(),
             diseaseCode: $('input[name="diseaseCode"]').val(),
