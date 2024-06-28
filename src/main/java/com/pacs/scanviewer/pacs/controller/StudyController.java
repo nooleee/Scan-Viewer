@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,12 @@ public class StudyController {
     private final StudyService studyService;
 
     @GetMapping("/worklist")
-    public String getWorklistPage(){
+    public String getWorklistPage(HttpSession session){
+        if(session.getAttribute("user") != null){
         return "worklist/worklist";
+        }else{
+            return "redirect:/user/login";
+        }
     }
 
     @CrossOrigin
