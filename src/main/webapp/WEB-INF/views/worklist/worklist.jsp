@@ -45,11 +45,14 @@
         </div>
         <div>
             <span class="totalStudies">총 검사 건수 : </span>
-            <div>
-                <button class="download">다운로드</button>
-                <button class="deleteStudy">검사삭제</button>
-                <select>
-                    <option selected>10개씩보기</option>
+            <div class="combo-box">
+                <label for="pageSizeSelect">항목 수 보기:</label>
+                <select id="pageSizeSelect">
+                    <option value="5">5개씩 보기</option>
+                    <option value="10">10개씩 보기</option>
+                    <option value="20">20개씩 보기</option>
+                    <option value="50">50개씩 보기</option>
+                    <option value="100">100개씩 보기</option>
                 </select>
             </div>
         </div>
