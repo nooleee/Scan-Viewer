@@ -33,6 +33,13 @@ public class ReportController {
         return model;
     }
 
+    @PostMapping("/save")
+    @ResponseBody
+    public String saveReport(@RequestBody Report report) {
+        reportService.save(report);
+        return "Report saved successfully";
+    }
+
     @PostMapping
     public String createReport(@ModelAttribute Report report) {
         reportService.save(report);
