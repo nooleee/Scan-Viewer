@@ -15,7 +15,7 @@ const {MouseBindings} = csToolsEnums;
 const toolGroupId = 'myToolGroup';
 const renderingEngineId = 'myRenderingEngine';
 const viewportId = 'CT_AXIAL_STACK';
-const content = document.getElementById('content');
+const content = document.getElementById('dicomViewport');
 const element = document.createElement('div');
 element.style.width = '500px';
 element.style.height = '500px';
@@ -50,7 +50,7 @@ const render = async (imageIds) => {
     await renderingEngine.renderViewports([viewportId]);
 
     const viewport = renderingEngine.getViewport(viewportInput.viewportId);
-    viewport.setStack(imageIds);
+    await viewport.setStack(imageIds);
 
     cornerstoneTools.utilities.stackPrefetch.enable(viewport.element);
 
@@ -71,18 +71,20 @@ const render = async (imageIds) => {
 };
 
 const loadSeries = async (studykey, serieskey) => {
-    const response = await fetch(`/images/study/${studykey}/series/${serieskey}/dicom-urls`);
+    const response = await fetch(`/images/${studykey}/${serieskey}/dicom-urls`);
     const dicomUrls = await response.json();
 
     const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
+    console.log("imageIds size : " + imageIds.length)
+    console.log("imageIds : " + imageIds)
     await render(imageIds);
 };
 
-// URL에서 쿼리 파라미터를 추출하는 함수
-const getQueryParams = (param) => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-};
+// // URL에서 쿼리 파라미터를 추출하는 함수
+// const getQueryParams = (param) => {
+//     const urlParams = new URLSearchParams(window.location.search);
+//     return urlParams.get(param);
+// };
 
 const init = async () => {
     await cornerstone.init();
@@ -104,20 +106,20 @@ const init = async () => {
     };
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
 
-    // // 시리즈 로드 (예시로 studykey와 serieskey를 사용)
-    // const studykey = 6;  // 실제 값을 넣어주세요
-    // const serieskey = 2;  // 실제 값을 넣어주세요
-    // loadSeries(studykey, serieskey);
+    // 시리즈 로드 (예시로 studykey와 serieskey를 사용)
+    const studykey = 5;  // 실제 값을 넣어주세요
+    const serieskey = 1;  // 실제 값을 넣어주세요
+    loadSeries(studykey, serieskey);
 
-    // URL에서 studykey와 serieskey 파라미터를 가져옴
-    const studykey = getQueryParams('studykey');  // 예: ?studykey=6
-    const serieskey = getQueryParams('serieskey');  // 예: ?serieskey=2
-
-    if (studykey && serieskey) {
-        loadSeries(studykey, serieskey);
-    } else {
-        console.error('studykey와 serieskey가 필요합니다.');
-    }
+    // // URL에서 studykey와 serieskey 파라미터를 가져옴
+    // const studykey = getQueryParams('studykey');  // 예: ?studykey=6
+    // const serieskey = getQueryParams('serieskey');  // 예: ?serieskey=2
+    //
+    // if (studykey && serieskey) {
+    //     loadSeries(studykey, serieskey);
+    // } else {
+    //     console.error('studykey와 serieskey가 필요합니다.');
+    // }
 };
 
 init();

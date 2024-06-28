@@ -61,20 +61,25 @@ public class ImageController {
         return new ResponseEntity<>(dicomImages, HttpStatus.OK);
     }
 
-    @GetMapping("/study/{studykey}/series/{serieskey}")
+    @GetMapping("/{studykey}/{serieskey}")
     public ModelAndView getImagesByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
-        Map<Long, List<String>> seriesImages = imageService.getImageNamesByStudyKey(studykey);
-        List<String> images = seriesImages.getOrDefault(serieskey, new ArrayList<>());
-
+//        Map<Long, List<String>> seriesImages = imageService.getImageNamesByStudyKey(studykey);
+//        List<String> images = seriesImages.getOrDefault(serieskey, new ArrayList<>());
+//
+//        ModelAndView mv = new ModelAndView("viewer/viewer");
+//        mv.addObject("images", images);
+        List<String> images = imageService.getDicomUrlsByStudyKeyAndSeriesKey(studykey, serieskey);
+        System.out.println("images size : " + images.size());
         ModelAndView mv = new ModelAndView("viewer/viewer");
         mv.addObject("images", images);
         return mv;
     }
 
-    @GetMapping("/study/{studykey}/series/{serieskey}/dicom-urls")
+    @GetMapping("/{studykey}/{serieskey}/dicom-urls")
     @ResponseBody
     public ResponseEntity<List<String>> getDicomUrlsByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
         List<String> dicomUrls = imageService.getDicomUrlsByStudyKeyAndSeriesKey(studykey, serieskey);
+        System.out.println("dicomUrls size : " + dicomUrls.size());
         return new ResponseEntity<>(dicomUrls, HttpStatus.OK);
     }
 
