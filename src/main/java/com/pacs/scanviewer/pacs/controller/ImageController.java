@@ -83,6 +83,8 @@ public class ImageController {
         return new ResponseEntity<>(dicomUrls, HttpStatus.OK);
     }
 
+
+    // window용 코드
     @GetMapping("/dicom-file")
     @ResponseBody
     public ResponseEntity<FileSystemResource> getDicomFile(@RequestParam String path) {
@@ -97,12 +99,43 @@ public class ImageController {
                 .body(new FileSystemResource(file));
     }
 
-//    @GetMapping("/list/page")
-//    public ModelAndView getImageListWithPagination(@PageableDefault(size = 5) Pageable pageable) {
-//        ModelAndView mv = new ModelAndView("image/list");
-//        Page<Image> imagesPage = imageService.findAllWithPage((org.springframework.data.domain.Pageable) pageable);
-//        mv.addObject("imagesPage", imagesPage);
-//        return mv;
+    // mac용 코드
+//    @GetMapping("/dicom-file")
+//    @ResponseBody
+//    public ResponseEntity<FileSystemResource> getDicomFile(@RequestParam String path) throws IOException {
+//        // URL 디코딩
+//        String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.name());
+//
+//        // 경로 앞에 /Volumes/STS가 이미 붙어있는 경우 중복 추가하지 않기 위해 검사
+//        String basePath = "/Volumes/STS";
+//        String fullPath;
+//        if (decodedPath.startsWith(basePath)) {
+//            fullPath = decodedPath;
+//        } else {
+//            fullPath = basePath + decodedPath;
+//        }
+//
+//        // 역슬래시를 슬래시로 변경
+//        fullPath = fullPath.replace("\\", "/");
+//
+//        // 전체 파일 경로 생성
+//        File file = new File(fullPath);
+//
+//        // 디버깅을 위한 로그 추가
+//        System.out.println("Requested path: " + path);
+//        System.out.println("Decoded path: " + decodedPath);
+//        System.out.println("Full file path: " + file.getAbsolutePath());
+//
+//        // 파일이 존재하지 않을 경우 404 응답
+//        if (!file.exists()) {
+//            System.out.println("File not found: " + file.getAbsolutePath()); // 파일이 존재하지 않을 경우 로그 추가
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        // 파일이 존재할 경우 파일 반환
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getName() + "\"")
+//                .body(new FileSystemResource(file));
 //    }
 
 }
