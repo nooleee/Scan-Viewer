@@ -35,6 +35,14 @@ document.getElementById('reset').addEventListener('click', function() {
     document.querySelector('.totalStudies').textContent = `총 검사 건수 : `;
 });
 
+document.getElementById('mypage').addEventListener('click', function() {
+    window.location.href = '/user/mypage';
+});
+
+document.getElementById('logout').addEventListener('click', function() {
+    window.location.href = '/user/logout';
+});
+
 function fetchStudies(page, size) {
     fetch(`/worklistAllSearch?page=${page}&size=${size}`)
         .then(response => {
