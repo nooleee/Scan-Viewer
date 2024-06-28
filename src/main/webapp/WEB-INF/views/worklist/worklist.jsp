@@ -105,7 +105,6 @@
                     <div class="report-box">
                         <div class="write-box">
                             <textarea class="comment" placeholder="코멘트"></textarea>
-                            <textarea class="quest" placeholder="탐색"></textarea>
                         </div>
                         <div class="input-box">
                             <div>판독의</div>
