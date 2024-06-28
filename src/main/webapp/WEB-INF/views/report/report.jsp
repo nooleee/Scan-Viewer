@@ -73,7 +73,7 @@
         <input type="text" name="diseaseCode" value="${report.diseaseCode}"/>
     </div>
     <div>
-        <button type="submit">판독</button>
+        <button class="button" type="submit">판독</button>
     </div>
     <div>
         <button onclick="cancelReport()">판독 취소</button>
