@@ -17,12 +17,12 @@
 <div class="container">
     <div class="aside">
         <div class="Menuwrapper">
-            <button>mypage</button>
+            <button id="mypage">mypage</button>
             <button>세부검색... 보류..</button>
         </div>
         <div class="Settingwrapper">
             <button>Setting</button>
-            <button>Logout</button>
+            <button id="logout">Logout</button>
         </div>
     </div>
     <div class="content">
