@@ -17,30 +17,16 @@ public class ReportController {
     private final ReportService reportService;
     private final StudyService studyService;
 
-    @GetMapping()
-    public ModelAndView getAllReports() {
+    @GetMapping("/{studyKey}")
+    public ModelAndView getReportByStudyKey(@PathVariable long studyKey) {
         ModelAndView model = new ModelAndView("report/report");
-        List<Study> reportList = studyService.getAllStudies();
+        List<Study> reportList = studyService.findByStudykey(studyKey);
+        System.out.println("reportList: " + reportList);
         model.addObject("reports", reportList);
         return model;
     }
 
-    @GetMapping("/{pid}")
-    public ModelAndView getReportsByPid(@PathVariable String pid) {
-        ModelAndView model = new ModelAndView("report/reportUpdate");
-        List<Study> reportList = studyService.getStudiesByPid(pid);
-        model.addObject("reports", reportList);
-        return model;
-    }
-
-    @PostMapping("/save")
-    @ResponseBody
-    public String saveReport(@RequestBody Report report) {
-        reportService.save(report);
-        return "Report saved successfully";
-    }
-
-    @PostMapping
+    @PostMapping("/{studyKey}")
     public String createReport(@ModelAttribute Report report) {
         reportService.save(report);
         return "redirect:/report";
