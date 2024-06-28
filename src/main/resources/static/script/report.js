@@ -9,8 +9,6 @@ $(document).ready(function () {
             content: $('.comment').val(),
             patient: $('.quest').val(),
             videoReplay: '읽지않음',  // 필요에 따라 적절한 값을 넣어줍니다.
-            // reportStatus: '읽지않음' // 적절한 값을 넣어줍니다.
-            // 필요한 경우 추가 필드를 여기에 추가
         };
 
         console.log('전송할 데이터:', reportData);
