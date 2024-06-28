@@ -23,12 +23,12 @@ public class Report {
     private String diseaseCode;
 
     @Enumerated(EnumType.STRING)
-    private String videoReplay;
+    private VideoReplay videoReplay;
 
     private Timestamp regDate;
     private Timestamp modDate;
 
-    public enum String {
+    public enum VideoReplay {
         읽지않음, 판독불가, 판독완료
     }
 }
