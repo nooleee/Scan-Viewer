@@ -48,6 +48,9 @@ public class StudyService {
         return studyRepository.findByPidContainingAndPnameContainingOrderByStudydateDesc(pid, pname, pageRequest);
     }
 
+    public List<Study> findByStudykey(long studykey) {
+        return studyRepository.findAllByStudykey(studykey);
+    }
 //    public List<Image> findByStudykey(long studykey) {
 //        return imageRepository.findAllById(studykey);
 //    }

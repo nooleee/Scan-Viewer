@@ -27,7 +27,7 @@
     <c:forEach var="study" items="${reports}">
         <tr>
             <td>${study.pname}</td>
-            <td><a href="/report/${study.pid}">${study.pid}</a></td>
+            <td>${study.pid}</td>
             <td>${study.studydate}</td>
             <td>${study.studydesc}</td>
             <td>
@@ -48,41 +48,37 @@
     </tbody>
 </table>
 
-<%--<c:if test="${not empty study}">--%>
 <h2>의사 소견</h2>
+<form id="reportForm" action="/report" method="post">
 <div>
-    <textarea rows="4" cols="50">${study.content}</textarea>
+    <textarea rows="4" cols="50" name="content">${report.content}</textarea>
 </div>
 
 <h2>결론</h2>
 <div>
-    <textarea rows="4" cols="50">${study.patient}</textarea>
+    <textarea rows="4" cols="50" name="patient">${report.patient}</textarea>
 </div>
 
 <h2>추가 정보</h2>
-<form id="reportForm" action="/report" method="post">
     <div>
         <label>판독의:</label>
-        <input type="text" name="userCode" value="${study.userCode}" readonly/>
+        <input type="text" name="userCode" value="${report.userCode}"/>
     </div>
     <div>
         <label>판독 일시:</label>
-        <input type="text" name="date" value="${study.date}" readonly/>
+        <input type="text" name="date" value="${report.date}"/>
     </div>
     <div>
         <label>질병 코드:</label>
-        <input type="text" name="diseaseCode" value="${study.diseaseCode}" readonly/>
+        <input type="text" name="diseaseCode" value="${report.diseaseCode}"/>
     </div>
-
     <div>
-        <button type="submit">판독</button>
+        <button class="button" type="submit">판독</button>
+    </div>
+    <div>
+        <button onclick="cancelReport()">판독 취소</button>
     </div>
 </form>
-<%--</c:if>--%>
-
-<div>
-    <button onclick="cancelReport()">판독 취소</button>
-</div>
 
 <script>
     function cancelReport() {
@@ -90,5 +86,6 @@
         alert('판독이 취소되었습니다.');
     }
 </script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
 </body>
 </html>

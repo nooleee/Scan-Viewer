@@ -12,10 +12,6 @@ import java.util.List;
 public class ReportService {
     private final ReportRepository reportRepository;
 
-    public List<Report> findAll() {
-        return reportRepository.findAll();
-    }
-
     public Report save(Report report) {
         return reportRepository.save(report);
     }

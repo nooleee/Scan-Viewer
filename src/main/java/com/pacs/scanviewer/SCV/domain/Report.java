@@ -2,19 +2,21 @@ package com.pacs.scanviewer.SCV.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+@IdClass(ReportId.class)
 @Getter
 @Setter
 @Table(name = "report")
 @Entity
 public class Report {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int studyKey;
-
+    @Id
     private String userCode;
 
     private String content;
@@ -25,7 +27,9 @@ public class Report {
     @Enumerated(EnumType.STRING)
     private VideoReplay videoReplay;
 
+    @CreatedDate
     private Timestamp regDate;
+    @LastModifiedDate
     private Timestamp modDate;
 
     public enum VideoReplay {
