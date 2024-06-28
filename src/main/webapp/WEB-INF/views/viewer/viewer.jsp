@@ -13,13 +13,11 @@
     <title>Title</title>
 </head>
 <body>
-<h1>CornerStone Sample Test</h1>
+<h1>DICOM Viewer</h1>
 <div id="content">
-    <c:forEach var="imagePath" items="${images}">
-        <img src="${imagePath}" alt="DICOM Image" width="100" height="100"/>
-    </c:forEach>
+    <div id="dicomViewport" style="width: 512px; height: 512px;"></div>
 </div>
-<input id ="file" type="file" accept="application/dicom">
+<%--<input id ="file" type="file" accept="application/dicom">--%>
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 </body>
 </html>

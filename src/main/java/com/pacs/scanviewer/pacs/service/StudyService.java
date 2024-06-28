@@ -29,15 +29,15 @@ public class StudyService {
     }
 
     public Page<Study> findStudiesWithPage(int page, int size) {
-        return studyRepository.findAll(PageRequest.of(page, size));
+        return studyRepository.findAllByOrderByStudydateDesc(PageRequest.of(page, size));
     }
 
     public Page<Study> findByPidContaining(String pid, PageRequest pageRequest) {
-        return studyRepository.findByPidContaining(pid, pageRequest);
+        return studyRepository.findByPidContainingOrderByStudydateDesc(pid, pageRequest);
     }
 
     public Page<Study> findByPnameContaining(String pname, PageRequest pageRequest) {
-        return studyRepository.findByPnameContaining(pname, pageRequest);
+        return studyRepository.findByPnameContainingOrderByStudydateDesc(pname, pageRequest);
     }
 
     public List<Study> getStudiesByPid(String pid) {
@@ -45,7 +45,7 @@ public class StudyService {
     }
 
     public Page<Study> findByPidContainingAndPnameContaining(String pid, String pname, PageRequest pageRequest) {
-        return studyRepository.findByPidContainingAndPnameContaining(pid, pname, pageRequest);
+        return studyRepository.findByPidContainingAndPnameContainingOrderByStudydateDesc(pid, pname, pageRequest);
     }
 
 //    public List<Image> findByStudykey(long studykey) {
