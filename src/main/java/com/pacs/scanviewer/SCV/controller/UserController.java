@@ -55,13 +55,23 @@ public class UserController {
 
     @PostMapping("/update")
     public String updateUser(@ModelAttribute UserDto userDto) {
-        userService.updateUserGroup(userDto.getUserCode(), userDto.getGroup());
+        Optional<User> optionalUser = userService.findUser(userDto.getUserCode());
+        User user = optionalUser.get();
+        System.out.println("[60]userCode: " + user.getUserCode());
+        UserDto userDto1 = new UserDto(user);
+        userDto1.setGroup(userDto.getGroup());
+        user = new User(userDto1);
+        System.out.println("[64]userCode: " + user.getUserCode());
+
+        userService.updateUserGroup(user);
         return "redirect:/user/manage";
     }
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam String userCode, HttpSession session) {
-        userService.deleteUserByUserCode(userCode);
+        Optional<User> optionalUser = userService.findUser(userCode);
+        User user = optionalUser.get();
+        userService.deleteUser(user);
         session.invalidate(); // 로그아웃 처리
         return "redirect:/user/login";
     }
@@ -81,13 +91,13 @@ public class UserController {
         System.out.println("로그인 로직 진입 ");
         System.out.println("userCode: " + userDto.getUserCode());
         System.out.println("password: " + userDto.getPassword());
-        if (userService.login(userDto)){
+        if (userService.login(userDto)) {
             Optional<User> userOptional = userService.findUser(userDto.getUserCode());
             User user = userOptional.get();
-            session.setAttribute("user",user);
+            session.setAttribute("user", user);
             modelAndView.setViewName("redirect:/user/mypage");
             System.out.println("로그인 성공");
-        }else {
+        } else {
             modelAndView.setViewName("redirect:/user/login");
             System.out.println("로그인 실패");
         }
@@ -107,10 +117,10 @@ public class UserController {
         System.out.println("group: " + userDto.getGroup());
         boolean saveComplete = userService.createUser(userDto);
 
-        if (saveComplete){
+        if (saveComplete) {
             System.out.println("가입 성공");
             modelAndView.setViewName("redirect:/user/login");
-        }else {
+        } else {
             System.out.println("가입 실패");
             modelAndView.setViewName("redirect:/user/index");
         }

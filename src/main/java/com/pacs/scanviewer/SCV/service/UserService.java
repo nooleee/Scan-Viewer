@@ -17,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public boolean login(UserDto userDto) {
-        return userRepository.findByUserCodeAndPassword(userDto.getUserCode(),userDto.getPassword()).isPresent();
+        return userRepository.findByUserCodeAndPassword(userDto.getUserCode(), userDto.getPassword()).isPresent();
     }
 
     public boolean createUser(UserDto userDto) {
@@ -38,20 +38,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void updateUserGroup(String userCode, String group) {
-        Optional<User> userOptional = userRepository.findById(userCode);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            UserDto userDto = new UserDto(user);
-            userDto.setGroup(group);
-            user = new User(userDto);
-            userRepository.save(user);
-        }
+    public void updateUserGroup(User user) {
+        userRepository.save(user);
     }
 
 
-    public void deleteUserByUserCode(String userCode) {
-        Optional<User> user = userRepository.findById(userCode);
-        user.ifPresent(userRepository::delete);
+    public void deleteUser(User user) {
+        userRepository.delete(user);
     }
 }
