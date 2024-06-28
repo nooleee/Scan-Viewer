@@ -80,11 +80,20 @@ const loadSeries = async (studykey, serieskey) => {
     await render(imageIds);
 };
 
-// // URL에서 쿼리 파라미터를 추출하는 함수
-// const getQueryParams = (param) => {
-//     const urlParams = new URLSearchParams(window.location.search);
-//     return urlParams.get(param);
-// };
+// URL 경로에서 studykey와 serieskey를 추출하는 함수
+const extractKeysFromPath = () => {
+    const path = window.location.pathname; // 예: "/images/5/1"
+    const pathParts = path.split('/');
+
+    if (pathParts.length >= 4) {
+        const studykey = pathParts[2];
+        const serieskey = pathParts[3];
+        return { studykey, serieskey };
+    } else {
+        console.error('올바른 경로 형식이 아닙니다. 예: /images/{studykey}/{serieskey}');
+        return null;
+    }
+};
 
 const init = async () => {
     await cornerstone.init();
@@ -106,20 +115,19 @@ const init = async () => {
     };
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
 
-    // 시리즈 로드 (예시로 studykey와 serieskey를 사용)
-    const studykey = 5;  // 실제 값을 넣어주세요
-    const serieskey = 1;  // 실제 값을 넣어주세요
-    loadSeries(studykey, serieskey);
+    // // 시리즈 로드 (예시로 studykey와 serieskey를 사용)
+    // const studykey = 7;  // 실제 값을 넣어주세요
+    // const serieskey = 1;  // 실제 값을 넣어주세요
+    // loadSeries(studykey, serieskey);
 
-    // // URL에서 studykey와 serieskey 파라미터를 가져옴
-    // const studykey = getQueryParams('studykey');  // 예: ?studykey=6
-    // const serieskey = getQueryParams('serieskey');  // 예: ?serieskey=2
-    //
-    // if (studykey && serieskey) {
-    //     loadSeries(studykey, serieskey);
-    // } else {
-    //     console.error('studykey와 serieskey가 필요합니다.');
-    // }
+    // URL 경로에서 studykey와 serieskey 추출
+    const keys = extractKeysFromPath();
+    if (keys) {
+        const { studykey, serieskey } = keys;
+        await loadSeries(studykey, serieskey);
+    } else {
+        console.error('studykey와 serieskey를 추출할 수 없습니다.');
+    }
 };
 
 init();

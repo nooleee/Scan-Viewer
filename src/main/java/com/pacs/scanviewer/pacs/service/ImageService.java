@@ -18,14 +18,6 @@ public class ImageService {
     private ImageRepository imageRepository;
 
 
-    public List<Image> getAllImages() {
-        return imageRepository.findAll();
-    }
-
-//    public Page<Image> findAllWithPage(Pageable pageable) {
-//        return imageRepository.findAll(pageable);
-//    }
-
     public List<Image> getDicomImages() {
         List<Image> allImages = imageRepository.findAll();
         return allImages.stream()
@@ -33,23 +25,6 @@ public class ImageService {
                 .collect(Collectors.toList());
     }
 
-    public List<Image> getImagesByStudyKeyAndSeriesKey(Long studykey, Long serieskey) {
-        return imageRepository.findByStudykeyAndSerieskey(studykey, serieskey);
-    }
-
-    public Map<Long, List<String>> getImageNamesByStudyKey(Long studyKey) {
-        List<Image> imageList = imageRepository.findByStudykey(studyKey);
-        System.out.println("imagelist size: " + imageList.size());
-        Map<Long, List<String>> seriesImages = new HashMap<>();
-
-        for (Image image : imageList) {
-            String fullPath = "Z:/" + image.getFormattedPath() + image.getFname();
-            seriesImages.computeIfAbsent(image.getSerieskey(), k -> new java.util.ArrayList<>()).add(fullPath);
-        }
-        System.out.println("series image size: " + seriesImages.size());
-
-        return seriesImages;
-    }
 
     public List<String> getDicomUrlsByStudyKeyAndSeriesKey(Long studykey, Long serieskey) {
         List<Image> imageList = imageRepository.findByStudykeyAndSerieskey(studykey, serieskey);
