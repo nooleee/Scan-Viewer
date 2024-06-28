@@ -7,6 +7,5 @@ import java.util.List;
 
 @Repository
 public interface ImageRepository extends JpaRepository<Image, Long> {
-    List<Image> findByStudykey(long studykey);
     List<Image> findByStudykeyAndSerieskey(long studykey, long serieskey);
 }
