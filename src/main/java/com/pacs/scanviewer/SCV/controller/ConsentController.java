@@ -34,7 +34,7 @@ public class ConsentController {
             long studykeyLong = (long) studykey;
             List<Long> seriesKeys = imageService.getSeriesKeysByStudyKey(studykeyLong);
             if (!seriesKeys.isEmpty()) {
-                ModelAndView modelAndView = new ModelAndView("redirect:/images/" + studykey + "/" + seriesKeys.get(0));
+                ModelAndView modelAndView = new ModelAndView("redirect:/images/" + studykey + "/" + seriesKeys.get(1));
                 return modelAndView;
             } else {
                 // 시리즈 키를 찾을 수 없는 경우를 처리합니다.
