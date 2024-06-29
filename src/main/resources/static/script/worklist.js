@@ -44,6 +44,10 @@ document.getElementById('logout').addEventListener('click', function() {
     window.location.href = '/user/logout';
 });
 
+document.getElementById('searchByDate').addEventListener('click', function() {
+
+});
+
 document.getElementById('pageSizeSelect').addEventListener('change', function() {
     pageSize = parseInt(this.value);
     const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
@@ -112,7 +116,6 @@ function appendStudies(studies) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    // fetchStudies(currentPage, pageSize);
 
     const table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
 
@@ -131,7 +134,52 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.href = url;
         }
     });
-});0
+
+    // 페이지 초기 로드 시 날짜를 설정
+    var today = new Date();
+    var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+
+    $('#startDate').datepicker({
+        dateFormat: 'yy-mm-dd',
+        defaultDate: new Date(1990, 0, 1)
+    }).datepicker('setDate', new Date(1990, 0, 1));
+
+    $('#endDate').datepicker({
+        dateFormat: 'yy-mm-dd',
+        defaultDate: formattedToday
+    }).datepicker('setDate', formattedToday);
+
+    // 세부 검색 버튼 클릭 시 상세 검색 div 토글
+    $('#toggleSearchDetail').click(function() {
+        $('#searchDetail').toggleClass('hidden');
+    });
+
+    // 날짜로 검색 버튼 클릭 시 처리
+    $('#searchByDate').click(function() {
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
+        // 여기에 날짜로 검색하는 기능을 추가하세요.
+        console.log('Searching from', startDate, 'to', endDate);
+    });
+
+
+
+    flatpickr("#calendar", {
+        inline: true,
+        mode: "range",
+        defaultDate: ["1990-01-01", formattedToday],
+        locale: "ko", // 언어 설정
+        onReady: function(selectedDates, dateStr, instance) {
+            instance.jumpToDate(formattedToday); // 달력을 현재 날짜로 이동
+        },
+        onChange: function(selectedDates, dateStr, instance) {
+            var startDate = selectedDates[0];
+            var endDate = selectedDates[1] || startDate;
+            $('#startDate').val(instance.formatDate(startDate, "Y-m-d"));
+            $('#endDate').val(instance.formatDate(endDate, "Y-m-d"));
+        }
+    });
+});
 
 function fetchStudiesByPid(pid) {
     fetch(`/worklistPrevious/${pid}`)

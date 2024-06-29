@@ -11,20 +11,82 @@
 <head>
     <title>Worklist</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/worklist.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+        .search-detail {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .search-detail label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .flatpickr-calendar {
+            display: inline-block !important;
+        }
+        .flatpickr-current-month {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+        .flatpickr-monthDropdown-months {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            padding: 10px 0 !important;
+        }
+        .flatpickr-monthDropdown-month {
+            width: 25% !important;
+            text-align: center !important;
+            padding: 5px 0 !important;
+        }
+        .flatpickr-monthDropdown-month:hover {
+            background: #f1f1f1 !important;
+        }
+        .flatpickr-monthDropdown-month.selected {
+            background: #4caf50 !important;
+            color: white !important;
+        }
+        .flatpickr-current-year {
+            margin: 0 10px !important;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="aside">
         <div class="Menuwrapper">
             <button id="mypage">mypage</button>
-            <button>세부검색... 보류..</button>
+            <button id="toggleSearchDetail">세부검색</button>
         </div>
         <div class="Settingwrapper">
             <button id="logout">Logout</button>
         </div>
     </div>
     <div class="content">
+
+        <!-- 상세 검색용 div -->
+        <div id="searchDetail" class="search-detail hidden">
+            <h3>상세 검색</h3>
+            <div>
+                <div id="calendar" class="flatpickr inline"></div>
+            </div>
+            <label for="startDate">시작 날짜:</label>
+            <input type="text" id="startDate">
+            <label for="endDate">종료 날짜:</label>
+            <input type="text" id="endDate">
+            <button id="searchByDate" class="button">날짜로 검색</button>
+        </div>
+
         <div class="search">
             <h3>검색</h3>
             <input type="text" placeholder="환자 아이디">
@@ -133,7 +195,8 @@
         </main>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/worklist.js"></script>
 
 </body>
