@@ -5,17 +5,11 @@ import com.pacs.scanviewer.pacs.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -52,23 +46,23 @@ public class StudyController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(required = false) String pid,
-            @RequestParam(required = false) String pname) {
+            @RequestParam(required = false) String pname,
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate)
+    {
 
         if (pid != null && !pid.isEmpty() && pname != null && !pname.isEmpty()) {
-            return studyService.findByPidContainingAndPnameContaining(pid, pname, PageRequest.of(page, size));
+            return studyService.findByPidPnameAndDateRange(pid, pname, startDate, endDate, PageRequest.of(page, size));
         } else if (pid != null && !pid.isEmpty()) {
-            return studyService.findByPidContaining(pid, PageRequest.of(page, size));
+            return studyService.findByPidContainingAndDateRange(pid, startDate, endDate, PageRequest.of(page, size));
         } else if (pname != null && !pname.isEmpty()) {
-            return studyService.findByPnameContaining(pname, PageRequest.of(page, size));
+            return studyService.findByPnameContainingAndDateRange(pname, startDate, endDate, PageRequest.of(page, size));
+        } else if (startDate != null && endDate != null) {
+            return studyService.findByDateRange(startDate, endDate, PageRequest.of(page, size));
         } else {
             return studyService.findStudiesWithPage(page, size);
         }
     }
-
-
-
-
-
 
 //    @ResponseBody
 //    @GetMapping("/studies/{page}")
