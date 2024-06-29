@@ -4,12 +4,12 @@ import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader'
 import * as dicomParser from 'dicom-parser';
 
 const {
-    ZoomTool, ToolGroupManager,
-    Enums: csToolsEnums,
-    LengthTool, AngleTool,
-    MagnifyTool,StackScrollMouseWheelTool
+    ZoomTool, PanTool, LengthTool, AngleTool, MagnifyTool, ToolGroupManager, StackScrollMouseWheelTool,
+    Enums: csToolsEnums
 } = cornerstoneTools;
 const {MouseBindings} = csToolsEnums;
+
+
 
 // 뷰 포트 생성
 const toolGroupId = 'myToolGroup';
@@ -17,13 +17,14 @@ const renderingEngineId = 'myRenderingEngine';
 const viewportId = 'CT_AXIAL_STACK';
 const content = document.getElementById('dicomViewport');
 const element = document.createElement('div');
-element.style.width = '500px';
-element.style.height = '500px';
+element.style.width = '100%';
+element.style.height = '100%';
 element.oncontextmenu = (e) => e.preventDefault();
 content.appendChild(element);
 
 cornerstoneTools.init();
 cornerstoneTools.addTool(ZoomTool);
+cornerstoneTools.addTool(PanTool);
 cornerstoneTools.addTool(LengthTool);
 cornerstoneTools.addTool(AngleTool);
 cornerstoneTools.addTool(MagnifyTool);
@@ -31,6 +32,7 @@ cornerstoneTools.addTool(StackScrollMouseWheelTool);
 
 const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
 toolGroup.addTool(ZoomTool.toolName);
+toolGroup.addTool(PanTool.toolName);
 toolGroup.addTool(LengthTool.toolName);
 toolGroup.addTool(AngleTool.toolName);
 toolGroup.addTool(MagnifyTool.toolName);
@@ -65,6 +67,9 @@ const render = async (imageIds) => {
     }); // 우클릭으로 확대
     toolGroup.setToolActive(AngleTool.toolName, {
         bindings: [{ mouseButton: MouseBindings.Auxiliary }],
+    });
+    toolGroup.setToolActive(PanTool.toolName, {
+        bindings: [{ mouseButton: MouseBindings.Secondary }],
     });
     toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
 
@@ -115,11 +120,6 @@ const init = async () => {
     };
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
 
-    // // 시리즈 로드 (예시로 studykey와 serieskey를 사용)
-    // const studykey = 7;  // 실제 값을 넣어주세요
-    // const serieskey = 1;  // 실제 값을 넣어주세요
-    // loadSeries(studykey, serieskey);
-
     // URL 경로에서 studykey와 serieskey 추출
     const keys = extractKeysFromPath();
     if (keys) {
@@ -128,6 +128,10 @@ const init = async () => {
     } else {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
     }
+};
+
+const toolAction = (tool) => {
+    toolGroup.setToolActive(tool, { bindings: [{ mouseButton: MouseBindings.Primary }] });
 };
 
 init();
