@@ -7,21 +7,22 @@ $(document).ready(function () {
             userCode: $('#userCode').val(),
             date: $('#date').val(),
             diseaseCode: $('#diseaseCode').val(),
-            content: $('.comment').val(),
-            patient: $('.quest').val(),
-            videoReplay: '읽지않음',  // 필요에 따라 적절한 값을 넣어줍니다.
+            content: $('#content').val(),
+            patient: $('#patient').val(),
+            videoReplay: $('#videoReplay').val(),  // 필요에 따라 적절한 값을 넣어줍니다.
         };
 
         console.log('전송할 데이터:', reportData);
 
         $.ajax({
             type: "POST",
-            url: "/report/{studykey}",
-            contentType: "application/json",
-            data: JSON.stringify(reportData),
+            url: "/report/"+$('#studyKey').val(),
+            contentType: "application/x-www-form-urlencoded",
+            data: $.param(reportData),
             success: function (response) {
                 console.log('성공 응답:', response);
                 alert("리포트가 저장되었습니다.");
+                location.href="/worklist";
                 // 필요한 경우 UI를 업데이트합니다.
             },
             error: function (xhr, status, error) {
