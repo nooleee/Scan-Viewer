@@ -1,9 +1,10 @@
 let currentPage = 0;
-const pageSize = 5;
+let pageSize = 5;
 let currentSearch = { pid: '', pname: '' };
 
 document.getElementById('loadMoreBtn').addEventListener('click', function() {
     currentPage++;
+    console.log("더보기 버튼 클릭시 pageSize : " + pageSize);
     if (currentSearch.pid || currentSearch.pname) {
         searchStudies(currentSearch.pid, currentSearch.pname, currentPage, pageSize);
     } else {
@@ -44,10 +45,12 @@ document.getElementById('logout').addEventListener('click', function() {
 });
 
 document.getElementById('pageSizeSelect').addEventListener('change', function() {
-    const pageSize = parseInt(this.value);
+    pageSize = parseInt(this.value);
+    const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
+    const pname = document.querySelector('input[placeholder="환자 이름"]').value;
     currentPage = 0;
-    clearStudies();
-    fetchStudies(currentPage, pageSize);
+    currentSearch = { pid, pname };
+    searchStudies(pid, pname, currentPage, pageSize);
 });
 
 function fetchStudies(page, size) {
