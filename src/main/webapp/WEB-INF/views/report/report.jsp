@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>의료 보고서</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/report.css">
 </head>
 <body>
 <h1>보고서</h1>
@@ -72,11 +73,9 @@
         <label>질병 코드:</label>
         <input type="text" name="diseaseCode" value="${report.diseaseCode}"/>
     </div>
-    <div>
+    <div class="button-container">
         <button class="button" type="submit">판독</button>
-    </div>
-    <div>
-        <button onclick="cancelReport()">판독 취소</button>
+        <button type="button" class="button" onclick="cancelReport()">판독 취소</button>
     </div>
 </form>
 
