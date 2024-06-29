@@ -5,11 +5,11 @@ let currentSearch = { pid: '', pname: '' };
 document.getElementById('loadMoreBtn').addEventListener('click', function() {
     currentPage++;
     console.log("더보기 버튼 클릭시 pageSize : " + pageSize);
-    if (currentSearch.pid || currentSearch.pname) {
-        searchStudies(currentSearch.pid, currentSearch.pname, currentPage, pageSize);
-    } else {
-        fetchStudies(currentPage, pageSize);
-    }
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const start = startDate.replaceAll("-","");
+    const end = endDate.replaceAll("-","");
+    searchStudies(currentSearch.pid, currentSearch.pname,start,end, currentPage, pageSize);
 });
 
 document.getElementById('getAllStudiesBtn').addEventListener('click', function() {
@@ -22,11 +22,15 @@ document.getElementById('getAllStudiesBtn').addEventListener('click', function()
 });
 
 document.querySelector('.search-button').addEventListener('click', function() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const start = startDate.replaceAll("-","");
+    const end = endDate.replaceAll("-","");
     const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
     const pname = document.querySelector('input[placeholder="환자 이름"]').value;
     currentPage = 0;  // Reset page count for new search
     currentSearch = { pid, pname };  // Store current search
-    searchStudies(pid, pname, currentPage, pageSize);
+    searchStudies(pid, pname, start, end, currentPage, pageSize);
 });
 
 document.getElementById('reset').addEventListener('click', function() {
@@ -42,10 +46,6 @@ document.getElementById('mypage').addEventListener('click', function() {
 
 document.getElementById('logout').addEventListener('click', function() {
     window.location.href = '/user/logout';
-});
-
-document.getElementById('searchByDate').addEventListener('click', function() {
-
 });
 
 document.getElementById('pageSizeSelect').addEventListener('change', function() {
@@ -247,7 +247,7 @@ function toggleLoadMoreButton(data) {
     }
 }
 
-function searchStudies(pid, pname, page, size) {
+function searchStudies(pid, pname, startDate, endDate, page, size) {
     let url = `/searchStudies?page=${page}&size=${size}`;
     if (pid) {
         url += `&pid=${pid}`;
@@ -255,23 +255,24 @@ function searchStudies(pid, pname, page, size) {
     if (pname) {
         url += `&pname=${pname}`;
     }
+    if (startDate) {
+        url += `&startDate=${startDate}`;
+    }
+    if (endDate) {
+        url += `&endDate=${endDate}`;
+    }
 
     fetch(url)
         .then(response => {
             if (!response.ok) {
                 throw new Error('서버 응답 오류: ' + response.status);
             }
-            const contentType = response.headers.get('Content-Type');
-            if (contentType && contentType.includes('application/json')) {
-                return response.json();
-            } else {
-                throw new Error('서버에서 올바른 형식의 데이터를 반환하지 않았습니다.');
-            }
+            return response.json();
         })
         .then(data => {
-            if (page === 0) clearStudies();  // Clear existing studies only for the first page
+            if (page === 0) clearStudies();
             appendStudies(data.content);
-            updateTotalStudiesCount(data.totalElements); // Update total count
+            updateTotalStudiesCount(data.totalElements);
             toggleLoadMoreButton(data);
         })
         .catch(error => {
@@ -279,6 +280,7 @@ function searchStudies(pid, pname, page, size) {
             alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
+
 
 function clearStudies() {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
