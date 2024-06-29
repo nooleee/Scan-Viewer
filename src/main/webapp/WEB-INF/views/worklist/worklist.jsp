@@ -46,7 +46,6 @@
         <div>
             <span class="totalStudies">총 검사 건수 : </span>
             <div class="combo-box">
-                <label for="pageSizeSelect">항목 수 보기:</label>
                 <select id="pageSizeSelect">
                     <option value="5">5개씩 보기</option>
                     <option value="10">10개씩 보기</option>
