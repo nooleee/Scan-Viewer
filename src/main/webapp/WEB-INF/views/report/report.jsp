@@ -11,6 +11,7 @@
 <head>
     <title>의료 보고서</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/report.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>보고서</h1>
@@ -30,7 +31,9 @@
             <td>${study.pname}</td>
             <td>${study.pid}</td>
             <td>${study.studydate}</td>
-            <td>${study.studydesc}</td>
+            <td>${study.studydesc}
+                <input type="hidden" name="studyKey" value="${study.studykey}"/>
+            </td>
             <td>
                 <c:choose>
                     <c:when test="${study.reportstatus == 3}">
@@ -52,26 +55,26 @@
 <h2>의사 소견</h2>
 <form id="reportForm" action="/report" method="post">
 <div>
-    <textarea rows="4" cols="50" name="content">${report.content}</textarea>
+    <textarea rows="4" cols="50" name="content"></textarea>
 </div>
 
 <h2>결론</h2>
 <div>
-    <textarea rows="4" cols="50" name="patient">${report.patient}</textarea>
+    <textarea rows="4" cols="50" name="patient"></textarea>
 </div>
 
 <h2>추가 정보</h2>
     <div>
         <label>판독의:</label>
-        <input type="text" name="userCode" value="${report.userCode}"/>
+        <input type="text" name="userCode" value="${user.userCode}"/>
     </div>
     <div>
         <label>판독 일시:</label>
-        <input type="text" name="date" value="${report.date}"/>
+        <input type="text" name="date"/>
     </div>
     <div>
         <label>질병 코드:</label>
-        <input type="text" name="diseaseCode" value="${report.diseaseCode}"/>
+        <input type="text" name="diseaseCode"/>
     </div>
     <div class="button-container">
         <button class="button" type="submit">판독</button>
