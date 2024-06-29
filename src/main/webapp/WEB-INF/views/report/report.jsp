@@ -31,9 +31,8 @@
             <td>${study.pname}</td>
             <td>${study.pid}</td>
             <td>${study.studydate}</td>
-            <td>${study.studydesc}
-                <input type="hidden" name="studyKey" value="${study.studykey}"/>
-            </td>
+            <td>${study.studydesc}</td>
+            <input type="hidden" id="studyKey" value="${study.studykey}"/>
             <td>
                 <c:choose>
                     <c:when test="${study.reportstatus == 3}">
@@ -55,26 +54,34 @@
 <h2>의사 소견</h2>
 <form id="reportForm" action="/report" method="post">
 <div>
-    <textarea rows="4" cols="50" name="content"></textarea>
+    <textarea rows="4" cols="50" id="content"></textarea>
 </div>
 
 <h2>결론</h2>
 <div>
-    <textarea rows="4" cols="50" name="patient"></textarea>
+    <textarea rows="4" cols="50" id="patient"></textarea>
 </div>
 
 <h2>추가 정보</h2>
     <div>
         <label>판독의:</label>
-        <input type="text" name="userCode" value="${user.userCode}"/>
+        <input type="text" id="userCode" value="${user.userCode}"/>
     </div>
     <div>
         <label>판독 일시:</label>
-        <input type="text" name="date"/>
+        <input type="text" id="date"/>
     </div>
     <div>
         <label>질병 코드:</label>
-        <input type="text" name="diseaseCode"/>
+        <input type="text" id="diseaseCode"/>
+    </div>
+    <div>
+        <label>판독 상태:</label>
+        <select id="videoReplay">
+            <option value="읽지않음">읽지않음</option>
+            <option value="판독완료">판독완료</option>
+            <option value="판독불가">판독불가</option>
+        </select>
     </div>
     <div class="button-container">
         <button class="button" type="submit">판독</button>
