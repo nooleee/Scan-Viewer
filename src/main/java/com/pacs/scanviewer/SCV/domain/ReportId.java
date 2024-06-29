@@ -17,7 +17,7 @@ public class ReportId implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         ReportId reportId = (ReportId) o;
         return studyKey == reportId.studyKey &&
-                userCode == reportId.userCode;
+                userCode.equals(reportId.userCode);
     }
 
     @Override
