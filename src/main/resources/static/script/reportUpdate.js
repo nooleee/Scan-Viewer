@@ -16,7 +16,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "PUT",
-            url: "/report/"+$('#studyKey').val(),
+            url: "/report/" + $('#studyKey').val(),
             contentType: "application/x-www-form-urlencoded",
             data: $.param(reportData),
             success: function (response) {
@@ -30,5 +30,27 @@ $(document).ready(function () {
                 alert("리포트 수정을 실패했습니다.");
             }
         });
+    });
+
+    $('#deleteButton').on('click', function (e) {
+        e.preventDefault();
+
+        if (confirm("정말로 리포트를 삭제하시겠습니까?")) {
+            var studyKey = $('#studyKey').val();
+
+            $.ajax({
+                type: "DELETE",
+                url: "/report/" + $('#studyKey').val(),
+                success: function (response) {
+                    console.log('성공 응답:', response);
+                    alert("리포트가 삭제 되었습니다.");
+                    location.href = "/worklist";
+                },
+                error: function (xhr, status, error) {
+                    console.error('에러 응답:', xhr, status, error);
+                    alert("리포트 삭제를 실패했습니다.");
+                }
+            });
+        }
     });
 });

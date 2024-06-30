@@ -70,11 +70,11 @@
     </div>
     <div>
         <label>판독 일시:</label>
-        <input type="text" id="date"/>
+        <input type="text" id="date" value="${report.date}"/>
     </div>
     <div>
         <label>질병 코드:</label>
-        <input type="text" id="diseaseCode"/>
+        <input type="text" id="diseaseCode" value="${report.diseaseCode}"/>
     </div>
     <div>
         <label>판독 상태:</label>
@@ -86,7 +86,7 @@
     </div>
     <div class="button-container">
         <button class="button" type="submit">리포트 수정</button>
-        <button class="button" type="button">리포트 수정 취소</button>
+        <button id="deleteButton">리포트 삭제</button>
     </div>
 </form>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/reportUpdate.js"></script>
