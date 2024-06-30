@@ -5,18 +5,12 @@ import com.pacs.scanviewer.SCV.domain.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class ReportService {
     private final ReportRepository reportRepository;
 
     public Report save(Report report) {
-        return reportRepository.save(report);
-    }
-
-    public Report update(Report report) {
         return reportRepository.save(report);
     }
 

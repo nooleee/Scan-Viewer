@@ -25,16 +25,9 @@ public class ReportController {
         return model;
     }
 
-    @PostMapping()
-    public String createReport(@ModelAttribute Report report) {
+    @PostMapping("/{studyKey}")
+    public void createReport(@ModelAttribute Report report) {
         reportService.save(report);
-        return "redirect:/worklist";
-    }
-
-    @PutMapping("/update")
-    public String updateReport(@ModelAttribute Report report) {
-        reportService.update(report);
-        return "redirect:/report";
     }
 
     @DeleteMapping("/delete/{studyKey}")
