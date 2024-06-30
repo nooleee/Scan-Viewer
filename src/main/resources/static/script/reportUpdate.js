@@ -36,8 +36,6 @@ $(document).ready(function () {
         e.preventDefault();
 
         if (confirm("정말로 리포트를 삭제하시겠습니까?")) {
-            var studyKey = $('#studyKey').val();
-
             $.ajax({
                 type: "DELETE",
                 url: "/report/" + $('#studyKey').val(),
