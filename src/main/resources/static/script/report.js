@@ -21,13 +21,13 @@ $(document).ready(function () {
             data: $.param(reportData),
             success: function (response) {
                 console.log('성공 응답:', response);
-                alert("리포트가 저장되었습니다.");
+                alert("리포트가 생성되었습니다.");
                 location.href="/worklist";
                 // 필요한 경우 UI를 업데이트합니다.
             },
             error: function (xhr, status, error) {
                 console.error('에러 응답:', xhr, status, error);
-                alert("리포트를 저장하는 데 실패했습니다.");
+                alert("리포트 생성을 실패했습니다.");
             }
         });
     });
