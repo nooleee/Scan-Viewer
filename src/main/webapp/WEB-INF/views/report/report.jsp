@@ -86,7 +86,6 @@
     </div>
     <div class="button-container">
         <button class="button" type="submit">리포트 생성</button>
-        <button class="button" type="button">리포트 생성 취소</button>
     </div>
 </form>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
