@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Title</title>
+    <title>Detail</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/viewer.css">
 </head>
 </head>
