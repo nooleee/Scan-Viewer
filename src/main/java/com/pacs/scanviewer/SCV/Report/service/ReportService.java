@@ -21,4 +21,8 @@ public class ReportService {
     public void delete(int studyKey) {
         reportRepository.deleteById(studyKey);
     }
+
+    public Report getReportByStudyKey(int studyKey) {
+        return reportRepository.findByStudyKey(studyKey);
+    }
 }
