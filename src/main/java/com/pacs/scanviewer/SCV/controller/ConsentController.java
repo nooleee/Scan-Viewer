@@ -17,13 +17,13 @@ import java.util.Optional;
 
 
 @RequiredArgsConstructor
-//@RequestMapping("/consent")
+@RequestMapping("/consent")
 @Controller
 public class ConsentController {
     private final ConsentService consentService;
     private final ImageService imageService;
 
-    @GetMapping("consent/{studykey}")
+    @GetMapping("/{studykey}")
     public ModelAndView getConsents(@PathVariable int studykey, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Optional<Consent> consent = consentService.findConsentByStudyKeyAndUserCode(studykey, user.getUserCode());
@@ -34,7 +34,7 @@ public class ConsentController {
             long studykeyLong = (long) studykey;
             List<Long> seriesKeys = imageService.getSeriesKeysByStudyKey(studykeyLong);
             if (!seriesKeys.isEmpty()) {
-                ModelAndView modelAndView = new ModelAndView("redirect:/images/" + studykey + "/" + seriesKeys.get(1));
+                ModelAndView modelAndView = new ModelAndView("redirect:/images/" + studykey + "/" + seriesKeys.get(0));
                 return modelAndView;
             } else {
                 // 시리즈 키를 찾을 수 없는 경우를 처리합니다.
@@ -55,10 +55,7 @@ public class ConsentController {
         System.out.println("studykey: " + consentDto.getStudyKey());
         consentService.createConsent(consent);
 
-        //스터디 뷰페이지로 이동
-        ModelAndView modelAndView = new ModelAndView("redirect:viewer/viewer");
-        modelAndView.addObject("studyKey", consentDto.getStudyKey());
-        return modelAndView;
+        return new ModelAndView("redirect:/consent/" + consentDto.getStudyKey());
     }
 
 
