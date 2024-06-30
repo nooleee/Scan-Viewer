@@ -89,6 +89,6 @@
         <button type="button" class="button">리포트 수정 취소</button>
     </div>
 </form>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/reportUpdate.js"></script>
 </body>
 </html>
