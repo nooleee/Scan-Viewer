@@ -14,7 +14,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<h1>보고서</h1>
+<h1>보고서 수정</h1>
 <table border="1">
     <thead>
     <tr>
