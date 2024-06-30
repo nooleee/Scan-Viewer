@@ -78,15 +78,15 @@
     </div>
     <div>
         <label>판독 상태:</label>
-        <select id="videoReplay">
-            <option value="읽지않음">읽지않음</option>
-            <option value="판독완료">판독완료</option>
-            <option value="판독불가">판독불가</option>
+        <select id="videoReplay" name="videoReplay">
+            <option value="읽지않음" <c:if test="${report.videoReplay == '읽지않음'}">selected</c:if>>읽지않음</option>
+            <option value="판독완료" <c:if test="${report.videoReplay == '판독완료'}">selected</c:if>>판독완료</option>
+            <option value="판독불가" <c:if test="${report.videoReplay == '판독불가'}">selected</c:if>>판독불가</option>
         </select>
     </div>
     <div class="button-container">
         <button class="button" type="submit">리포트 수정</button>
-        <button id="deleteButton">리포트 삭제</button>
+        <button id="deleteButton" type="button">리포트 삭제</button>
     </div>
 </form>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/reportUpdate.js"></script>
