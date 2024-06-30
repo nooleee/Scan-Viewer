@@ -4,7 +4,6 @@ let currentSearch = { pid: '', pname: '' };
 
 document.getElementById('loadMoreBtn').addEventListener('click', function() {
     currentPage++;
-    console.log("더보기 버튼 클릭시 pageSize : " + pageSize);
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
     const start = startDate.replaceAll("-","");
@@ -15,10 +14,18 @@ document.getElementById('loadMoreBtn').addEventListener('click', function() {
 document.getElementById('getAllStudiesBtn').addEventListener('click', function() {
     currentPage = 0;
     clearStudies();
-    fetchStudies(currentPage, pageSize);
     currentSearch = { pid: '', pname: '' };  // Reset current search parameters
     document.querySelector('input[placeholder="환자 아이디"]').value = '';
     document.querySelector('input[placeholder="환자 이름"]').value = '';
+
+    document.getElementById('startDate').value = '1990-01-01';
+    var today = new Date();
+    var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+    document.getElementById('endDate').value = formattedToday;
+    fetchStudies(currentPage, pageSize);
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    searchStudies( '','',startDate,endDate,currentPage,pageSize);
 });
 
 document.querySelector('.search-button').addEventListener('click', function() {
