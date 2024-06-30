@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/worklist.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
     <style>
         .hidden {
             display: none;
@@ -29,35 +30,6 @@
         .search-detail label {
             display: block;
             margin-bottom: 5px;
-        }
-        .flatpickr-calendar {
-            display: inline-block !important;
-        }
-        .flatpickr-current-month {
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-        }
-        .flatpickr-monthDropdown-months {
-            display: flex !important;
-            flex-wrap: wrap !important;
-            justify-content: center !important;
-            padding: 10px 0 !important;
-        }
-        .flatpickr-monthDropdown-month {
-            width: 25% !important;
-            text-align: center !important;
-            padding: 5px 0 !important;
-        }
-        .flatpickr-monthDropdown-month:hover {
-            background: #f1f1f1 !important;
-        }
-        .flatpickr-monthDropdown-month.selected {
-            background: #4caf50 !important;
-            color: white !important;
-        }
-        .flatpickr-current-year {
-            margin: 0 10px !important;
         }
     </style>
 </head>
