@@ -19,7 +19,7 @@ public class ReportController {
 
     @GetMapping("/{studyKey}")
     public ModelAndView getReportByStudyKey(@PathVariable long studyKey) {
-        ModelAndView model = new ModelAndView("report/report");
+        ModelAndView model = new ModelAndView("report/reportUpdate");
         List<Study> reportList = studyService.findByStudykey(studyKey);
         model.addObject("reports", reportList);
         return model;
@@ -35,9 +35,8 @@ public class ReportController {
         reportService.update(report);
     }
 
-    @DeleteMapping("/delete/{studyKey}")
-    public String deleteReport(@PathVariable int studyKey) {
+    @DeleteMapping("/{studyKey}")
+    public void deleteReport(@PathVariable int studyKey) {
         reportService.delete(studyKey);
-        return "redirect:/report";
     }
 }
