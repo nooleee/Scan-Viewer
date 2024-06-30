@@ -86,7 +86,7 @@
     </div>
     <div class="button-container">
         <button class="button" type="submit">리포트 수정</button>
-        <button type="button" class="button">리포트 수정 취소</button>
+        <button class="button" type="button">리포트 수정 취소</button>
     </div>
 </form>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/reportUpdate.js"></script>
