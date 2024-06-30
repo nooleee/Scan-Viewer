@@ -19,7 +19,7 @@ public class ReportController {
 
     @GetMapping("/{studyKey}")
     public ModelAndView getReportByStudyKey(@PathVariable long studyKey) {
-        ModelAndView model = new ModelAndView("report/reportUpdate");
+        ModelAndView model = new ModelAndView("report/report");
         List<Study> reportList = studyService.findByStudykey(studyKey);
         model.addObject("reports", reportList);
         return model;
