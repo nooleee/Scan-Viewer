@@ -12,39 +12,30 @@ document.getElementById('loadMoreBtn').addEventListener('click', function() {
 });
 
 document.getElementById('getAllStudiesBtn').addEventListener('click', function() {
-    currentPage = 0;
-    clearStudies();
-    currentSearch = { pid: '', pname: '' };  // Reset current search parameters
-    document.querySelector('input[placeholder="환자 아이디"]').value = '';
-    document.querySelector('input[placeholder="환자 이름"]').value = '';
-
-    document.getElementById('startDate').value = '1990-01-01';
-    var today = new Date();
-    var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
-    document.getElementById('endDate').value = formattedToday;
-    fetchStudies(currentPage, pageSize);
+    reset();
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
     searchStudies( '','',startDate,endDate,currentPage,pageSize);
 });
 
-document.querySelector('.search-button').addEventListener('click', function() {
-    const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
-    const start = startDate.replaceAll("-","");
-    const end = endDate.replaceAll("-","");
-    const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
-    const pname = document.querySelector('input[placeholder="환자 이름"]').value;
-    currentPage = 0;  // Reset page count for new search
-    currentSearch = { pid, pname };  // Store current search
-    searchStudies(pid, pname, start, end, currentPage, pageSize);
+document.querySelectorAll('.search-button').forEach(button => {
+    button.addEventListener('click', function () {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        const start = startDate.replaceAll("-", "");
+        const end = endDate.replaceAll("-", "");
+        const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
+        const pname = document.querySelector('input[placeholder="환자 이름"]').value;
+        currentPage = 0;  // Reset page count for new search
+        currentSearch = {pid, pname};  // Store current search
+        searchStudies(pid, pname, start, end, currentPage, pageSize);
+    })
 });
 
-document.getElementById('reset').addEventListener('click', function() {
-    clearStudies();
-    document.querySelector('input[placeholder="환자 아이디"]').value = '';
-    document.querySelector('input[placeholder="환자 이름"]').value = '';
-    document.querySelector('.totalStudies').textContent = `총 검사 건수 : `;
+document.querySelectorAll('.reset').forEach(button => {
+    button.addEventListener('click', function () {
+        reset();
+    })
 });
 
 document.getElementById('mypage').addEventListener('click', function() {
@@ -63,30 +54,6 @@ document.getElementById('pageSizeSelect').addEventListener('change', function() 
     currentSearch = { pid, pname };
     searchStudies(pid, pname, currentPage, pageSize);
 });
-
-function fetchStudies(page, size) {
-    fetch(`/worklistAllSearch?page=${page}&size=${size}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('서버 응답 오류: ' + response.status);
-            }
-            const contentType = response.headers.get('Content-Type');
-            if (contentType && contentType.includes('application/json')) {
-                return response.json();
-            } else {
-                throw new Error('서버에서 올바른 형식의 데이터를 반환하지 않았습니다.');
-            }
-        })
-        .then(data => {
-            appendStudies(data.content); // 기존 데이터를 지우지 않고 추가 데이터를 테이블에 추가
-            toggleLoadMoreButton(data);
-            updateTotalStudiesCount(data.totalElements);
-        })
-        .catch(error => {
-            console.error('오류 발생:', error);
-            alert('데이터를 불러오는 중 오류가 발생했습니다.');
-        });
-}
 
 function appendStudies(studies) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
@@ -168,8 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // 여기에 날짜로 검색하는 기능을 추가하세요.
         console.log('Searching from', startDate, 'to', endDate);
     });
-
-
 
     flatpickr("#calendar", {
         inline: true,
@@ -297,6 +262,41 @@ function clearStudies() {
 function updateTotalStudiesCount(total) {
     const totalStudiesElement = document.querySelector('.totalStudies');
     totalStudiesElement.textContent = `총 검사 건수 : ${total}`;
+}
+
+// 날짜, pid, pname, modality 초기화
+function reset(){
+    currentPage=0;
+    clearStudies();
+    updateTotalStudiesCount('');
+    currentSearch = { pid: '', pname: '' };  // Reset current search parameters
+    document.querySelector('input[placeholder="환자 아이디"]').value = '';
+    document.querySelector('input[placeholder="환자 이름"]').value = '';
+    document.getElementById('startDate').value = '1990-01-01';
+    var today = new Date();
+    var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+    document.getElementById('endDate').value = formattedToday;
+    // modality 초기화 추가해야함.
+
+    // 달력 초기화
+    const calendarInstance = flatpickr("#calendar", {
+        inline: true,
+        mode: "range",
+        defaultDate: ["1990-01-01", formattedToday],
+        locale: "ko", // 언어 설정
+        onReady: function(selectedDates, dateStr, instance) {
+            instance.jumpToDate(formattedToday); // 달력을 현재 날짜로 이동
+        },
+        onChange: function(selectedDates, dateStr, instance) {
+            var startDate = selectedDates[0];
+            var endDate = selectedDates[1] || startDate;
+            $('#startDate').val(instance.formatDate(startDate, "Y-m-d"));
+            $('#endDate').val(instance.formatDate(endDate, "Y-m-d"));
+        }
+    });
+
+    // 강제로 초기화 범위를 설정합니다.
+    calendarInstance.setDate(["1990-01-01", formattedToday]);
 }
 
 function populateReportSection(study) { // report 정보 띄우는거 ㅇㅇ
