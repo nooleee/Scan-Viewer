@@ -84,7 +84,8 @@
             <input type="text" id="startDate">
             <label for="endDate">종료 날짜:</label>
             <input type="text" id="endDate">
-            <button id="searchByDate" class="button">날짜로 검색</button>
+            <button id="searchDetailSearch" class="button search-button">조회</button>
+            <button id="searchDetailReset" class="button reset">재설정</button>
         </div>
 
         <div class="search">
@@ -102,7 +103,7 @@
             <button>1일</button>
             <button>3일</button>
             <button>1주일</button>
-            <button class="button" id="reset">재설정</button>
+            <button class="button reset" id="reset">재설정</button>
             <button class="button search-button" id="searchStudies">검색</button>
         </div>
         <div>
