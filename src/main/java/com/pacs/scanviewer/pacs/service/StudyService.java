@@ -24,7 +24,6 @@ public class StudyService {
     }
 
     public List<Study> findAllWithPage(int page, Pageable pageable) {
-
         return studyRepository.findAll(pageable.withPage(page)).getContent();
     }
 
@@ -32,25 +31,32 @@ public class StudyService {
         return studyRepository.findAllByOrderByStudydateDesc(PageRequest.of(page, size));
     }
 
-    public Page<Study> findByPidContaining(String pid, PageRequest pageRequest) {
-        return studyRepository.findByPidContainingOrderByStudydateDesc(pid, pageRequest);
-    }
-
-    public Page<Study> findByPnameContaining(String pname, PageRequest pageRequest) {
-        return studyRepository.findByPnameContainingOrderByStudydateDesc(pname, pageRequest);
-    }
-
     public List<Study> getStudiesByPid(String pid) {
         return studyRepository.findAllByPid(pid);
-    }
-
-    public Page<Study> findByPidContainingAndPnameContaining(String pid, String pname, PageRequest pageRequest) {
-        return studyRepository.findByPidContainingAndPnameContainingOrderByStudydateDesc(pid, pname, pageRequest);
     }
 
     public List<Study> findByStudykey(long studykey) {
         return studyRepository.findAllByStudykey(studykey);
     }
+
+    public Page<Study> findByPidContainingAndDateRange(String pid, String startDate, String endDate, PageRequest pageRequest) {
+        return studyRepository.findByPidContainingAndStudydateBetweenOrderByStudydateDesc(pid, startDate, endDate, pageRequest);
+    }
+
+    public Page<Study> findByPnameContainingAndDateRange(String pname, String startDate, String endDate, PageRequest pageRequest) {
+        return studyRepository.findByPnameContainingAndStudydateBetweenOrderByStudydateDesc(pname, startDate, endDate, pageRequest);
+    }
+
+    public Page<Study> findByPidPnameAndDateRange(String pid, String pname, String startDate, String endDate, PageRequest pageRequest) {
+        return studyRepository.findByPidContainingAndPnameContainingAndStudydateBetweenOrderByStudydateDesc(pid, pname, startDate, endDate, pageRequest);
+    }
+
+    public Page<Study> findByDateRange(String startDate, String endDate, PageRequest pageRequest) {
+        return studyRepository.findByStudydateBetweenOrderByStudydateDesc(startDate, endDate, pageRequest);
+    }
+
+
+
 //    public List<Image> findByStudykey(long studykey) {
 //        return imageRepository.findAllById(studykey);
 //    }
