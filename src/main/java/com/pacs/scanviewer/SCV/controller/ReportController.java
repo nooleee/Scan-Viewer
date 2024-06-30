@@ -30,6 +30,11 @@ public class ReportController {
         reportService.save(report);
     }
 
+    @PutMapping("/{studyKey}")
+    public void updateReport(@ModelAttribute Report report) {
+        reportService.update(report);
+    }
+
     @DeleteMapping("/delete/{studyKey}")
     public String deleteReport(@PathVariable int studyKey) {
         reportService.delete(studyKey);
