@@ -3,10 +3,13 @@ package com.pacs.scanviewer.SCV.Consent.controller;
 
 import com.pacs.scanviewer.SCV.Consent.domain.Consent;
 import com.pacs.scanviewer.SCV.Consent.domain.ConsentDto;
+import com.pacs.scanviewer.SCV.StudyLog.domain.StudyLog;
+import com.pacs.scanviewer.SCV.StudyLog.service.StudyLogService;
 import com.pacs.scanviewer.SCV.User.domain.User;
 import com.pacs.scanviewer.SCV.Consent.service.ConsentService;
 import com.pacs.scanviewer.pacs.Image.service.ImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,6 +25,7 @@ import java.util.Optional;
 public class ConsentController {
     private final ConsentService consentService;
     private final ImageService imageService;
+    private final StudyLogService studyLogService;
 
     @GetMapping("/{studykey}")
     public ModelAndView getConsents(@PathVariable int studykey, HttpSession session) {
@@ -34,6 +38,8 @@ public class ConsentController {
             long studykeyLong = (long) studykey;
             List<Long> seriesKeys = imageService.getSeriesKeysByStudyKey(studykeyLong);
             if (!seriesKeys.isEmpty()) {
+                StudyLog studyLog = new StudyLog(studykey,user.getUserCode());
+                studyLogService.createLog(studyLog);
                 ModelAndView modelAndView = new ModelAndView("redirect:/images/" + studykey + "/" + seriesKeys.get(0));
                 return modelAndView;
             } else {
@@ -57,6 +63,7 @@ public class ConsentController {
 
         return new ModelAndView("redirect:/consent/" + consentDto.getStudyKey());
     }
+
 
 
 }
