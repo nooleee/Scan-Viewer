@@ -30,9 +30,13 @@ public class ReportController {
         reportService.save(report);
     }
 
-    @DeleteMapping("/delete/{studyKey}")
-    public String deleteReport(@PathVariable int studyKey) {
+    @PutMapping("/{studyKey}")
+    public void updateReport(@ModelAttribute Report report) {
+        reportService.update(report);
+    }
+
+    @DeleteMapping("/{studyKey}")
+    public void deleteReport(@PathVariable int studyKey) {
         reportService.delete(studyKey);
-        return "redirect:/report";
     }
 }

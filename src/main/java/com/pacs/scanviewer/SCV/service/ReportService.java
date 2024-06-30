@@ -14,6 +14,10 @@ public class ReportService {
         return reportRepository.save(report);
     }
 
+    public Report update(Report report) {
+        return reportRepository.save(report);
+    }
+
     public void delete(int studyKey) {
         reportRepository.deleteById(studyKey);
     }

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: ryuuki
-  Date: 2024. 6. 25.
-  Time: 오후 12:24
+  User: mingi
+  Date: 2024. 6. 30.
+  Time: AM 11:30
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -14,7 +14,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<h1>보고서</h1>
+<h1>보고서 수정</h1>
 <table border="1">
     <thead>
     <tr>
@@ -53,28 +53,28 @@
 
 
 <form id="reportForm" action="/report" method="post">
-<h2>의사 소견</h2>
-<div>
-    <textarea rows="4" cols="50" id="content">${report.content}</textarea>
-</div>
+    <h2>의사 소견</h2>
+    <div>
+        <textarea rows="4" cols="50" id="content">${report.content}</textarea>
+    </div>
 
-<h2>결론</h2>
-<div>
-    <textarea rows="4" cols="50" id="patient">${report.patient}</textarea>
-</div>
+    <h2>결론</h2>
+    <div>
+        <textarea rows="4" cols="50" id="patient">${report.patient}</textarea>
+    </div>
 
-<h2>추가 정보</h2>
+    <h2>추가 정보</h2>
     <div>
         <label>판독의:</label>
         <input type="text" id="userCode" value="${user.userCode}"/>
     </div>
     <div>
         <label>판독 일시:</label>
-        <input type="text" id="date"/>
+        <input type="text" id="date" value="${report.date}"/>
     </div>
     <div>
         <label>질병 코드:</label>
-        <input type="text" id="diseaseCode"/>
+        <input type="text" id="diseaseCode" value="${report.diseaseCode}"/>
     </div>
     <div>
         <label>판독 상태:</label>
@@ -85,9 +85,10 @@
         </select>
     </div>
     <div class="button-container">
-        <button class="button" type="submit">리포트 생성</button>
+        <button class="button" type="submit">리포트 수정</button>
+        <button id="deleteButton">리포트 삭제</button>
     </div>
 </form>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/reportUpdate.js"></script>
 </body>
 </html>

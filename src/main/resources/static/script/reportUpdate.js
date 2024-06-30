@@ -15,20 +15,42 @@ $(document).ready(function () {
         console.log('전송할 데이터:', reportData);
 
         $.ajax({
-            type: "POST",
-            url: "/report/"+$('#studyKey').val(),
+            type: "PUT",
+            url: "/report/" + $('#studyKey').val(),
             contentType: "application/x-www-form-urlencoded",
             data: $.param(reportData),
             success: function (response) {
                 console.log('성공 응답:', response);
-                alert("리포트가 생성되었습니다.");
+                alert("리포트가 수정 되었습니다.");
                 location.href="/worklist";
                 // 필요한 경우 UI를 업데이트합니다.
             },
             error: function (xhr, status, error) {
                 console.error('에러 응답:', xhr, status, error);
-                alert("리포트 생성을 실패했습니다.");
+                alert("리포트 수정을 실패했습니다.");
             }
         });
+    });
+
+    $('#deleteButton').on('click', function (e) {
+        e.preventDefault();
+
+        if (confirm("정말로 리포트를 삭제하시겠습니까?")) {
+            var studyKey = $('#studyKey').val();
+
+            $.ajax({
+                type: "DELETE",
+                url: "/report/" + $('#studyKey').val(),
+                success: function (response) {
+                    console.log('성공 응답:', response);
+                    alert("리포트가 삭제 되었습니다.");
+                    location.href = "/worklist";
+                },
+                error: function (xhr, status, error) {
+                    console.error('에러 응답:', xhr, status, error);
+                    alert("리포트 삭제를 실패했습니다.");
+                }
+            });
+        }
     });
 });
