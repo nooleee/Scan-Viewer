@@ -3,11 +3,9 @@ package com.pacs.scanviewer.pacs.Study.service;
 //import com.pacs.scanviewer.pacs.Image.domain.ImageRepository;
 import com.pacs.scanviewer.pacs.Study.domain.Study;
 import com.pacs.scanviewer.pacs.Study.domain.StudyRepository;
-import com.pacs.scanviewer.pacs.Study.domain.StudySpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,11 +23,6 @@ public class StudyService {
 
     public List<Study> getStudiesByPid(String pid) {
         return studyRepository.findAllByPid(pid);
-    }
-
-
-    public Page<Study> searchStudies(String pid, String pname, String startDate, String endDate, String modality, Pageable pageable) {
-        return studyRepository.findAll(StudySpecification.searchStudies(pid, pname, startDate, endDate, modality), pageable);
     }
 
 
