@@ -57,8 +57,8 @@ public class ReportController {
         reportService.update(report);
     }
 
-    @DeleteMapping("/{studyKey}")
-    public void deleteReport(@PathVariable int studyKey) {
-        reportService.delete(studyKey);
+    @DeleteMapping("/{studyKey}/{userCode}")
+    public void deleteReport(@PathVariable int studyKey, @PathVariable String userCode) {
+        reportService.delete(studyKey, userCode);
     }
 }
