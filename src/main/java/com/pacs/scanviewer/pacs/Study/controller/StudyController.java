@@ -18,10 +18,10 @@ public class StudyController {
     private final StudyService studyService;
 
     @GetMapping("/worklist")
-    public String getWorklistPage(HttpSession session){
-        if(session.getAttribute("user") != null){
-        return "worklist/worklist";
-        }else{
+    public String getWorklistPage(HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            return "worklist/worklist";
+        } else {
             return "redirect:/user/login";
         }
     }
@@ -29,7 +29,7 @@ public class StudyController {
     @CrossOrigin
     @GetMapping("/worklistAllSearch")
     @ResponseBody
-    public Page<Study> getAllStudies(@RequestParam(defaultValue="0") int page, @RequestParam(defaultValue = "5") int size ) {
+    public Page<Study> getAllStudies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         return studyService.findStudiesWithPage(page, size);
     }
 
@@ -48,20 +48,9 @@ public class StudyController {
             @RequestParam(required = false) String pid,
             @RequestParam(required = false) String pname,
             @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate)
-    {
-
-        if (pid != null && !pid.isEmpty() && pname != null && !pname.isEmpty()) {
-            return studyService.findByPidPnameAndDateRange(pid, pname, startDate, endDate, PageRequest.of(page, size));
-        } else if (pid != null && !pid.isEmpty()) {
-            return studyService.findByPidContainingAndDateRange(pid, startDate, endDate, PageRequest.of(page, size));
-        } else if (pname != null && !pname.isEmpty()) {
-            return studyService.findByPnameContainingAndDateRange(pname, startDate, endDate, PageRequest.of(page, size));
-        } else if (startDate != null && endDate != null) {
-            return studyService.findByDateRange(startDate, endDate, PageRequest.of(page, size));
-        } else {
-            return studyService.findStudiesWithPage(page, size);
-        }
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String modality) {
+        return studyService.searchStudies(pid, pname, startDate, endDate, modality, PageRequest.of(page, size));
     }
 
 //    @ResponseBody
