@@ -52,7 +52,7 @@
 </table>
 
 
-<form id="reportForm" action="/report" method="post">
+<form id="reportForm" method="post">
     <h2>의사 소견</h2>
     <div>
         <textarea rows="4" cols="50" id="content">${report.content}</textarea>
