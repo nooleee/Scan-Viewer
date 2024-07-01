@@ -61,4 +61,14 @@ public class ReportController {
     public void deleteReport(@PathVariable int studyKey, @PathVariable String userCode) {
         reportService.delete(studyKey, userCode);
     }
+
+    @GetMapping("/searchICD")
+    public ResponseEntity<String> searchICDCode(@RequestParam("query") String query) {
+        try {
+            String result = reportService.searchICDCode(query);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
 }
