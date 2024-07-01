@@ -18,13 +18,22 @@ public class ReportController {
     private final ReportService reportService;
     private final StudyService studyService;
 
-//    @GetMapping("/{studyKey}")
-//    public ModelAndView getReportByStudyKey(@PathVariable long studyKey) {
-//        ModelAndView model = new ModelAndView("report/report");
-//        List<Study> reportList = studyService.findByStudykey(studyKey);
-//        model.addObject("reports", reportList);
-//        return model;
-//    }
+    @GetMapping("/{studyKey}")
+    public ModelAndView getReportByStudyKeys(@PathVariable int studyKey) {
+        ModelAndView model;
+        Report report = reportService.getReportByStudyKey(studyKey);
+
+        if (report == null) {
+            model = new ModelAndView("report/report");
+        } else {
+            model = new ModelAndView("report/reportUpdate");
+            model.addObject("report", report);
+        }
+
+        List<Study> reportList = studyService.findByStudykey(studyKey);
+        model.addObject("reports", reportList);
+        return model;
+    }
 
     @GetMapping("/ByStudyKey")
     @ResponseBody
