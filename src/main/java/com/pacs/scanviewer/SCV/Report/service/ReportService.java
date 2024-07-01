@@ -1,6 +1,7 @@
 package com.pacs.scanviewer.SCV.Report.service;
 
 import com.pacs.scanviewer.SCV.Report.domain.Report;
+import com.pacs.scanviewer.SCV.Report.domain.ReportId;
 import com.pacs.scanviewer.SCV.Report.domain.ReportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,11 @@ public class ReportService {
         return reportRepository.save(report);
     }
 
-    public void delete(int studyKey) {
-        reportRepository.deleteById(studyKey);
+    public void delete(int studyKey, String userCode) {
+        ReportId reportId = new ReportId();
+        reportId.setStudyKey(studyKey);
+        reportId.setUserCode(userCode);
+        reportRepository.deleteById(reportId);
     }
 
     public Report getReportByStudyKey(int studyKey) {
