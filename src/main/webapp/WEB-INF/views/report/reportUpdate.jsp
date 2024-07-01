@@ -86,7 +86,7 @@
     </div>
     <div class="button-container">
         <button class="button" type="submit">리포트 수정</button>
-        <button id="deleteButton" type="button">리포트 삭제</button>
+        <button class="button delete" id="deleteButton" type="button">리포트 삭제</button>
     </div>
 </form>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/reportUpdate.js"></script>
