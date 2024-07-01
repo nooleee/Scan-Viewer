@@ -52,7 +52,11 @@ document.getElementById('pageSizeSelect').addEventListener('change', function() 
     const pname = document.querySelector('input[placeholder="환자 이름"]').value;
     currentPage = 0;
     currentSearch = { pid, pname };
-    searchStudies(pid, pname, currentPage, pageSize);
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const start = startDate.replaceAll("-", "");
+    const end = endDate.replaceAll("-", "");
+    searchStudies(pid, pname, start, end, currentPage, pageSize);
 });
 
 function appendStudies(studies) {
@@ -307,15 +311,23 @@ function populateReportSection(study) {
     fetch(`/report/ByStudyKey?studyKey=${study.studykey}`)
         .then(response => {
             if (!response.ok) {
-                console.log("ddd");
-                throw new Error('서버 응답 오류: ' + response.status);
+                if (response.status === 404) {
+                    return null;  // 리포트가 없으면 null 반환
+                } else {
+                    throw new Error('서버 응답 오류: ' + response.status);
+                }
             }
             return response.json();
         })
         .then(report => {
-            console.log("report들어옴");
-            document.getElementById('reading').textContent = report.userCode || '';
-            document.querySelector('.comment').value = report.content || '';
+            if (report) {
+                document.getElementById('reading').textContent = report.userCode || '';
+                document.querySelector('.comment').value = report.content || '';
+            } else {
+                // 리포트가 없으면 공백으로 설정
+                document.getElementById('reading').textContent = '';
+                document.querySelector('.comment').value = '';
+            }
         })
         .catch(error => {
             console.error('오류 발생:', error);
