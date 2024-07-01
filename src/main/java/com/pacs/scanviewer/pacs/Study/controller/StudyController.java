@@ -39,20 +39,6 @@ public class StudyController {
         return studyService.getStudiesByPid(pid);
     }
 
-    @CrossOrigin
-    @GetMapping("/searchStudies")
-    @ResponseBody
-    public Page<Study> searchStudies(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam(required = false) String pid,
-            @RequestParam(required = false) String pname,
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate,
-            @RequestParam(required = false) String modality) {
-        return studyService.searchStudies(pid, pname, startDate, endDate, modality, PageRequest.of(page, size));
-    }
-
 //    @ResponseBody
 //    @GetMapping("/studies/{page}")
 //    public ResponseEntity<List<Study>> getAllStudies(@PathVariable int page,@PageableDefault(size = 5) Pageable pageable) {
