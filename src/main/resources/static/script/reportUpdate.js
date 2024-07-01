@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.button').on('click', function (e) {
+    $('.button:not(.delete)').on('click', function (e) {
         e.preventDefault();
 
         var reportData = {
