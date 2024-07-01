@@ -134,4 +134,11 @@ const toolAction = (tool) => {
     toolGroup.setToolActive(tool, { bindings: [{ mouseButton: MouseBindings.Primary }] });
 };
 
+document.getElementById('zoomTool').addEventListener('click', () => toolAction(ZoomTool.toolName));
+document.getElementById('panTool').addEventListener('click', () => toolAction(PanTool.toolName));
+document.getElementById('lengthTool').addEventListener('click', () => toolAction(LengthTool.toolName));
+document.getElementById('angleTool').addEventListener('click', () => toolAction(AngleTool.toolName));
+document.getElementById('magnifyTool').addEventListener('click', () => toolAction(MagnifyTool.toolName));
+document.getElementById('stackScrollTool').addEventListener('click', () => toolAction(StackScrollMouseWheelTool.toolName));
+
 init();
