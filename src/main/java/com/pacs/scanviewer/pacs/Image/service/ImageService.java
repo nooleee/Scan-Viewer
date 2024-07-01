@@ -24,4 +24,12 @@ public class ImageService {
     public List<Long> getSeriesKeysByStudyKey(Long studykey) {
         return imageRepository.findSeriesKeysByStudyKey(studykey);
     }
+
+    public List<Long> findSeriesKeysByStudyKey(Long studykey) {
+        return imageRepository.findSeriesKeysByStudyKey(studykey);
+    }
+
+    public List<Image> findByStudykeyAndSerieskey(Long studykey, Long serieskey) {
+        return imageRepository.findByStudykeyAndSerieskey(studykey, serieskey);
+    }
 }

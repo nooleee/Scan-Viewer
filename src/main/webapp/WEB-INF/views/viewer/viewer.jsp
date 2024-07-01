@@ -18,11 +18,12 @@
 <h1>DICOM Viewer</h1>
 <div class="toolbar">
     <!-- 툴바에 필요한 버튼들 추가 -->
-    <button onclick="toolAction('Zoom')">Zoom</button>
-    <button onclick="toolAction('Pan')">Pan</button>
-    <button onclick="toolAction('Length')">Length</button>
-    <button onclick="toolAction('Angle')">Angle</button>
-    <button onclick="toolAction('StackScroll')">Stack Scroll</button>
+    <button id="zoomTool">Zoom</button>
+    <button id="panTool">Pan</button>
+    <button id="lengthTool">Length</button>
+    <button id="angleTool">Angle</button>
+    <button id="magnifyTool">Magnify</button>
+    <button id="stackScrollTool">Stack Scroll</button>
 </div>
 <div id="content">
     <div id="dicomViewport" class ="viewport"></div>
