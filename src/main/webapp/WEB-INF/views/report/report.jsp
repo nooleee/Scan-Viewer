@@ -52,18 +52,18 @@
 </table>
 
 
-<form id="reportForm" action="/report" method="post">
-<h2>의사 소견</h2>
-<div>
-    <textarea rows="4" cols="50" id="content">${report.content}</textarea>
-</div>
+<form id="reportForm" method="post">
+    <h2>의사 소견</h2>
+    <div>
+        <textarea rows="4" cols="50" id="content">${report.content}</textarea>
+    </div>
 
-<h2>결론</h2>
-<div>
-    <textarea rows="4" cols="50" id="patient">${report.patient}</textarea>
-</div>
+    <h2>결론</h2>
+    <div>
+        <textarea rows="4" cols="50" id="patient">${report.patient}</textarea>
+    </div>
 
-<h2>추가 정보</h2>
+    <h2>추가 정보</h2>
     <div>
         <label>판독의:</label>
         <input type="text" id="userCode" value="${user.userCode}"/>
