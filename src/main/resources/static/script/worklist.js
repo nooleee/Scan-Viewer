@@ -98,6 +98,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const pid = targetRow.querySelector('td:nth-child(1)').textContent;
         fetchStudiesByPid(pid);
+
+        // 보고서 정보 가져오기
+        const studyKey = targetRow.querySelector('.studykey').value;
+        populateReportSection({ studykey: studyKey });
     });
 
     table.addEventListener('dblclick', function (event) {
@@ -299,17 +303,17 @@ function reset(){
     calendarInstance.setDate(["1990-01-01", formattedToday]);
 }
 
-function populateReportSection(study) { // report 정보 띄우는거 ㅇㅇ
-    //다시. studykey로 report를 먼저! 조회하고, 유무로 갖다박으라고 판독을 ㅆㅂ 똑같은걸 몇번을
-
-    fetch(`/reportByStudyKey?studykey=${study.studykey}`)
+function populateReportSection(study) {
+    fetch(`/report/ByStudyKey?studyKey=${study.studykey}`)
         .then(response => {
             if (!response.ok) {
+                console.log("ddd");
                 throw new Error('서버 응답 오류: ' + response.status);
             }
             return response.json();
         })
         .then(report => {
+            console.log("report들어옴");
             document.getElementById('reading').textContent = report.userCode || '';
             document.querySelector('.comment').value = report.content || '';
         })
