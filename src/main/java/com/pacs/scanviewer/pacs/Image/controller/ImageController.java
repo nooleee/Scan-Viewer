@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RequestMapping("/images")
 @RequiredArgsConstructor
@@ -28,13 +30,6 @@ public class ImageController {
 
     private final ImageService imageService;
     private final StudyService studyService;
-
-    @GetMapping("/image")
-    public ResponseEntity<List<Study>> getAllStudies() {
-        List<Study> result = studyService.getAllStudies();
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
 
     @GetMapping("/dicom-images")
     public ResponseEntity<List<Image>> getDicomImages() {
@@ -45,12 +40,23 @@ public class ImageController {
         return new ResponseEntity<>(dicomImages, HttpStatus.OK);
     }
 
-    @GetMapping("/{studykey}/{serieskey}")
-    public ModelAndView getImagesByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
-        List<Image> imageList = imageService.getDicomUrlsByStudyKeyAndSeriesKey(studykey, serieskey);
+    @GetMapping("/{studykey}/{index}")
+    public ModelAndView getImagesByStudyKeyAndIndex(@PathVariable Long studykey, @PathVariable Integer index) {
+        List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
+        Map<Integer, Long> indexedSeriesKeys = IntStream.range(0, seriesKeys.size())
+                .boxed()
+                .collect(Collectors.toMap(i -> i + 1, seriesKeys::get));
+
+        Long serieskey = indexedSeriesKeys.get(index);
+        if (serieskey == null) {
+            return new ModelAndView("error/noSeriesFound");
+        }
+
+        List<Image> imageList = imageService.findByStudykeyAndSerieskey(studykey, serieskey);
         List<String> images = imageList.stream()
                 .map(image -> "Z:/" + image.getPath() + image.getFname())
                 .collect(Collectors.toList());
+
         ModelAndView mv = new ModelAndView("viewer/viewer");
         mv.addObject("images", images);
         return mv;
