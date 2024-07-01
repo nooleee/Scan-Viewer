@@ -25,6 +25,5 @@
     <input type="submit" value="회원탈퇴">
 </form>
 <button onclick="window.location='/worklist'">워크리스트로 이동 </button>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/common.js"></script>
 </body>
 </html>
