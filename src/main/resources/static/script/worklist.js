@@ -231,7 +231,7 @@ function toggleLoadMoreButton(data) {
 }
 
 function searchStudies(pid, pname, startDate, endDate, page, size, modality) {
-    let url = `/searchStudies?page=${page}&size=${size}`;
+    let url = `/search/studies?page=${page}&size=${size}`;
     if (pid) {
         url += `&pid=${pid}`;
     }
