@@ -4,6 +4,7 @@ import com.pacs.scanviewer.SCV.User.domain.User;
 import com.pacs.scanviewer.SCV.User.domain.UserDto;
 import com.pacs.scanviewer.SCV.User.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,15 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public boolean login(UserDto userDto) {
-        return userRepository.findByUserCodeAndPassword(userDto.getUserCode(), userDto.getPassword()).isPresent();
+        Optional<User> optionalUser = userRepository.findById(userDto.getUserCode());
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            return passwordEncoder.matches(userDto.getPassword(), user.getPassword()); // 비밀번호 검증
+        }
+        return false;
     }
 
     public boolean createUser(UserDto userDto) {

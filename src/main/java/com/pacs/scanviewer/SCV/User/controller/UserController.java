@@ -2,9 +2,16 @@ package com.pacs.scanviewer.SCV.User.controller;
 
 import com.pacs.scanviewer.SCV.User.domain.User;
 import com.pacs.scanviewer.SCV.User.domain.UserDto;
+import com.pacs.scanviewer.SCV.User.service.MyUserDetailsService;
 import com.pacs.scanviewer.SCV.User.service.UserService;
+import com.pacs.scanviewer.Util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +27,10 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final MyUserDetailsService myUserDetailsService;
+    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
     public String login() {
@@ -84,36 +95,28 @@ public class UserController {
 
 
     @PostMapping("/loginProcess")
-    public ModelAndView loginprocess(@ModelAttribute UserDto userDto, HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView();
-
-        System.out.println("로그인 로직 진입 ");
+    public ResponseEntity<?> loginprocess(@RequestBody UserDto userDto) {
         System.out.println("userCode: " + userDto.getUserCode());
         System.out.println("password: " + userDto.getPassword());
-        if (userService.login(userDto)) {
-            Optional<User> userOptional = userService.findUser(userDto.getUserCode());
-            User user = userOptional.get();
-            session.setAttribute("user", user);
-            modelAndView.setViewName("redirect:/user/mypage");
-            System.out.println("로그인 성공");
-        } else {
-            modelAndView.setViewName("redirect:/user/login");
-            System.out.println("로그인 실패");
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userDto.getUserCode(), userDto.getPassword())
+            );
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(401).body("Invalid credentials");
         }
 
-        return modelAndView;
+        final UserDetails userDetails = myUserDetailsService.loadUserByUsername(userDto.getUserCode());
+        final String jwt = jwtUtil.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 
     @PostMapping("/joinProcess")
     public ModelAndView joinprocess(@ModelAttribute UserDto userDto) {
         ModelAndView modelAndView = new ModelAndView();
-
-        System.out.println("가입 로직 진입 ");
-        System.out.println("userCode: " + userDto.getUserCode());
-        System.out.println("password: " + userDto.getPassword());
-        System.out.println("name: " + userDto.getName());
-        System.out.println("phone: " + userDto.getPhone());
-        System.out.println("group: " + userDto.getGroup());
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         boolean saveComplete = userService.createUser(userDto);
 
         if (saveComplete) {
@@ -134,6 +137,18 @@ public class UserController {
         boolean isDuplicate = userService.isUserCodeDuplicate(userCode);
         System.out.println("isduplicate: " + isDuplicate);
         return ResponseEntity.ok(isDuplicate);
+    }
+
+    private static class AuthenticationResponse {
+        private final String jwt;
+
+        public AuthenticationResponse(String jwt) {
+            this.jwt = jwt;
+        }
+
+        public String getJwt() {
+            return jwt;
+        }
     }
 
 

@@ -18,12 +18,8 @@ public class StudyController {
     private final StudyService studyService;
 
     @GetMapping("/worklist")
-    public String getWorklistPage(HttpSession session){
-        if(session.getAttribute("user") != null){
+    public String getWorklistPage(){
         return "worklist/worklist";
-        }else{
-            return "redirect:/user/login";
-        }
     }
 
     @CrossOrigin
