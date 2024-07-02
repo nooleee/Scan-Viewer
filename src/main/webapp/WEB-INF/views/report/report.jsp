@@ -30,6 +30,7 @@
             <td>${study.pname}</td>
             <td>${study.pid}</td>
             <td>${study.studydate}</td>
+            <td>${study.studydesc}</td>
             <input type="hidden" id="studyKey" value="${study.studykey}"/>
         </tr>
     </c:forEach>

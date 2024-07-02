@@ -22,7 +22,6 @@
         <th>환자 아이디</th>
         <th>검사 날짜</th>
         <th>검사 설명</th>
-        <th>판독 상태</th>
     </tr>
     </thead>
     <tbody>
@@ -33,13 +32,6 @@
             <td>${study.studydate}</td>
             <td>${study.studydesc}</td>
             <input type="hidden" id="studyKey" value="${study.studykey}"/>
-            <td>
-                <c:choose>
-                    <c:when test="${study.reportstatus == 3}">읽지 않음</c:when>
-                    <c:when test="${study.reportstatus == 6}">판독 완료</c:when>
-                    <c:when test="${study.reportstatus == 5}">판독 보류</c:when>
-                </c:choose>
-            </td>
         </tr>
     </c:forEach>
     </tbody>
@@ -59,11 +51,11 @@
     <h2>추가 정보</h2>
     <div>
         <label>판독의:</label>
-        <input type="text" id="userCode" value="${user.userCode}"/>
+        <input type="text" id="userCode" readonly/>
     </div>
     <div>
         <label>판독 일시:</label>
-        <input type="text" id="date" value="${report.date}"/>
+        <input type="text" id="date" readonly/>
     </div>
     <div>
         <label>질병 코드:</label>
@@ -76,7 +68,7 @@
         <select id="videoReplay" name="videoReplay">
             <option value="읽지않음" <c:if test="${report.videoReplay == '읽지않음'}">selected</c:if>>읽지않음</option>
             <option value="판독완료" <c:if test="${report.videoReplay == '판독완료'}">selected</c:if>>판독완료</option>
-            <option value="판독불가" <c:if test="${report.videoReplay == '판독불가'}">selected</c:if>>판독불가</option>
+            <option value="판독취소" <c:if test="${report.videoReplay == '판독취소'}">selected</c:if>>판독취소</option>
         </select>
     </div>
     <div class="button-container">
