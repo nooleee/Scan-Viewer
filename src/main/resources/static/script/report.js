@@ -17,7 +17,6 @@ function fetchUserInfo() {
         })
         .then(data => {
             document.getElementById('userCode').value = data.userCode;
-            document.getElementById('name').value = data.name;
         })
         .catch(error => {
             console.error('Error:', error);
