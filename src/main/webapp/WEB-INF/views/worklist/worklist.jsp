@@ -58,6 +58,47 @@
             <input type="text" id="endDate">
             <button id="searchDetailSearch" class="button search-button">조회</button>
             <button id="searchDetailReset" class="button reset">재설정</button>
+            <div>
+                <label>검사장비</label>
+                <select id="modalitySelect">
+                    <option value>선택해주세요</option>
+                    <option value="AS">AS</option>
+                    <option value="AU">AU</option>
+                    <option value="BI">BI</option>
+                    <option value="CD">CD</option>
+                    <option value="CF">CF</option>
+                    <option value="CP">CP</option>
+                    <option value="CR">CR</option>
+                    <option value="CS">CS</option>
+                    <option value="CT">CT</option>
+                    <option value="DD">DD</option>
+                    <option value="DF">DF</option>
+                    <option value="DG">DG</option>
+                    <option value="DM">DM</option>
+                    <option value="DR">DR</option>
+                    <option value="DS">DS</option>
+                    <option value="DX">DX</option>
+                    <option value="EC">EC</option>
+                    <option value="ES">ES</option>
+                    <option value="FA">FA</option>
+                    <option value="FS">FS</option>
+                    <option value="LS">LS</option>
+                    <option value="LP">LP</option>
+                    <option value="MA">MA</option>
+                    <option value="MR">MR</option>
+                    <option value="MS">MS</option>
+                    <option value="MM">MM</option>
+                    <option value="OT">OT</option>
+                    <option value="PT">PT</option>
+                    <option value="RF">RF</option>
+                    <option value="RG">RG</option>
+                    <option value="ST">ST</option>
+                    <option value="TG">TG</option>
+                    <option value="US">US</option>
+                    <option value="VF">VF</option>
+                    <option value="XA">XA</option>
+                </select>
+            </div>
         </div>
 
         <div class="search">

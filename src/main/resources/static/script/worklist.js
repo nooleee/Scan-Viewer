@@ -1,6 +1,6 @@
 let currentPage = 0;
 let pageSize = 5;
-let currentSearch = { pid: '', pname: '' };
+let currentSearch = { pid: '', pname: '', modality: '' };
 
 document.getElementById('loadMoreBtn').addEventListener('click', function() {
     currentPage++;
@@ -8,14 +8,15 @@ document.getElementById('loadMoreBtn').addEventListener('click', function() {
     const endDate = document.getElementById('endDate').value;
     const start = startDate.replaceAll("-","");
     const end = endDate.replaceAll("-","");
-    searchStudies(currentSearch.pid, currentSearch.pname,start,end, currentPage, pageSize);
+    console.log("currentSearch.modality : " + currentSearch.modality);
+    searchStudies(currentSearch.pid, currentSearch.pname,start,end, currentPage, pageSize, currentSearch.modality);
 });
 
 document.getElementById('getAllStudiesBtn').addEventListener('click', function() {
     reset();
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
-    searchStudies( '','',startDate,endDate,currentPage,pageSize);
+    searchStudies( '','',startDate,endDate,currentPage,pageSize, '');
 });
 
 document.querySelectorAll('.search-button').forEach(button => {
@@ -26,9 +27,10 @@ document.querySelectorAll('.search-button').forEach(button => {
         const end = endDate.replaceAll("-", "");
         const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
         const pname = document.querySelector('input[placeholder="환자 이름"]').value;
+        const modality = document.getElementById('modalitySelect').value;
         currentPage = 0;  // Reset page count for new search
-        currentSearch = {pid, pname};  // Store current search
-        searchStudies(pid, pname, start, end, currentPage, pageSize);
+        currentSearch = {pid, pname, modality};  // Store current search
+        searchStudies(pid, pname, start, end, currentPage, pageSize, modality);
     })
 });
 
@@ -51,8 +53,13 @@ document.getElementById('pageSizeSelect').addEventListener('change', function() 
     const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
     const pname = document.querySelector('input[placeholder="환자 이름"]').value;
     currentPage = 0;
-    currentSearch = { pid, pname };
-    searchStudies(pid, pname, currentPage, pageSize);
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    const start = startDate.replaceAll("-", "");
+    const end = endDate.replaceAll("-", "");
+    const modality = document.getElementById('modalitySelect').value;
+    currentSearch = { pid, pname, modality };
+    searchStudies(pid, pname, start, end, currentPage, pageSize, modality);
 });
 
 function appendStudies(studies) {
@@ -223,8 +230,8 @@ function toggleLoadMoreButton(data) {
     }
 }
 
-function searchStudies(pid, pname, startDate, endDate, page, size) {
-    let url = `/searchStudies?page=${page}&size=${size}`;
+function searchStudies(pid, pname, startDate, endDate, page, size, modality) {
+    let url = `/search/studies?page=${page}&size=${size}`;
     if (pid) {
         url += `&pid=${pid}`;
     }
@@ -237,6 +244,10 @@ function searchStudies(pid, pname, startDate, endDate, page, size) {
     if (endDate) {
         url += `&endDate=${endDate}`;
     }
+    if (modality) {
+        url += `&modality=${modality}`;
+    }
+    console.log("url : " + url);
 
     fetch(url)
         .then(response => {
@@ -273,14 +284,15 @@ function reset(){
     currentPage=0;
     clearStudies();
     updateTotalStudiesCount('');
-    currentSearch = { pid: '', pname: '' };  // Reset current search parameters
+    currentSearch = { pid: '', pname: '', modality: '' };
     document.querySelector('input[placeholder="환자 아이디"]').value = '';
     document.querySelector('input[placeholder="환자 이름"]').value = '';
+    document.getElementById('modalitySelect').value = '';
     document.getElementById('startDate').value = '1990-01-01';
     var today = new Date();
     var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
     document.getElementById('endDate').value = formattedToday;
-    // modality 초기화 추가해야함.
+    document.querySelector('#searchDetail select').value = '';
 
     // 달력 초기화
     const calendarInstance = flatpickr("#calendar", {
@@ -307,15 +319,23 @@ function populateReportSection(study) {
     fetch(`/report/ByStudyKey?studyKey=${study.studykey}`)
         .then(response => {
             if (!response.ok) {
-                console.log("ddd");
-                throw new Error('서버 응답 오류: ' + response.status);
+                if (response.status === 404) {
+                    return null;  // 리포트가 없으면 null 반환
+                } else {
+                    throw new Error('서버 응답 오류: ' + response.status);
+                }
             }
             return response.json();
         })
         .then(report => {
-            console.log("report들어옴");
-            document.getElementById('reading').textContent = report.userCode || '';
-            document.querySelector('.comment').value = report.content || '';
+            if (report) {
+                document.getElementById('reading').textContent = report.userCode || '';
+                document.querySelector('.comment').value = report.content || '';
+            } else {
+                // 리포트가 없으면 공백으로 설정
+                document.getElementById('reading').textContent = '';
+                document.querySelector('.comment').value = '';
+            }
         })
         .catch(error => {
             console.error('오류 발생:', error);

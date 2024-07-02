@@ -18,14 +18,18 @@ public class StudyController {
     private final StudyService studyService;
 
     @GetMapping("/worklist")
-    public String getWorklistPage(){
-        return "worklist/worklist";
+    public String getWorklistPage(HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            return "worklist/worklist";
+        } else {
+            return "redirect:/user/login";
+        }
     }
 
     @CrossOrigin
     @GetMapping("/worklistAllSearch")
     @ResponseBody
-    public Page<Study> getAllStudies(@RequestParam(defaultValue="0") int page, @RequestParam(defaultValue = "5") int size ) {
+    public Page<Study> getAllStudies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         return studyService.findStudiesWithPage(page, size);
     }
 
@@ -33,31 +37,6 @@ public class StudyController {
     @ResponseBody
     public List<Study> getStudiesByPid(@PathVariable String pid) {
         return studyService.getStudiesByPid(pid);
-    }
-
-    @CrossOrigin
-    @GetMapping("/searchStudies")
-    @ResponseBody
-    public Page<Study> searchStudies(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam(required = false) String pid,
-            @RequestParam(required = false) String pname,
-            @RequestParam(required = false) String startDate,
-            @RequestParam(required = false) String endDate)
-    {
-
-        if (pid != null && !pid.isEmpty() && pname != null && !pname.isEmpty()) {
-            return studyService.findByPidPnameAndDateRange(pid, pname, startDate, endDate, PageRequest.of(page, size));
-        } else if (pid != null && !pid.isEmpty()) {
-            return studyService.findByPidContainingAndDateRange(pid, startDate, endDate, PageRequest.of(page, size));
-        } else if (pname != null && !pname.isEmpty()) {
-            return studyService.findByPnameContainingAndDateRange(pname, startDate, endDate, PageRequest.of(page, size));
-        } else if (startDate != null && endDate != null) {
-            return studyService.findByDateRange(startDate, endDate, PageRequest.of(page, size));
-        } else {
-            return studyService.findStudiesWithPage(page, size);
-        }
     }
 
 //    @ResponseBody

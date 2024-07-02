@@ -18,13 +18,22 @@ public class ReportController {
     private final ReportService reportService;
     private final StudyService studyService;
 
-//    @GetMapping("/{studyKey}")
-//    public ModelAndView getReportByStudyKey(@PathVariable long studyKey) {
-//        ModelAndView model = new ModelAndView("report/report");
-//        List<Study> reportList = studyService.findByStudykey(studyKey);
-//        model.addObject("reports", reportList);
-//        return model;
-//    }
+    @GetMapping("/{studyKey}")
+    public ModelAndView getReportByStudyKeys(@PathVariable int studyKey) {
+        ModelAndView model;
+        Report report = reportService.getReportByStudyKey(studyKey);
+
+        if (report == null) {
+            model = new ModelAndView("report/report");
+        } else {
+            model = new ModelAndView("report/reportUpdate");
+            model.addObject("report", report);
+        }
+
+        List<Study> reportList = studyService.findByStudykey(studyKey);
+        model.addObject("reports", reportList);
+        return model;
+    }
 
     @GetMapping("/ByStudyKey")
     @ResponseBody
@@ -48,8 +57,18 @@ public class ReportController {
         reportService.update(report);
     }
 
-    @DeleteMapping("/{studyKey}")
-    public void deleteReport(@PathVariable int studyKey) {
-        reportService.delete(studyKey);
+    @DeleteMapping("/{studyKey}/{userCode}")
+    public void deleteReport(@PathVariable int studyKey, @PathVariable String userCode) {
+        reportService.delete(studyKey, userCode);
+    }
+
+    @GetMapping("/searchICD")
+    public ResponseEntity<String> searchICDCode(@RequestParam("query") String query) {
+        try {
+            String result = reportService.searchICDCode(query);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
     }
 }

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.button').on('click', function (e) {
+    $('.button:not(.delete)').on('click', function (e) {
         e.preventDefault();
 
         var reportData = {
@@ -38,7 +38,7 @@ $(document).ready(function () {
         if (confirm("정말로 리포트를 삭제하시겠습니까?")) {
             $.ajax({
                 type: "DELETE",
-                url: "/report/" + $('#studyKey').val(),
+                url: "/report/" + $('#studyKey').val() + "/" + $('#userCode').val(),
                 success: function (response) {
                     console.log('성공 응답:', response);
                     alert("리포트가 삭제 되었습니다.");
