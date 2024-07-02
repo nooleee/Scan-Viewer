@@ -38,21 +38,7 @@ public class StudyService {
         return studyRepository.findAllByStudykey(studykey);
     }
 
-    public Page<Study> findByPidContainingAndDateRange(String pid, String startDate, String endDate, PageRequest pageRequest) {
-        return studyRepository.findByPidContainingAndStudydateBetweenOrderByStudydateDesc(pid, startDate, endDate, pageRequest);
-    }
 
-    public Page<Study> findByPnameContainingAndDateRange(String pname, String startDate, String endDate, PageRequest pageRequest) {
-        return studyRepository.findByPnameContainingAndStudydateBetweenOrderByStudydateDesc(pname, startDate, endDate, pageRequest);
-    }
-
-    public Page<Study> findByPidPnameAndDateRange(String pid, String pname, String startDate, String endDate, PageRequest pageRequest) {
-        return studyRepository.findByPidContainingAndPnameContainingAndStudydateBetweenOrderByStudydateDesc(pid, pname, startDate, endDate, pageRequest);
-    }
-
-    public Page<Study> findByDateRange(String startDate, String endDate, PageRequest pageRequest) {
-        return studyRepository.findByStudydateBetweenOrderByStudydateDesc(startDate, endDate, pageRequest);
-    }
 
 
 
