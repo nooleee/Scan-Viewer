@@ -74,7 +74,9 @@
     </div>
     <div>
         <label>질병 코드:</label>
-        <input type="text" id="diseaseCode" value="${report.diseaseCode}"/>
+        <input type="text" id="diseaseCode"/>
+        <button type="button" id="searchICDButton">ICD 코드 검색</button>
+        <div id="icdResults"></div> <!-- 검색 결과 표시 -->
     </div>
     <div>
         <label>판독 상태:</label>
