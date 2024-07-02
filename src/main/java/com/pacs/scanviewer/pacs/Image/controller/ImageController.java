@@ -1,9 +1,7 @@
 package com.pacs.scanviewer.pacs.Image.controller;
 
 import com.pacs.scanviewer.pacs.Image.domain.Image;
-import com.pacs.scanviewer.pacs.Study.domain.Study;
 import com.pacs.scanviewer.pacs.Image.service.ImageService;
-import com.pacs.scanviewer.pacs.Study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
@@ -43,16 +41,13 @@ public class ImageController {
     @GetMapping("/{studykey}/{index}")
     public ModelAndView getImagesByStudyKeyAndIndex(@PathVariable Long studykey, @PathVariable Integer index) {
         List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
-        Map<Integer, List<String>> indexedSeriesImages  = IntStream.range(0, seriesKeys.size())
-                .boxed()
-                .collect(Collectors.toMap(i -> i + 1, i -> {
-                    Long serieskey = seriesKeys.get(i);
-                    return imageService.findByStudykeyAndSerieskey(studykey, serieskey).stream()
-                            .map(image -> "Z:/" + image.getPath() + image.getFname())
-                            .collect(Collectors.toList());
-                }));
-
-        System.out.println("Indexed Series Images: " + indexedSeriesImages);
+        Map<Integer, List<String>> indexedSeriesImages = seriesKeys.stream()
+                .collect(Collectors.toMap(
+                        key -> seriesKeys.indexOf(key) + 1,
+                        key -> imageService.findByStudykeyAndSerieskey(studykey, key).stream()
+                                .map(image -> "Z:/" + image.getPath() + image.getFname())
+                                .collect(Collectors.toList())
+                ));
 
         List<String> images = indexedSeriesImages.get(index);
         if (images == null) {
@@ -63,18 +58,16 @@ public class ImageController {
         List<Map<String, Object>> seriesList = seriesKeys.stream()
                 .map(key -> {
                     List<Image> imagesForSeries = imageService.findByStudykeyAndSerieskey(studykey, key);
-                    List<String> thumbnailUrls = imagesForSeries.stream()
-                            .map(image -> "Z:/" + image.getPath() + image.getFname())
-                            .collect(Collectors.toList());
+                    String thumbnailUrl = "Z:/" + imagesForSeries.get(0).getPath() + imagesForSeries.get(0).getFname();
                     Map<String, Object> seriesMap = new HashMap<>();
                     seriesMap.put("seriesKey", key.toString());
-                    seriesMap.put("thumbnailUrls", thumbnailUrls);
-                    seriesMap.put("description", "Series Description");
+                    seriesMap.put("thumbnailUrl", thumbnailUrl);
                     seriesMap.put("index", seriesKeys.indexOf(key) + 1);
                     return seriesMap;
                 })
                 .collect(Collectors.toList());
 
+        System.out.println("serieslist : " + seriesList);
         ModelAndView mv = new ModelAndView("viewer/viewer");
         mv.addObject("images", images);
         mv.addObject("seriesList", seriesList);
@@ -92,14 +85,11 @@ public class ImageController {
         return new ResponseEntity<>(dicomUrls, HttpStatus.OK);
     }
 
-
     @GetMapping("/dicom-file")
     @ResponseBody
     public ResponseEntity<FileSystemResource> getDicomFile(@RequestParam String path) throws IOException {
         String os = System.getProperty("os.name").toLowerCase();
         String sep = System.getProperty("file.separator");
-
-
 
         // URL 디코딩
         String decodedPath = URLDecoder.decode(path, StandardCharsets.UTF_8.name());
@@ -108,7 +98,7 @@ public class ImageController {
 
         if (!os.contains("win")) {
             rootPath = "/Volumes/STS/";
-           decodedPath = decodedPath.replace("Z:/",rootPath);
+            decodedPath = decodedPath.replace("Z:/",rootPath);
         }
 
         // 역슬래시를 슬래시로 변경
@@ -145,6 +135,3 @@ public class ImageController {
                 .body(new FileSystemResource(file));
     }
 }
-
-
-
