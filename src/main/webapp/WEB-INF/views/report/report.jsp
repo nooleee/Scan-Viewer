@@ -31,15 +31,7 @@
             <td>${study.pname}</td>
             <td>${study.pid}</td>
             <td>${study.studydate}</td>
-            <td>${study.studydesc}</td>
             <input type="hidden" id="studyKey" value="${study.studykey}"/>
-            <td>
-                <c:choose>
-                    <c:when test="${study.reportstatus == 3}">읽지 않음</c:when>
-                    <c:when test="${study.reportstatus == 6}">판독 완료</c:when>
-                    <c:when test="${study.reportstatus == 5}">판독 보류</c:when>
-                </c:choose>
-            </td>
         </tr>
     </c:forEach>
     </tbody>
@@ -63,7 +55,7 @@
     </div>
     <div>
         <label>판독 일시:</label>
-        <input type="text" id="date"/>
+        <input type="text" id="date" readonly/>
     </div>
     <div>
         <label>질병 코드:</label>
@@ -76,7 +68,7 @@
         <select id="videoReplay">
             <option value="읽지않음">읽지않음</option>
             <option value="판독완료">판독완료</option>
-            <option value="판독불가">판독불가</option>
+            <option value="판독취소">판독취소</option>
         </select>
     </div>
     <div class="button-container">
