@@ -4,6 +4,7 @@ import com.pacs.scanviewer.SCV.User.domain.User;
 import com.pacs.scanviewer.SCV.User.domain.UserDto;
 import com.pacs.scanviewer.SCV.User.service.MyUserDetailsService;
 import com.pacs.scanviewer.SCV.User.service.UserService;
+import com.pacs.scanviewer.Util.CookieUtil;
 import com.pacs.scanviewer.Util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
@@ -137,6 +139,19 @@ public class UserController {
         boolean isDuplicate = userService.isUserCodeDuplicate(userCode);
         System.out.println("isduplicate: " + isDuplicate);
         return ResponseEntity.ok(isDuplicate);
+    }
+
+    @GetMapping("/userInfo")
+    public ResponseEntity<User> getUserInfo(HttpServletRequest request) {
+        String token = CookieUtil.getCookieValue(request, "jwt");
+        String userCode = jwtUtil.extractUsername(token);
+        Optional<User> user = userService.findUser(userCode);
+
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     private static class AuthenticationResponse {

@@ -7,6 +7,8 @@ import com.pacs.scanviewer.SCV.StudyLog.domain.StudyLog;
 import com.pacs.scanviewer.SCV.StudyLog.service.StudyLogService;
 import com.pacs.scanviewer.SCV.User.domain.User;
 import com.pacs.scanviewer.SCV.Consent.service.ConsentService;
+import com.pacs.scanviewer.Util.CookieUtil;
+import com.pacs.scanviewer.Util.JwtUtil;
 import com.pacs.scanviewer.pacs.Image.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
@@ -26,11 +29,13 @@ public class ConsentController {
     private final ConsentService consentService;
     private final ImageService imageService;
     private final StudyLogService studyLogService;
+    private final JwtUtil jwtUtil;
 
     @GetMapping("/{studykey}")
-    public ModelAndView getConsents(@PathVariable int studykey, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        Optional<Consent> consent = consentService.findConsentByStudyKeyAndUserCode(studykey, user.getUserCode());
+    public ModelAndView getConsents(@PathVariable int studykey, HttpServletRequest request) {
+        String token = CookieUtil.getCookieValue(request, "jwt");
+        String userCode = jwtUtil.extractUsername(token);
+        Optional<Consent> consent = consentService.findConsentByStudyKeyAndUserCode(studykey, userCode);
         System.out.println("study key: " + studykey);
         if (consent.isPresent()) {
             // 검색 결과가 있을 경우 다른 페이지로 리디렉션
@@ -38,7 +43,7 @@ public class ConsentController {
             long studykeyLong = (long) studykey;
             List<Long> seriesKeys = imageService.getSeriesKeysByStudyKey(studykeyLong);
             if (!seriesKeys.isEmpty()) {
-                StudyLog studyLog = new StudyLog(studykey,user.getUserCode());
+                StudyLog studyLog = new StudyLog(studykey,userCode);
                 studyLogService.createLog(studyLog);
                 ModelAndView modelAndView = new ModelAndView("redirect:/images/" + studykey + "/" + seriesKeys.get(0));
                 return modelAndView;
