@@ -49,6 +49,10 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
+    //who
+    implementation 'org.json:json:20210307'
+
+
 }
 
 tasks.named('test') {
