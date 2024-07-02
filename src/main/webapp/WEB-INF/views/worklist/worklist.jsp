@@ -209,7 +209,6 @@
         </main>
     </div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/common.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/worklist.js"></script>

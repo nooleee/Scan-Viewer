@@ -22,19 +22,19 @@
     </div>
     <div class="form-group">
         <label for="userCode">User Code:</label>
-        <input type="text" id="userCode" name="userCode" value="${sessionScope.user.userCode}" readonly>
+        <input type="text" id="userCode" name="userCode" readonly>
     </div>
     <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="${sessionScope.user.name}" readonly>
+        <input type="text" id="name" name="name" readonly>
     </div>
     <div class="form-group">
         <label for="birth">Birth:</label>
-        <input type="date" id="birth" name="birth" value="${sessionScope.user.birth}" readonly>
+        <input type="date" id="birth" name="birth" readonly>
     </div>
     <div class="form-group">
         <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone" value="${sessionScope.user.phone}" readonly>
+        <input type="text" id="phone" name="phone" readonly>
     </div>
     <div class="form-group">
         <label for="position">Position:</label>
@@ -68,5 +68,6 @@
         <button type="submit">Submit</button>
     </div>
 </form>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/consent.js"></script>
 </body>
 </html>
