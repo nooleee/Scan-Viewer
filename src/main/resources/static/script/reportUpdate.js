@@ -16,7 +16,7 @@ function fetchUserInfo() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('userCode').value = data.name;
+            document.getElementById('userCode').value = data.userCode;
         })
         .catch(error => {
             console.error('Error:', error);
