@@ -17,7 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
@@ -80,18 +82,30 @@ public class UserController {
     }
 
     @PostMapping("/delete")
-    public String deleteUser(@RequestParam String userCode, HttpSession session) {
+    public String deleteUser(HttpServletRequest request, HttpServletResponse response) {
+        String token = CookieUtil.getCookieValue(request, "jwt");
+        String userCode = jwtUtil.extractUsername(token);
         Optional<User> optionalUser = userService.findUser(userCode);
         User user = optionalUser.get();
         userService.deleteUser(user);
-        session.invalidate(); // 로그아웃 처리
+        // JWT 쿠키 삭제
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0); // 쿠키 만료 시간 설정 (0은 즉시 삭제)
+        response.addCookie(cookie);
         return "redirect:/user/login";
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.removeAttribute("user");
-        session.invalidate();
+    public String logout(HttpServletResponse response) {
+        // JWT 쿠키 삭제
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(0); // 쿠키 만료 시간 설정 (0은 즉시 삭제)
+        response.addCookie(cookie);
+
         return "user/login";
     }
 
