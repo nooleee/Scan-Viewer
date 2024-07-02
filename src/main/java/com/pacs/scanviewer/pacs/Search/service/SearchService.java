@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SearchService {
 
+
     private final StudyRepository studyRepository;
 
     public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {

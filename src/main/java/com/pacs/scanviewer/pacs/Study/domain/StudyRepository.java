@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
+
     Page<Study> findAllByOrderByStudydateDesc(Pageable pageable);
 
     Page<Study> findByPidContainingAndStudydateBetweenOrderByStudydateDesc(String pid, String startDate, String endDate, Pageable pageable);
