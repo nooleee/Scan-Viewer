@@ -51,4 +51,34 @@ $(document).ready(function () {
             });
         }
     });
+
+    $('#searchICDButton').on('click', function () {
+        var query = $('#diseaseCode').val();
+        $.ajax({
+            type: "GET",
+            url: "/report/searchICD",
+            data: { query: query },
+            success: function (response) {
+                console.log('ICD 코드 검색 결과:', response);
+                if (response === "검색 결과가 없습니다.") {
+                    alert("ICD 코드 검색 결과가 없습니다.");
+                } else {
+                    // 검색 결과를 표시합니다.
+                    $('#icdResults').html('<ul>' + response.split(',').map(function(item) {
+                        return '<li class="icd-result-item">' + item + '</li>';
+                    }).join('') + '</ul>');
+
+                    // 검색 결과 항목에 클릭 이벤트 핸들러 추가
+                    $('.icd-result-item').on('click', function () {
+                        $('#diseaseCode').val($(this).text());
+                        $('#icdResults').empty();  // 검색 결과 목록 비우기
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('ICD 코드 검색 에러:', xhr, status, error);
+                alert("ICD 코드 검색에 실패했습니다.");
+            }
+        });
+    });
 });
