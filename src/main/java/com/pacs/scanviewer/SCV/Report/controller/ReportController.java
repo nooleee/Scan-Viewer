@@ -49,15 +49,15 @@ public class ReportController {
 
     @PostMapping("/{studyKey}")
     public void createReport(@ModelAttribute Report report) {
-        if (report.getVideoReplay() == Report.VideoReplay.판독취소) {
-            report.setContent("");
-            report.setPatient("");
-        }
         reportService.save(report);
     }
 
     @PutMapping("/{studyKey}")
     public void updateReport(@ModelAttribute Report report) {
+        if (report.getVideoReplay() == Report.VideoReplay.판독취소) {
+            report.setContent("");
+            report.setPatient("");
+        }
         reportService.update(report);
     }
 
