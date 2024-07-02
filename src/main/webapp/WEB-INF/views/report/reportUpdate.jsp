@@ -35,22 +35,15 @@
             <input type="hidden" id="studyKey" value="${study.studykey}"/>
             <td>
                 <c:choose>
-                    <c:when test="${study.reportstatus == 3}">
-                        읽지 않음
-                    </c:when>
-                    <c:when test="${study.reportstatus == 6}">
-                        판독 완료
-                    </c:when>
-                    <c:when test="${study.reportstatus == 5}">
-                        판독 보류
-                    </c:when>
+                    <c:when test="${study.reportstatus == 3}">읽지 않음</c:when>
+                    <c:when test="${study.reportstatus == 6}">판독 완료</c:when>
+                    <c:when test="${study.reportstatus == 5}">판독 보류</c:when>
                 </c:choose>
             </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-
 
 <form id="reportForm" method="post">
     <h2>의사 소견</h2>
@@ -74,7 +67,7 @@
     </div>
     <div>
         <label>질병 코드:</label>
-        <input type="text" id="diseaseCode"/>
+        <input type="text" id="diseaseCode" value="${report.diseaseCode}"/>
         <button type="button" id="searchICDButton">ICD 코드 검색</button>
         <div id="icdResults"></div> <!-- 검색 결과 표시 -->
     </div>
