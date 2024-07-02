@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface StudyRepository extends JpaRepository<Study, Long> {
 
+
     Page<Study> findAllByOrderByStudydateDesc(Pageable pageable);
 
     Page<Study> findAll(Specification<Study> spec, Pageable pageable);
