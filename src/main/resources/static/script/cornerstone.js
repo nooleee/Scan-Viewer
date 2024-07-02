@@ -32,19 +32,26 @@ const initializeCornerstone = async () => {
         },
     };
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
-    cornerstoneTools.init();
+    // cornerstoneTools.init();
 };
 
-const createToolGroup = () => {
-    const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
-    toolGroup.addTool(ZoomTool.toolName);
-    toolGroup.addTool(PanTool.toolName);
-    toolGroup.addTool(LengthTool.toolName);
-    toolGroup.addTool(AngleTool.toolName);
-    toolGroup.addTool(MagnifyTool.toolName);
-    toolGroup.addTool(StackScrollMouseWheelTool.toolName);
-    return toolGroup;
-};
+// content.appendChild(element);
+
+cornerstoneTools.init();
+cornerstoneTools.addTool(ZoomTool);
+cornerstoneTools.addTool(PanTool);
+cornerstoneTools.addTool(LengthTool);
+cornerstoneTools.addTool(AngleTool);
+cornerstoneTools.addTool(MagnifyTool);
+cornerstoneTools.addTool(StackScrollMouseWheelTool);
+
+const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
+toolGroup.addTool(ZoomTool.toolName);
+toolGroup.addTool(PanTool.toolName);
+toolGroup.addTool(LengthTool.toolName);
+toolGroup.addTool(AngleTool.toolName);
+toolGroup.addTool(MagnifyTool.toolName);
+toolGroup.addTool(StackScrollMouseWheelTool.toolName);
 
 const render = async (imageIds, element) => {
     const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
@@ -54,10 +61,10 @@ const render = async (imageIds, element) => {
         type: cornerstone.Enums.ViewportType.STACK,
     };
 
-    const toolGroup = ToolGroupManager.getToolGroup(toolGroupId) || createToolGroup();
+    const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
     toolGroup.addViewport(viewportId, renderingEngineId);
-
     renderingEngine.enableElement(viewportInput);
+
     await renderingEngine.renderViewports([viewportId]);
 
     const viewport = renderingEngine.getViewport(viewportInput.viewportId);
@@ -82,6 +89,23 @@ const render = async (imageIds, element) => {
     toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
 };
 
+const renderThumbnail = async (imageIds, elementId) => {
+    const renderingEngine = new cornerstone.RenderingEngine(`${renderingEngineId}-${elementId}`);
+    const viewportInput = {
+        viewportId: `thumbnail-${elementId}`,
+        element: document.getElementById(elementId),
+        type: cornerstone.Enums.ViewportType.STACK,
+    };
+
+    renderingEngine.enableElement(viewportInput);
+    await renderingEngine.renderViewports([viewportInput.viewportId]);
+
+    const viewport = renderingEngine.getViewport(viewportInput.viewportId);
+    await viewport.setStack(imageIds);
+
+    await viewport.render();
+};
+
 const loadSeries = async (studykey, index, element) => {
     try {
         const response = await fetch(`/images/${studykey}/${index}/dicom-urls`);
@@ -90,12 +114,21 @@ const loadSeries = async (studykey, index, element) => {
         }
         const dicomUrls = await response.json();
         const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
-        console.log("imageIds size : " + imageIds.length);
-        console.log("imageIds : " + imageIds);
         await render(imageIds, element);
     } catch (error) {
         console.error("Failed to load series:", error);
         alert('잘못된 인덱스입니다. 유효한 시리즈를 선택해주세요.');
+    }
+};
+
+const loadThumbnails = async (seriesList) => {
+    for (const series of seriesList) {
+        const response = await fetch(`/images/${series.studyKey}/${series.index}/dicom-urls`);
+        if (response.ok) {
+            const dicomUrls = await response.json();
+            const imageIds = dicomUrls.map(url => `dicomweb:${url}`);
+            await renderThumbnail(imageIds, `thumbnail-${series.index}`);
+        }
     }
 };
 
@@ -124,6 +157,14 @@ const init = async () => {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
     }
 
+
+    const seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
+        studyKey: keys.studykey,
+        index: thumbnail.getAttribute('data-series-index')
+    }));
+
+    await loadThumbnails(seriesList);
+
     document.querySelectorAll('.thumbnail-viewport').forEach(thumbnail => {
         thumbnail.addEventListener('click', async () => {
             const index = thumbnail.getAttribute('data-series-index');
@@ -134,17 +175,6 @@ const init = async () => {
                 await loadSeries(studykey, index, contentElement);
             }
         });
-    });
-
-    document.querySelectorAll('.thumbnail-element').forEach(async thumbnailElement => {
-        const index = thumbnailElement.parentElement.getAttribute('data-series-index');
-        const keys = extractKeysFromPath();
-        if (keys) {
-            const { studykey } = keys;
-            const dicomUrls = await fetch(`/images/${studykey}/${index}/dicom-urls`).then(res => res.json());
-            const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
-            await render(imageIds, thumbnailElement);
-        }
     });
 };
 
