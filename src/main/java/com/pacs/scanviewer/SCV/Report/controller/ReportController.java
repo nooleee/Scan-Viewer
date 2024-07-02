@@ -49,7 +49,7 @@ public class ReportController {
 
     @PostMapping("/{studyKey}")
     public void createReport(@ModelAttribute Report report) {
-        if (report.getVideoReplay() == Report.VideoReplay.판독불가) {
+        if (report.getVideoReplay() == Report.VideoReplay.판독취소) {
             report.setContent("");
             report.setPatient("");
         }
