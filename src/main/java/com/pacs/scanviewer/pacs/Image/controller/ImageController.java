@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,7 +30,6 @@ import java.util.stream.IntStream;
 public class ImageController {
 
     private final ImageService imageService;
-    private final StudyService studyService;
 
     @GetMapping("/dicom-images")
     public ResponseEntity<List<Image>> getDicomImages() {
@@ -43,22 +43,41 @@ public class ImageController {
     @GetMapping("/{studykey}/{index}")
     public ModelAndView getImagesByStudyKeyAndIndex(@PathVariable Long studykey, @PathVariable Integer index) {
         List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
-        Map<Integer, Long> indexedSeriesKeys = IntStream.range(0, seriesKeys.size())
+        Map<Integer, List<String>> indexedSeriesImages  = IntStream.range(0, seriesKeys.size())
                 .boxed()
-                .collect(Collectors.toMap(i -> i + 1, seriesKeys::get));
+                .collect(Collectors.toMap(i -> i + 1, i -> {
+                    Long serieskey = seriesKeys.get(i);
+                    return imageService.findByStudykeyAndSerieskey(studykey, serieskey).stream()
+                            .map(image -> "Z:/" + image.getPath() + image.getFname())
+                            .collect(Collectors.toList());
+                }));
 
-        Long serieskey = indexedSeriesKeys.get(index);
-        if (serieskey == null) {
+        System.out.println("Indexed Series Images: " + indexedSeriesImages);
+
+        List<String> images = indexedSeriesImages.get(index);
+        if (images == null) {
             return new ModelAndView("error/noSeriesFound");
         }
 
-        List<Image> imageList = imageService.findByStudykeyAndSerieskey(studykey, serieskey);
-        List<String> images = imageList.stream()
-                .map(image -> "Z:/" + image.getPath() + image.getFname())
+        // 썸네일 리스트 생성
+        List<Map<String, Object>> seriesList = seriesKeys.stream()
+                .map(key -> {
+                    List<Image> imagesForSeries = imageService.findByStudykeyAndSerieskey(studykey, key);
+                    List<String> thumbnailUrls = imagesForSeries.stream()
+                            .map(image -> "Z:/" + image.getPath() + image.getFname())
+                            .collect(Collectors.toList());
+                    Map<String, Object> seriesMap = new HashMap<>();
+                    seriesMap.put("seriesKey", key.toString());
+                    seriesMap.put("thumbnailUrls", thumbnailUrls);
+                    seriesMap.put("description", "Series Description");
+                    seriesMap.put("index", seriesKeys.indexOf(key) + 1);
+                    return seriesMap;
+                })
                 .collect(Collectors.toList());
 
         ModelAndView mv = new ModelAndView("viewer/viewer");
         mv.addObject("images", images);
+        mv.addObject("seriesList", seriesList);
         return mv;
     }
 
