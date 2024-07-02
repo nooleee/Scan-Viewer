@@ -30,6 +30,7 @@ public class Report {
     private VideoReplay videoReplay;
 
     @CreatedDate
+    @Column(updatable = false)
     private Timestamp regDate;
     @LastModifiedDate
     private Timestamp modDate;
