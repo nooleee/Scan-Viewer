@@ -22,7 +22,6 @@
         <th>환자 아이디</th>
         <th>검사 날짜</th>
         <th>검사 설명</th>
-        <th>판독 상태</th>
     </tr>
     </thead>
     <tbody>
