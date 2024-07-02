@@ -24,8 +24,22 @@ function fetchUserInfo() {
 }
 
 $(document).ready(function () {
+    function setCurrentDateTime() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = ('0' + (now.getMonth() + 1)).slice(-2);
+        var day = ('0' + now.getDate()).slice(-2);
+        var hours = ('0' + now.getHours()).slice(-2);
+        var minutes = ('0' + now.getMinutes()).slice(-2);
+        var seconds = ('0' + now.getSeconds()).slice(-2);
+        var formattedDateTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+        $('#date').val(formattedDateTime);
+    }
+
     $('.button').on('click', function (e) {
         e.preventDefault();
+
+        setCurrentDateTime();
 
         var reportData = {
             studyKey: $('#studyKey').val(),
