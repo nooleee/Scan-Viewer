@@ -30,11 +30,12 @@ public class Report {
     private VideoReplay videoReplay;
 
     @CreatedDate
+    @Column(updatable = false)
     private Timestamp regDate;
     @LastModifiedDate
     private Timestamp modDate;
 
     public enum VideoReplay {
-        읽지않음, 판독불가, 판독완료
+        읽지않음, 판독취소, 판독완료
     }
 }

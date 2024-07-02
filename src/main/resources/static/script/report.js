@@ -1,6 +1,45 @@
+document.addEventListener('DOMContentLoaded', function () {
+    fetchUserInfo();
+});
+
+function fetchUserInfo() {
+    fetch('/user/userInfo', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch user info');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('userCode').value = data.userCode;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 $(document).ready(function () {
+    function setCurrentDateTime() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = ('0' + (now.getMonth() + 1)).slice(-2);
+        var day = ('0' + now.getDate()).slice(-2);
+        var hours = ('0' + now.getHours()).slice(-2);
+        var minutes = ('0' + now.getMinutes()).slice(-2);
+        var seconds = ('0' + now.getSeconds()).slice(-2);
+        var formattedDateTime = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds;
+        $('#date').val(formattedDateTime);
+    }
+
     $('.button').on('click', function (e) {
         e.preventDefault();
+
+        setCurrentDateTime();
 
         var reportData = {
             studyKey: $('#studyKey').val(),
