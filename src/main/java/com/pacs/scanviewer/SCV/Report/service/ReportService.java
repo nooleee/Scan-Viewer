@@ -1,7 +1,6 @@
 package com.pacs.scanviewer.SCV.Report.service;
 
 import com.pacs.scanviewer.SCV.Report.domain.Report;
-import com.pacs.scanviewer.SCV.Report.domain.ReportId;
 import com.pacs.scanviewer.SCV.Report.domain.ReportRepository;
 import com.pacs.scanviewer.SCV.ReportLog.domain.ReportLog;
 import com.pacs.scanviewer.SCV.ReportLog.service.ReportLogService;
