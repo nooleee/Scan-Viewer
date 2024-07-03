@@ -3,6 +3,8 @@ package com.pacs.scanviewer.SCV.Report.service;
 import com.pacs.scanviewer.SCV.Report.domain.Report;
 import com.pacs.scanviewer.SCV.Report.domain.ReportId;
 import com.pacs.scanviewer.SCV.Report.domain.ReportRepository;
+import com.pacs.scanviewer.SCV.ReportLog.domain.ReportLog;
+import com.pacs.scanviewer.SCV.ReportLog.service.ReportLogService;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,13 +18,18 @@ import java.util.List;
 public class ReportService {
     private final ReportRepository reportRepository;
     private final ICDAPIclient icdAPIclient;
+    private final ReportLogService reportLogService; // 로그 서비스를 주입받습니다.
 
     public Report save(Report report) {
-        return reportRepository.save(report);
+        Report savedReport = reportRepository.save(report);
+        createReportLog(savedReport); // 로그 생성
+        return savedReport;
     }
 
     public Report update(Report report) {
-        return reportRepository.save(report);
+        Report updatedReport = reportRepository.save(report);
+        createReportLog(updatedReport); // 로그 생성
+        return updatedReport;
     }
 
     public void delete(int studyKey, String userCode) {
@@ -39,6 +46,18 @@ public class ReportService {
             report.setPatient("");  // 결론 비우기
         }
         return report;
+    }
+
+    private void createReportLog(Report report) {
+        ReportLog reportLog = new ReportLog();
+        reportLog.setStudyKey(report.getStudyKey());
+        reportLog.setUserCode(report.getUserCode());
+        reportLog.setContent(report.getContent());
+        reportLog.setPatient(report.getPatient());
+        reportLog.setDate(report.getDate());
+        reportLog.setDiseaseCode(report.getDiseaseCode());
+        reportLog.setVideoReplay(report.getVideoReplay());
+        reportLogService.createLog(reportLog); // 로그를 저장합니다.
     }
 
     public String searchICDCode(String query) throws Exception {
@@ -60,5 +79,4 @@ public class ReportService {
             return results.toString();
         }
     }
-
 }
