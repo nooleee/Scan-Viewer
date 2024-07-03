@@ -71,8 +71,7 @@ public class ReportService {
             for (int i = 0; i < destinationEntities.length(); i++) {
                 JSONObject entity = destinationEntities.getJSONObject(i);
                 String title = entity.getString("title").replaceAll("\\<.*?\\>", ""); // HTML 태그 제거
-                String code = entity.getString("code");
-                results.add(code + ":" + title);
+                results.add(title);
             }
             return results.toString();
         }
