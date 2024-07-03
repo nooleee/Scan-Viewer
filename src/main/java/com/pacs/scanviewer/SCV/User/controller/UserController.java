@@ -2,6 +2,7 @@ package com.pacs.scanviewer.SCV.User.controller;
 
 import com.pacs.scanviewer.SCV.User.domain.User;
 import com.pacs.scanviewer.SCV.User.domain.UserDto;
+import com.pacs.scanviewer.SCV.User.service.LogOnUserService;
 import com.pacs.scanviewer.SCV.User.service.MyUserDetailsService;
 import com.pacs.scanviewer.SCV.User.service.UserService;
 import com.pacs.scanviewer.Util.CookieUtil;
@@ -21,8 +22,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @RequiredArgsConstructor
@@ -35,6 +38,7 @@ public class UserController {
     private final MyUserDetailsService myUserDetailsService;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final LogOnUserService logOnUserService;
 
     @GetMapping("/login")
     public String login() {
@@ -98,7 +102,13 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletResponse response) {
+    public String logout(HttpServletRequest request ,HttpServletResponse response) {
+        String token = CookieUtil.getCookieValue(request, "jwt");
+        String userCode = jwtUtil.extractUsername(token);
+
+        if (userCode != null) {
+            logOnUserService.removeUser(userCode);
+        }
         // JWT 쿠키 삭제
         Cookie cookie = new Cookie("jwt", null);
         cookie.setPath("/");
@@ -125,6 +135,8 @@ public class UserController {
 
         final UserDetails userDetails = myUserDetailsService.loadUserByUsername(userDto.getUserCode());
         final String jwt = jwtUtil.generateToken(userDetails);
+
+        logOnUserService.addUser(userDto.getUserCode());
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
@@ -166,6 +178,16 @@ public class UserController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @ResponseBody
+    @GetMapping("/logOnUsers")
+    public List<String> getLoggedInUsers() {
+        System.out.println("현재 로그인중인 회원 리스트 출력 ");
+        // logOnUserService.getLoggedInUsers()가 Set<String>을 반환하는 경우 List<String>으로 변환하여 반환
+        Set<String> loggedInUsers = logOnUserService.getLoggedInUsers();
+        loggedInUsers.forEach(System.out::println);
+        return new ArrayList<>(logOnUserService.getLoggedInUsers());
     }
 
     private static class AuthenticationResponse {
