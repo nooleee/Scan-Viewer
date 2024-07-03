@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +41,10 @@ public class ReportService {
         return report;
     }
 
+    public Optional<Report> findReportByStudyKey(int studyKey) {
+        return reportRepository.findReportByStudyKey(studyKey);
+    }
+
     private void createReportLog(Report report) {
         ReportLog reportLog = new ReportLog();
         reportLog.setStudyKey(report.getStudyKey());
@@ -66,7 +71,8 @@ public class ReportService {
             for (int i = 0; i < destinationEntities.length(); i++) {
                 JSONObject entity = destinationEntities.getJSONObject(i);
                 String title = entity.getString("title").replaceAll("\\<.*?\\>", ""); // HTML 태그 제거
-                results.add(title);
+                String code = entity.getString("code");
+                results.add(code + ":" + title);
             }
             return results.toString();
         }
