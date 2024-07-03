@@ -9,13 +9,18 @@ import java.net.URLEncoder;
 import javax.net.ssl.HttpsURLConnection;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class ICDAPIclient {
 
     private final String TOKEN_ENPOINT = "https://icdaccessmanagement.who.int/connect/token";
-    private final String CLIENT_ID = "";
-    private final String CLIENT_SECRET = "";
+    @Value("${icdapi.client.id}")
+    private String CLIENT_ID;
+
+    @Value("${icdapi.client.secret}")
+    private String CLIENT_SECRET;
+
     private final String SCOPE = "icdapi_access";
     private final String GRANT_TYPE = "client_credentials";
 
