@@ -15,25 +15,8 @@ import java.util.List;
 @Controller
 public class StudyController {
 
-    private final StudyService studyService;
 
-    @GetMapping("/worklist")
-    public String getWorklistPage() {
-            return "worklist/worklist";
-    }
 
-    @CrossOrigin
-    @GetMapping("/worklistAllSearch")
-    @ResponseBody
-    public Page<Study> getAllStudies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
-        return studyService.findStudiesWithPage(page, size);
-    }
-
-    @GetMapping("/worklistPrevious/{pid}")
-    @ResponseBody
-    public List<Study> getStudiesByPid(@PathVariable String pid) {
-        return studyService.getStudiesByPid(pid);
-    }
 
 //    @ResponseBody
 //    @GetMapping("/studies/{page}")
