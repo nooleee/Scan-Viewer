@@ -70,14 +70,14 @@ function appendStudies(studies) {
 
         let reportStatusText = '';
         switch (study.reportstatus) {
-            case 6:
-                reportStatusText = '판독';
-                break;
-            case 5:
-                reportStatusText = '예비판독';
-                break;
-            case 3:
+            case 0:
                 reportStatusText = '읽지않음';
+                break;
+            case 1:
+                reportStatusText = '판독취소';
+                break;
+            case 2:
+                reportStatusText = '판독완료';
                 break;
         }
 
@@ -97,7 +97,6 @@ function appendStudies(studies) {
             <td>${study.modality}</td>
             <td>${study.studydesc}</td>
             <td>${study.studydate}</td>
-<!--            바꿔야댐 findByStudyKey로 있나 없나-->
             <td>${reportStatusText}</td>  
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
@@ -201,14 +200,14 @@ function displayStudyKeys(data) {
 
         let reportStatusText = '';
         switch (study.reportstatus) {
-            case 6:
-                reportStatusText = '판독';
-                break;
-            case 5:
-                reportStatusText = '예비판독';
-                break;
-            case 3:
+            case 0:
                 reportStatusText = '읽지않음';
+                break;
+            case 1:
+                reportStatusText = '판독취소';
+                break;
+            case 2:
+                reportStatusText = '판독완료';
                 break;
         }
 
