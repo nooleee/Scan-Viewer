@@ -5,6 +5,7 @@ import * as dicomParser from 'dicom-parser';
 
 const {
     ZoomTool, PanTool, LengthTool, AngleTool, MagnifyTool, ToolGroupManager, StackScrollMouseWheelTool,
+    WindowLevelTool,
     Enums: csToolsEnums
 } = cornerstoneTools;
 const { MouseBindings } = csToolsEnums;
@@ -38,6 +39,7 @@ const initializeCornerstone = async () => {
     cornerstoneTools.addTool(LengthTool);
     cornerstoneTools.addTool(AngleTool);
     cornerstoneTools.addTool(MagnifyTool);
+    cornerstoneTools.addTool(WindowLevelTool);
     cornerstoneTools.addTool(StackScrollMouseWheelTool);
 
     const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
@@ -46,11 +48,13 @@ const initializeCornerstone = async () => {
     toolGroup.addTool(LengthTool.toolName);
     toolGroup.addTool(AngleTool.toolName);
     toolGroup.addTool(MagnifyTool.toolName);
+    toolGroup.addTool(WindowLevelTool.toolName);
     toolGroup.addTool(StackScrollMouseWheelTool.toolName);
 };
 
 const render = async (imageIds, element) => {
     const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
+    renderingEngine.disableElement(viewportId);
     const viewportInput = {
         viewportId,
         element,
@@ -80,7 +84,10 @@ const render = async (imageIds, element) => {
         bindings: [{ mouseButton: MouseBindings.Auxiliary }],
     });
     toolGroup.setToolActive(PanTool.toolName, {
-        bindings: [{ mouseButton: MouseBindings.Secondary }],
+        bindings: [{ mouseButton: MouseBindings.Primary_And_Secondary }],
+    });
+    toolGroup.setToolActive(WindowLevelTool.toolName, {
+        bindings: [{ mouseButton: MouseBindings.Primary_And_Auxiliary }],
     });
     toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
 };
@@ -102,6 +109,15 @@ const renderThumbnail = async (imageIds, elementId) => {
     await viewport.render();
 };
 
+// const extractMetaData = async (url) => {
+//     try {
+//         const image = await cornerstone.loadAndCacheImage(url);
+//         console.log(`Extracted metadata for ${url}:`, image.data);
+//     } catch (error) {
+//         console.error(`Failed to extract metadata for ${url}:`, error);
+//     }
+// };
+
 const loadSeries = async (studykey, index, element) => {
     try {
         const response = await fetch(`/images/${studykey}/${index}/dicom-urls`);
@@ -110,6 +126,13 @@ const loadSeries = async (studykey, index, element) => {
         }
         const dicomUrls = await response.json();
         const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
+
+
+        // // Extract metadata for debugging
+        // for (const url of imageIds) {
+        //     await extractMetaData(url);
+        // }
+
         await render(imageIds, element);
     } catch (error) {
         console.error("Failed to load series:", error);
@@ -163,6 +186,7 @@ const init = async () => {
     document.querySelectorAll('.thumbnail-viewport').forEach(thumbnail => {
         thumbnail.addEventListener('click', async () => {
             const index = thumbnail.getAttribute('data-series-index');
+
             console.log("index : " + index);
             const keys = extractKeysFromPath();
             if (keys) {

@@ -130,6 +130,7 @@ public class ImageController {
                 .map(key -> {
                     List<Image> imagesForSeries = imageService.findByStudykeyAndSerieskey(studykey, key);
                     String thumbnailUrl = "Z:/" + imagesForSeries.get(0).getPath() + imagesForSeries.get(0).getFname();
+                    System.out.println("thumbnailUrl: " + thumbnailUrl);
                     Map<String, Object> seriesMap = new HashMap<>();
                     seriesMap.put("seriesKey", key.toString());
                     seriesMap.put("thumbnailUrl", thumbnailUrl);
