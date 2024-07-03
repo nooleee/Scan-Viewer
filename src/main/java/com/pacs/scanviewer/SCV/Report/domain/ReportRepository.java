@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 public interface ReportRepository extends JpaRepository<Report, ReportId> {
 
     Report findByStudyKey(int studyKey);
-    void deleteById(ReportId id);
 }
