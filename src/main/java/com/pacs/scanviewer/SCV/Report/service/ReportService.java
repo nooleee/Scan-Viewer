@@ -39,7 +39,6 @@ public class ReportService {
             report.setPatient("");  // 결론 비우기
         }
         return report;
-//        return reportRepository.findByStudyKey(studyKey);
     }
 
     public String searchICDCode(String query) throws Exception {
