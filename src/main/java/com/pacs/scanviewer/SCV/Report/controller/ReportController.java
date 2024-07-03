@@ -61,11 +61,6 @@ public class ReportController {
         reportService.update(report);
     }
 
-    @DeleteMapping("/{studyKey}/{userCode}")
-    public void deleteReport(@PathVariable int studyKey, @PathVariable String userCode) {
-        reportService.delete(studyKey, userCode);
-    }
-
     @GetMapping("/searchICD")
     public ResponseEntity<String> searchICDCode(@RequestParam("query") String query) {
         try {
