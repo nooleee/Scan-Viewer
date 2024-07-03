@@ -55,7 +55,7 @@
     </div>
     <div>
         <label>판독 일시:</label>
-        <input type="text" id="date" readonly/>
+        <input type="text" id="date" readonly value="${report.date}"/>
     </div>
     <div>
         <label>질병 코드:</label>
