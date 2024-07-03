@@ -54,18 +54,7 @@ public class ImageController {
             return new ModelAndView("error/noSeriesFound");
         }
 
-        // 썸네일 리스트 생성
-        List<Map<String, Object>> seriesList = seriesKeys.stream()
-                .map(key -> {
-                    List<Image> imagesForSeries = imageService.findByStudykeyAndSerieskey(studykey, key);
-                    String thumbnailUrl = "Z:/" + imagesForSeries.get(0).getPath() + imagesForSeries.get(0).getFname();
-                    Map<String, Object> seriesMap = new HashMap<>();
-                    seriesMap.put("seriesKey", key.toString());
-                    seriesMap.put("thumbnailUrl", thumbnailUrl);
-                    seriesMap.put("index", seriesKeys.indexOf(key) + 1);
-                    return seriesMap;
-                })
-                .collect(Collectors.toList());
+        List<Map<String, Object>> seriesList = createThumbnailList(studykey, seriesKeys);
 
         System.out.println("serieslist : " + seriesList);
         ModelAndView mv = new ModelAndView("viewer/viewer");
@@ -133,5 +122,20 @@ public class ImageController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getName() + "\"")
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(new FileSystemResource(file));
+    }
+
+
+    private List<Map<String, Object>> createThumbnailList(Long studykey, List<Long> seriesKeys) {
+        return seriesKeys.stream()
+                .map(key -> {
+                    List<Image> imagesForSeries = imageService.findByStudykeyAndSerieskey(studykey, key);
+                    String thumbnailUrl = "Z:/" + imagesForSeries.get(0).getPath() + imagesForSeries.get(0).getFname();
+                    Map<String, Object> seriesMap = new HashMap<>();
+                    seriesMap.put("seriesKey", key.toString());
+                    seriesMap.put("thumbnailUrl", thumbnailUrl);
+                    seriesMap.put("index", seriesKeys.indexOf(key) + 1);
+                    return seriesMap;
+                })
+                .collect(Collectors.toList());
     }
 }

@@ -32,26 +32,22 @@ const initializeCornerstone = async () => {
         },
     };
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
-    // cornerstoneTools.init();
+    cornerstoneTools.init();
+    cornerstoneTools.addTool(ZoomTool);
+    cornerstoneTools.addTool(PanTool);
+    cornerstoneTools.addTool(LengthTool);
+    cornerstoneTools.addTool(AngleTool);
+    cornerstoneTools.addTool(MagnifyTool);
+    cornerstoneTools.addTool(StackScrollMouseWheelTool);
+
+    const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
+    toolGroup.addTool(ZoomTool.toolName);
+    toolGroup.addTool(PanTool.toolName);
+    toolGroup.addTool(LengthTool.toolName);
+    toolGroup.addTool(AngleTool.toolName);
+    toolGroup.addTool(MagnifyTool.toolName);
+    toolGroup.addTool(StackScrollMouseWheelTool.toolName);
 };
-
-// content.appendChild(element);
-
-cornerstoneTools.init();
-cornerstoneTools.addTool(ZoomTool);
-cornerstoneTools.addTool(PanTool);
-cornerstoneTools.addTool(LengthTool);
-cornerstoneTools.addTool(AngleTool);
-cornerstoneTools.addTool(MagnifyTool);
-cornerstoneTools.addTool(StackScrollMouseWheelTool);
-
-const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
-toolGroup.addTool(ZoomTool.toolName);
-toolGroup.addTool(PanTool.toolName);
-toolGroup.addTool(LengthTool.toolName);
-toolGroup.addTool(AngleTool.toolName);
-toolGroup.addTool(MagnifyTool.toolName);
-toolGroup.addTool(StackScrollMouseWheelTool.toolName);
 
 const render = async (imageIds, element) => {
     const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
@@ -126,7 +122,7 @@ const loadThumbnails = async (seriesList) => {
         const response = await fetch(`/images/${series.studyKey}/${series.index}/dicom-urls`);
         if (response.ok) {
             const dicomUrls = await response.json();
-            const imageIds = dicomUrls.map(url => `dicomweb:${url}`);
+            const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
             await renderThumbnail(imageIds, `thumbnail-${series.index}`);
         }
     }
@@ -157,7 +153,6 @@ const init = async () => {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
     }
 
-
     const seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
         studyKey: keys.studykey,
         index: thumbnail.getAttribute('data-series-index')
@@ -168,6 +163,7 @@ const init = async () => {
     document.querySelectorAll('.thumbnail-viewport').forEach(thumbnail => {
         thumbnail.addEventListener('click', async () => {
             const index = thumbnail.getAttribute('data-series-index');
+            console.log("index : " + index);
             const keys = extractKeysFromPath();
             if (keys) {
                 const { studykey } = keys;
