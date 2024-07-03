@@ -32,13 +32,6 @@ public class ReportService {
         return updatedReport;
     }
 
-    public void delete(int studyKey, String userCode) {
-        ReportId reportId = new ReportId();
-        reportId.setStudyKey(studyKey);
-        reportId.setUserCode(userCode);
-        reportRepository.deleteById(reportId);
-    }
-
     public Report getReportByStudyKey(int studyKey) {
         Report report = reportRepository.findByStudyKey(studyKey);
         if (report != null && report.getVideoReplay() == Report.VideoReplay.판독취소) {
