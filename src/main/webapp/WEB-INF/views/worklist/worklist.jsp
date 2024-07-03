@@ -146,7 +146,7 @@
                         <th>판독상태</th>
                         <th>시리즈</th>
                         <th>이미지</th>
-                        <th>Verify</th>
+                        <th>동의서</th>
                     </tr>
                     </thead>
                     <tbody class="contentBody">
@@ -176,7 +176,7 @@
                             <th>판독상태</th>
                             <th>시리즈</th>
                             <th>이미지</th>
-                            <th>Verify</th>
+                            <th>동의서</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -187,16 +187,30 @@
                 <div class="report">
                     <div class="report-title">
                         <h2>Report</h2>
-                        <button class="button">판독 지우기</button>
                     </div>
                     <div class="report-box">
                         <div class="write-box">
-                            <textarea class="comment" placeholder="코멘트"></textarea>
+                            <h3>의사소견</h3>
+                            <textarea class="comment" placeholder="의사소견"></textarea>
+                            <h3>결론</h3>
+                            <textarea class="answer" placeholder="결론"></textarea>
                         </div>
                         <div class="input-box">
-                            <div>판독의</div>
                             <div>
-                                <p class="reading" id="reading"></p>
+                                <label>판독의:</label>
+<%--                                <p class="reading" id="reading"></p>--%>
+                                <input type="text" class="reading" readonly/>
+                            </div>
+                            <div>
+                                <label>판독일시:</label>
+<%--                                <p class="readingDate"></p>--%>
+                                <input type="text" class="readingDate" readonly/>
+                            </div>
+                            <div>
+                                <label>질병 코드:</label>
+                                <input type="text" class="diseaseCode" id="diseaseCode"/>
+                                <button type="button" id="searchICDButton">ICD 코드 검색</button>
+                                <div id="icdResults"></div> <!-- 검색 결과 표시 -->
                             </div>
                             <div class="reading-box">
                                 <button class="button blue-button">판독</button>
