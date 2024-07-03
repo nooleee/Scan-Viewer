@@ -2,6 +2,8 @@ package com.pacs.scanviewer.pacs.Search.controller;
 
 import com.pacs.scanviewer.SCV.Consent.domain.Consent;
 import com.pacs.scanviewer.SCV.Consent.service.ConsentService;
+import com.pacs.scanviewer.SCV.Report.domain.Report;
+import com.pacs.scanviewer.SCV.Report.service.ReportService;
 import com.pacs.scanviewer.Util.CookieUtil;
 import com.pacs.scanviewer.Util.JwtUtil;
 import com.pacs.scanviewer.pacs.Search.domain.SearchRequestDTO;
@@ -24,6 +26,7 @@ public class SearchController {
     private final SearchService searchService;
     private final JwtUtil jwtUtil;
     private final ConsentService consentService;
+    private final ReportService reportService;
 
     @CrossOrigin
     @GetMapping("/studies")
@@ -44,7 +47,23 @@ public class SearchController {
             }else{
                 dto.setExamstatus(0);
             }
+
+            Optional<Report> reportOptional = reportService.findReportByStudyKey((int)dto.getStudykey());
+            if(reportOptional.isPresent()) {
+                Report report = reportOptional.get();
+                if(report.getVideoReplay().equals(Report.VideoReplay.판독완료)){
+                    dto.setReportstatus(2);
+                }else{
+                    dto.setReportstatus(1);
+                }
+            }else{
+                dto.setReportstatus(0);
+            }
+
         });
+
+
+
         return searchResponseDTOS;
     }
 }

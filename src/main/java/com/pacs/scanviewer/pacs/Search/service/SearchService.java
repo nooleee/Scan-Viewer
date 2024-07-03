@@ -1,5 +1,7 @@
 package com.pacs.scanviewer.pacs.Search.service;
 
+import com.pacs.scanviewer.SCV.Consent.domain.Consent;
+import com.pacs.scanviewer.SCV.Consent.domain.ConsentRepository;
 import com.pacs.scanviewer.pacs.Search.domain.SearchSpecification;
 import com.pacs.scanviewer.pacs.Search.domain.SearchRequestDTO;
 import com.pacs.scanviewer.pacs.Search.domain.SearchResponseDTO;
@@ -12,17 +14,38 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class SearchService {
 
 
     private final StudyRepository studyRepository;
+    private final ConsentRepository consentRepository;
 
     public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "studydate"));
         return studyRepository.findAll(SearchSpecification.searchStudies(searchDTO), sortedPageable)
                 .map(this::convertToDTO);
+    }
+
+    public List<SearchResponseDTO> findStudiesByPid(String pid, String userCode) {
+        List<Study> studies = studyRepository.findAllByPid(pid);
+        return studies.stream()
+                .map(study -> {
+                    SearchResponseDTO dto = convertToDTO(study);
+                    Optional<Consent> consent = consentRepository.findByStudyKeyAndUserCode((int) study.getStudykey(), userCode);
+                    if (consent.isPresent()) {
+                        dto.setExamstatus(1);
+                    } else {
+                        dto.setExamstatus(0);
+                    }
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     private SearchResponseDTO convertToDTO(Study study) {

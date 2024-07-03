@@ -70,14 +70,24 @@ function appendStudies(studies) {
 
         let reportStatusText = '';
         switch (study.reportstatus) {
-            case 6:
-                reportStatusText = '판독';
-                break;
-            case 5:
-                reportStatusText = '예비판독';
-                break;
-            case 3:
+            case 0:
                 reportStatusText = '읽지않음';
+                break;
+            case 1:
+                reportStatusText = '판독취소';
+                break;
+            case 2:
+                reportStatusText = '판독완료';
+                break;
+        }
+
+        let examStatusText = '';
+        switch (study.examstatus){
+            case 1:
+                examStatusText = 'O';
+                break;
+            case 0:
+                examStatusText = 'X';
                 break;
         }
 
@@ -87,10 +97,10 @@ function appendStudies(studies) {
             <td>${study.modality}</td>
             <td>${study.studydesc}</td>
             <td>${study.studydate}</td>
-            <td>${reportStatusText}</td>
+            <td>${reportStatusText}</td>  
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
-            <td>${study.examstatus}</td>
+            <td>${examStatusText}</td>
             <input type="hidden" class="studykey" value="${study.studykey}">
         `;
     });
@@ -165,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fetchStudiesByPid(pid) {
-    fetch(`/worklistPrevious/${pid}`)
+    fetch(`/studiesByPid/${pid}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('서버 응답 오류: ' + response.status);
@@ -190,14 +200,24 @@ function displayStudyKeys(data) {
 
         let reportStatusText = '';
         switch (study.reportstatus) {
-            case 6:
-                reportStatusText = '판독';
-                break;
-            case 5:
-                reportStatusText = '예비판독';
-                break;
-            case 3:
+            case 0:
                 reportStatusText = '읽지않음';
+                break;
+            case 1:
+                reportStatusText = '판독취소';
+                break;
+            case 2:
+                reportStatusText = '판독완료';
+                break;
+        }
+
+        let examStatusText = '';
+        switch (study.examstatus){
+            case 1:
+                examStatusText = 'O';
+                break;
+            case 0:
+                examStatusText = 'X';
                 break;
         }
 
@@ -208,7 +228,7 @@ function displayStudyKeys(data) {
             <td>${reportStatusText}</td>
             <td>${study.seriescnt}</td>
             <td>${study.imagecnt}</td>
-            <td>${study.examstatus}</td>
+            <td>${examStatusText}</td>
             <input type="hidden" class="pid" value="${study.pid}">
             <input type="hidden" class="pname" value="${study.pname}">
         `;
@@ -329,17 +349,28 @@ function populateReportSection(study) {
         })
         .then(report => {
             if (report) {
-                document.getElementById('reading').textContent = report.userCode || '';
+                document.querySelector('.reading').value = report.userCode || '';
+                document.querySelector('.readingDate').value = report.date || '';
+                document.querySelector('.diseaseCode').value = report.diseaseCode || '';
                 document.querySelector('.comment').value = report.content || '';
+                document.querySelector('.answer').value = report.patient || '';
             } else {
                 // 리포트가 없으면 공백으로 설정
-                document.getElementById('reading').textContent = '';
+                document.querySelector('.reading').value = '';
+                document.querySelector('.readingDate').value = '';
+                document.querySelector('.diseaseCode').value = '';
                 document.querySelector('.comment').value = '';
+                document.querySelector('.answer').value = '';
             }
         })
         .catch(error => {
-            console.error('오류 발생:', error);
-            alert('데이터를 불러오는 중 오류가 발생했습니다.');
+            if (error.message.includes('서버 응답 오류: 404')) {
+                // 404 에러는 별도의 처리 없이 무시
+                console.log('리포트를 찾을 수 없습니다.');
+            } else {
+                console.error('오류 발생:', error);
+                alert('데이터를 불러오는 중 오류가 발생했습니다.');
+            }
         });
 }
 
