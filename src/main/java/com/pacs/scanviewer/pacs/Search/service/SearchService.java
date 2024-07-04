@@ -2,6 +2,8 @@ package com.pacs.scanviewer.pacs.Search.service;
 
 import com.pacs.scanviewer.SCV.Consent.domain.Consent;
 import com.pacs.scanviewer.SCV.Consent.domain.ConsentRepository;
+import com.pacs.scanviewer.SCV.Report.domain.Report;
+import com.pacs.scanviewer.SCV.Report.domain.ReportRepository;
 import com.pacs.scanviewer.pacs.Search.domain.SearchSpecification;
 import com.pacs.scanviewer.pacs.Search.domain.SearchRequestDTO;
 import com.pacs.scanviewer.pacs.Search.domain.SearchResponseDTO;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +28,7 @@ public class SearchService {
 
     private final StudyRepository studyRepository;
     private final ConsentRepository consentRepository;
+    private final ReportRepository reportRepository;
 
     public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "studydate"));
@@ -43,6 +47,19 @@ public class SearchService {
                     } else {
                         dto.setExamstatus(0);
                     }
+
+                    Optional<Report> reportOptional = reportRepository.findReportByStudyKey((int)study.getStudykey());
+                    if (reportOptional.isPresent()) {
+                        Report report = reportOptional.get();
+                        if(report.getVideoReplay().equals(Report.VideoReplay.판독완료)){
+                            dto.setReportstatus(2);
+                        }else{
+                            dto.setReportstatus(1);
+                        }
+                    }else{
+                        dto.setReportstatus(0);
+                    }
+
                     return dto;
                 })
                 .collect(Collectors.toList());
