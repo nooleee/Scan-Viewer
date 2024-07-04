@@ -62,6 +62,7 @@ public class ReportService {
         String response = icdAPIclient.getICDCode(token, query);
 
         JSONObject jsonResponse = new JSONObject(response);
+        System.out.println("ICD API 응답 데이터: " + jsonResponse.toString(2));
         JSONArray destinationEntities = jsonResponse.optJSONArray("destinationEntities");
 
         if (destinationEntities == null || destinationEntities.length() == 0) {
@@ -71,7 +72,14 @@ public class ReportService {
             for (int i = 0; i < destinationEntities.length(); i++) {
                 JSONObject entity = destinationEntities.getJSONObject(i);
                 String title = entity.getString("title").replaceAll("\\<.*?\\>", ""); // HTML 태그 제거
-                results.add(title);
+                String code = entity.getString("theCode");
+
+                // 'unspecified'가 포함된 항목 처리
+                if (title.contains("unspecified")) {
+                    title = title.replace(", unspecified", " unspecified");
+                }
+
+                results.add(title + "/" + code);
             }
             return results.toString();
         }

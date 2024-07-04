@@ -5,120 +5,91 @@ body {
     background-color: #f5f5f5;
 }
 
-h1 {
-    text-align: center;
-    margin: 20px 0;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-thead {
-    background-color: #343a40;
-    color: #fff;
-}
-
-th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-tr:hover {
-    background-color: #e2e2e2;
-}
-
-.button-container {
-    text-align: center;
-    margin: 20px 0;
-}
-
-.button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.button:hover {
-    background-color: #0056b3;
-}
-
-form {
+.content {
     background-color: #fff;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 5px;
-    max-width: 600px;
-    margin: auto;
+    max-width: 800px;
+    width: 100%;
 }
 
-label {
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.report-info {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.report-info p {
+    margin: 10px 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
     display: block;
-    margin: 10px 0 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
-input[type="text"], textarea, select {
+.form-group textarea, .form-group input[type="text"], .form-group select {
     width: calc(100% - 20px);
     padding: 10px;
-    margin: 5px 0 10px;
+    margin: 5px 0;
     border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 16px;
+    resize: vertical;
 }
 
 textarea {
     resize: vertical;
 }
 
-.button {
-    display: inline-block;
-}
-
-.hidden {
-    display: none;
-}
-
-.table-container {
-    display: flex;
-    justify-content: space-between;
-}
-
-.table-container table {
-    width: 60%;
-}
-
-.table-container .report-details {
-    width: 35%;
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.table-container .report-details h2 {
-    margin-top: 0;
-}
-
 .button-container {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 
 .button-container .button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
     margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+.button-container .button:hover {
+    background-color: #0056b3;
 }
 
 #icdResults ul {

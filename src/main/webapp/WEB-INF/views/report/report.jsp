@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ryuuki
-  Date: 2024. 6. 25.
-  Time: 오후 12:24
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -14,67 +7,56 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<h1>보고서</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>환자 이름</th>
-        <th>환자 아이디</th>
-        <th>검사 날짜</th>
-        <th>검사 설명</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="study" items="${reports}">
-        <tr>
-            <td>${study.pname}</td>
-            <td>${study.pid}</td>
-            <td>${study.studydate}</td>
-            <td>${study.studydesc}</td>
-            <input type="hidden" id="studyKey" value="${study.studykey}"/>
-        </tr>
-    </c:forEach>
-    </tbody>
-</table>
-
-<form id="reportForm" method="post">
-    <h2>의사 소견</h2>
-    <div>
-        <textarea rows="4" cols="50" id="content">${report.content}</textarea>
+<div class="container">
+    <div class="content">
+        <div class="header">
+            <h2>의료 보고서</h2>
+        </div>
+        <div class="report-info">
+            <c:forEach var="study" items="${reports}">
+                <p>환자명: ${study.pname} / 환자 아이디: ${study.pid} / 스터디번호: ${study.studykey}</p>
+                <p>검사 날짜: ${study.studydate}</p>
+                <p>검사명: ${study.studydesc}</p>
+                <input type="hidden" id="studyKey" value="${study.studykey}"/>
+            </c:forEach>
+        </div>
+        <form id="reportForm" method="post">
+            <div class="form-group">
+                <label for="content">의사 소견</label>
+                <textarea id="content" rows="4">${report.content}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="patient">결론</label>
+                <textarea id="patient" rows="4">${report.patient}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="userCode">판독의</label>
+                <input type="text" id="userCode" readonly/>
+            </div>
+            <div class="form-group">
+                <label for="date">판독 일시</label>
+                <input type="text" id="date" placeholder="리포트 생성 시 실시간 추가" readonly/>
+            </div>
+            <div class="form-group">
+                <label for="diseaseCode">질병 코드</label>
+                <input type="text" id="diseaseCode"/>
+                <button type="button" id="searchICDButton">ICD 코드 검색</button>
+                <div id="icdResults"></div>
+            </div>
+            <div class="form-group">
+                <label for="videoReplay">판독 상태</label>
+                <select id="videoReplay">
+                    <option value="읽지않음">읽지않음</option>
+                    <option value="판독완료">판독완료</option>
+                    <option value="판독취소">판독취소</option>
+                </select>
+            </div>
+            <div class="button-container">
+                <button class="button" type="submit">리포트 생성</button>
+            </div>
+        </form>
     </div>
-
-    <h2>결론</h2>
-    <div>
-        <textarea rows="4" cols="50" id="patient">${report.patient}</textarea>
-    </div>
-
-    <h2>추가 정보</h2>
-    <div>
-        <label>판독의:</label>
-        <input type="text" id="userCode" readonly/>
-    </div>
-    <div>
-        <label>판독 일시:</label>
-        <input type="text" id="date" readonly/>
-    </div>
-    <div>
-        <label>질병 코드:</label>
-        <input type="text" id="diseaseCode"/>
-        <button type="button" id="searchICDButton">ICD 코드 검색</button>
-        <div id="icdResults"></div> <!-- 검색 결과 표시 -->
-    </div>
-    <div>
-        <label>판독 상태:</label>
-        <select id="videoReplay">
-            <option value="읽지않음">읽지않음</option>
-            <option value="판독완료">판독완료</option>
-            <option value="판독취소">판독취소</option>
-        </select>
-    </div>
-    <div class="button-container">
-        <button class="button" type="submit">리포트 생성</button>
-    </div>
-</form>
+</div>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@
 <body>
 <h1>DICOM Viewer</h1>
 <div class="toolbar">
+    <button id="report">Report</button>
     <button id="backButton">Worklist</button>
     <button id="toggleThumbnails">Toggle Thumbnails</button>
     <button id="zoomTool">Zoom</button>
