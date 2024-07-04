@@ -103,14 +103,14 @@
 
         <div class="search">
             <h3>검색</h3>
-            <input type="text" placeholder="환자 아이디">
-            <input type="text" placeholder="환자 이름">
-            <select>
-                <option disabled selected>판독 상태</option>
-                <option>판독 상태</option>
-                <option>읽지않음</option>
-                <option>판독취소</option>
-                <option>판독</option>
+            <input type="text" placeholder="환자 아이디" id="pid">
+            <input type="text" placeholder="환자 이름" id="pname">
+            <select id="reportStatus">
+                <option value="" disabled selected>판독 상태</option>
+                <option value="">판독상태</option>
+                <option value="0">읽지않음</option>
+                <option value="1">판독취소</option>
+                <option value="2">판독완료</option>
             </select>
             <button class="button" id="getAllStudiesBtn">전체</button>
             <button>1일</button>
