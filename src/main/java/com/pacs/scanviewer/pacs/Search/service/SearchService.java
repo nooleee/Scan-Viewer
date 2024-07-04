@@ -31,43 +31,38 @@ public class SearchService {
     private final ReportRepository reportRepository;
 
     public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
-        Page<Study> studies = studyRepository.findAll(SearchSpecification.searchStudies(searchDTO), pageable);
-        return studies.map(this::convertToDTO)
-                .map(this::setReportStatus);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "studydate"));
+        return studyRepository.findAll(SearchSpecification.searchStudies(searchDTO), sortedPageable)
+                .map(this::convertToDTO);
     }
 
     public List<SearchResponseDTO> findStudiesByPid(String pid, String userCode) {
         List<Study> studies = studyRepository.findAllByPid(pid);
         return studies.stream()
-                .map(this::convertToDTO)
-                .map(dto -> setReportStatus(dto, userCode))
+                .map(study -> {
+                    SearchResponseDTO dto = convertToDTO(study);
+                    Optional<Consent> consent = consentRepository.findByStudyKeyAndUserCode((int) study.getStudykey(), userCode);
+                    if (consent.isPresent()) {
+                        dto.setExamstatus(1);
+                    } else {
+                        dto.setExamstatus(0);
+                    }
+
+                    Optional<Report> reportOptional = reportRepository.findReportByStudyKey((int)study.getStudykey());
+                    if (reportOptional.isPresent()) {
+                        Report report = reportOptional.get();
+                        if(report.getVideoReplay().equals(Report.VideoReplay.판독완료)){
+                            dto.setReportstatus(2);
+                        }else{
+                            dto.setReportstatus(1);
+                        }
+                    }else{
+                        dto.setReportstatus(0);
+                    }
+
+                    return dto;
+                })
                 .collect(Collectors.toList());
-    }
-
-    private SearchResponseDTO setReportStatus(SearchResponseDTO dto) {
-        Optional<Report> reportOptional = reportRepository.findReportByStudyKey((int)dto.getStudykey());
-        if (reportOptional.isPresent()) {
-            Report report = reportOptional.get();
-            if(report.getVideoReplay().equals(Report.VideoReplay.판독완료)){
-                dto.setReportstatus(2);
-            } else {
-                dto.setReportstatus(1);
-            }
-        } else {
-            dto.setReportstatus(0);
-        }
-        return dto;
-    }
-
-    private SearchResponseDTO setReportStatus(SearchResponseDTO dto, String userCode) {
-        Optional<Consent> consent = consentRepository.findByStudyKeyAndUserCode((int)dto.getStudykey(), userCode);
-        if (consent.isPresent()) {
-            dto.setExamstatus(1);
-        } else {
-            dto.setExamstatus(0);
-        }
-
-        return setReportStatus(dto);
     }
 
     private SearchResponseDTO convertToDTO(Study study) {
