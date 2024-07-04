@@ -220,3 +220,13 @@ document.getElementById('magnifyTool').addEventListener('click', () => toolActio
 document.getElementById('stackScrollTool').addEventListener('click', () => toolAction(StackScrollMouseWheelTool.toolName));
 
 document.addEventListener('DOMContentLoaded', init);
+
+document.getElementById('report').addEventListener('click', function() {
+    // 현재 페이지의 URL에서 studyKey를 추출합니다.
+    const currentUrl = window.location.href;
+    const parts = currentUrl.split('/');
+    const studyKey = parts[parts.length - 2]; // studyKey는 URL의 끝에서 두 번째 부분입니다.
+
+    // 리포트 생성 페이지로 리디렉션합니다.
+    window.location.href = '/report/' + studyKey;
+});
