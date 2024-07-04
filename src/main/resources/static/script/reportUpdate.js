@@ -71,26 +71,6 @@ $(document).ready(function () {
         });
     });
 
-    $('#deleteButton').on('click', function (e) {
-        e.preventDefault();
-
-        if (confirm("정말로 리포트를 삭제하시겠습니까?")) {
-            $.ajax({
-                type: "DELETE",
-                url: "/report/" + $('#studyKey').val() + "/" + $('#userCode').val(),
-                success: function (response) {
-                    console.log('성공 응답:', response);
-                    alert("리포트가 삭제 되었습니다.");
-                    location.href = "/worklist";
-                },
-                error: function (xhr, status, error) {
-                    console.error('에러 응답:', xhr, status, error);
-                    alert("리포트 삭제를 실패했습니다.");
-                }
-            });
-        }
-    });
-
     $('#searchICDButton').on('click', function () {
         var query = $('#diseaseCode').val();
         $.ajax({
