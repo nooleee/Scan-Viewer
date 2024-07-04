@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
-@Table(name = "V_STUDYTAB", schema="PACSPLUS")
+@Table(name = "STUDYTAB", schema="PACSPLUS")
 @Entity
 public class Study {
 

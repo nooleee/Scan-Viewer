@@ -8,7 +8,6 @@ document.getElementById('loadMoreBtn').addEventListener('click', function() {
     const endDate = document.getElementById('endDate').value;
     const start = startDate.replaceAll("-","");
     const end = endDate.replaceAll("-","");
-    console.log("currentSearch.modality : " + currentSearch.modality);
     searchStudies(currentSearch.pid, currentSearch.pname,start,end, currentPage, pageSize, currentSearch.modality);
 });
 
@@ -28,9 +27,10 @@ document.querySelectorAll('.search-button').forEach(button => {
         const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
         const pname = document.querySelector('input[placeholder="환자 이름"]').value;
         const modality = document.getElementById('modalitySelect').value;
+        const reportStatus = document.getElementById('reportStatus').value;
         currentPage = 0;  // Reset page count for new search
         currentSearch = {pid, pname, modality};  // Store current search
-        searchStudies(pid, pname, start, end, currentPage, pageSize, modality);
+        searchStudies(pid, pname, start, end, currentPage, pageSize, modality, reportStatus);
     })
 });
 
@@ -250,7 +250,7 @@ function toggleLoadMoreButton(data) {
     }
 }
 
-function searchStudies(pid, pname, startDate, endDate, page, size, modality) {
+function searchStudies(pid, pname, startDate, endDate, page, size, modality, reportStatus) {
     let url = `/search/studies?page=${page}&size=${size}`;
     if (pid) {
         url += `&pid=${pid}`;
@@ -266,6 +266,9 @@ function searchStudies(pid, pname, startDate, endDate, page, size, modality) {
     }
     if (modality) {
         url += `&modality=${modality}`;
+    }
+    if (reportStatus) {
+        url += `&reportStatus=${reportStatus}`;
     }
     console.log("url : " + url);
 
