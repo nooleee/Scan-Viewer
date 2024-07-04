@@ -11,16 +11,18 @@
 <div class="toolbar">
     <button id="backButton">Worklist</button>
     <button id="toggleThumbnails">Toggle Thumbnails</button>
+    <button id="layoutButton">Layout</button>
     <button id="zoomTool">Zoom</button>
     <button id="panTool">Pan</button>
     <button id="lengthTool">Length</button>
     <button id="angleTool">Angle</button>
     <button id="magnifyTool">Magnify</button>
     <button id="stackScrollTool">Stack Scroll</button>
-    <button id="oneViewport">1 Viewport</button>
-    <button id="twoViewports">2 Viewports</button>
-    <button id="fourViewports">4 Viewports</button>
-    <button id="sixViewports">6 Viewports</button>
+    <div id="layoutMenu" class="layout-menu hidden">
+        <button id="layoutOne">1 Viewport</button>
+        <button id="layoutTwo">2 Viewports</button>
+        <button id="layoutFour">4 Viewports</button>
+    </div>
 </div>
 <div id="mainContent">
     <div id="thumbnails" class="thumbnails">
@@ -31,7 +33,7 @@
             </div>
         </c:forEach>
     </div>
-    <div id="dicomViewport" class="viewport"></div>
+    <div id="dicomViewport1" class="viewport"></div>
 </div>
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 </body>

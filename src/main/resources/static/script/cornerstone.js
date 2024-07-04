@@ -12,7 +12,7 @@ const { MouseBindings } = csToolsEnums;
 
 const toolGroupId = 'myToolGroup';
 const renderingEngineId = 'myRenderingEngine';
-let viewports = ['CT_AXIAL_STACK'];
+let viewports = ['viewport1'];
 
 const initializeCornerstone = async () => {
     await cornerstone.init();
@@ -34,22 +34,28 @@ const initializeCornerstone = async () => {
     };
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
     cornerstoneTools.init();
-    cornerstoneTools.addTool(ZoomTool);
-    cornerstoneTools.addTool(PanTool);
-    cornerstoneTools.addTool(LengthTool);
-    cornerstoneTools.addTool(AngleTool);
-    cornerstoneTools.addTool(MagnifyTool);
-    cornerstoneTools.addTool(WindowLevelTool);
-    cornerstoneTools.addTool(StackScrollMouseWheelTool);
 
-    const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
-    toolGroup.addTool(ZoomTool.toolName);
-    toolGroup.addTool(PanTool.toolName);
-    toolGroup.addTool(LengthTool.toolName);
-    toolGroup.addTool(AngleTool.toolName);
-    toolGroup.addTool(MagnifyTool.toolName);
-    toolGroup.addTool(WindowLevelTool.toolName);
-    toolGroup.addTool(StackScrollMouseWheelTool.toolName);
+    const tools = [
+        { tool: ZoomTool, options: {} },
+        { tool: PanTool, options: {} },
+        { tool: LengthTool, options: {} },
+        { tool: AngleTool, options: {} },
+        { tool: MagnifyTool, options: {} },
+        { tool: WindowLevelTool, options: {} },
+        { tool: StackScrollMouseWheelTool, options: {} }
+    ];
+
+    tools.forEach(({ tool, options }) => {
+        // if (!cornerstoneTools.getTool(tool.toolName)) {
+            cornerstoneTools.addTool(tool, options);
+        // }
+    });
+
+    let toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
+    if (!toolGroup) {
+        toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
+        tools.forEach(({ tool }) => toolGroup.addTool(tool.toolName));
+    }
 };
 
 const render = async (imageIds, element, viewportId) => {
@@ -109,15 +115,6 @@ const renderThumbnail = async (imageIds, elementId) => {
     await viewport.render();
 };
 
-// const extractMetaData = async (url) => {
-//     try {
-//         const image = await cornerstone.loadAndCacheImage(url);
-//         console.log(`Extracted metadata for ${url}:`, image.data);
-//     } catch (error) {
-//         console.error(`Failed to extract metadata for ${url}:`, error);
-//     }
-// };
-
 const loadSeries = async (studykey, index, element, viewportId) => {
     try {
         const response = await fetch(`/images/${studykey}/${index}/dicom-urls`);
@@ -126,12 +123,7 @@ const loadSeries = async (studykey, index, element, viewportId) => {
         }
         const dicomUrls = await response.json();
         const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
-
-
-        // // Extract metadata for debugging
-        // for (const url of imageIds) {
-        //     await extractMetaData(url);
-        // }
+        console.log("[126]IMAGE : " + imageIds)
 
         await render(imageIds, element, viewportId);
     } catch (error) {
@@ -146,6 +138,7 @@ const loadThumbnails = async (seriesList) => {
         if (response.ok) {
             const dicomUrls = await response.json();
             const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
+            console.log("imageIds : " + imageIds)
             await renderThumbnail(imageIds, `thumbnail-${series.index}`);
         }
     }
@@ -170,8 +163,8 @@ const init = async () => {
     const keys = extractKeysFromPath();
     if (keys) {
         const { studykey, serieskey } = keys;
-        const contentElement = document.getElementById('dicomViewport');
-        await loadSeries(studykey, serieskey, contentElement, viewports[0]);
+        const contentElement = document.getElementById('dicomViewport1');
+        await loadSeries(studykey, serieskey, contentElement, 'viewport1');
     } else {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
     }
@@ -186,13 +179,13 @@ const init = async () => {
     document.querySelectorAll('.thumbnail-viewport').forEach(thumbnail => {
         thumbnail.addEventListener('click', async () => {
             const index = thumbnail.getAttribute('data-series-index');
-
-            console.log("index : " + index);
             const keys = extractKeysFromPath();
             if (keys) {
                 const { studykey } = keys;
-                const contentElement = document.getElementById('dicomViewport');
-                await loadSeries(studykey, index, contentElement, viewports[0]);
+                viewports.forEach(async (viewportId) => {
+                    const contentElement = document.getElementById(viewportId);
+                    await loadSeries(studykey, index, contentElement, viewportId);
+                });
             }
         });
     });
@@ -207,6 +200,45 @@ document.getElementById('toggleThumbnails').addEventListener('click', () => {
     thumbnails.classList.toggle('hidden');
 });
 
+document.getElementById('layoutButton').addEventListener('click', () => {
+    const layoutMenu = document.getElementById('layoutMenu');
+    layoutMenu.classList.toggle('hidden');
+});
+
+const setLayout = (layout) => {
+    const mainContent = document.getElementById('mainContent');
+    mainContent.innerHTML = '';
+
+    switch (layout) {
+        case 'one':
+            viewports = ['viewport1'];
+            mainContent.innerHTML = '<div id="dicomViewport1" class="viewport"></div>';
+            break;
+        case 'two':
+            viewports = ['viewport1', 'viewport2'];
+            mainContent.innerHTML = `
+                <div id="dicomViewport1" class="viewport"></div>
+                <div id="dicomViewport2" class="viewport"></div>
+            `;
+            break;
+        case 'four':
+            viewports = ['viewport1', 'viewport2', 'viewport3', 'viewport4'];
+            mainContent.innerHTML = `
+                <div id="dicomViewport1" class="viewport"></div>
+                <div id="dicomViewport2" class="viewport"></div>
+                <div id="dicomViewport3" class="viewport"></div>
+                <div id="dicomViewport4" class="viewport"></div>
+            `;
+            break;
+    }
+
+    init();
+};
+
+document.getElementById('layoutOne').addEventListener('click', () => setLayout('one'));
+document.getElementById('layoutTwo').addEventListener('click', () => setLayout('two'));
+document.getElementById('layoutFour').addEventListener('click', () => setLayout('four'));
+
 const toolAction = (tool) => {
     const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
     toolGroup.setToolActive(tool, { bindings: [{ mouseButton: MouseBindings.Primary }] });
@@ -219,23 +251,19 @@ document.getElementById('angleTool').addEventListener('click', () => toolAction(
 document.getElementById('magnifyTool').addEventListener('click', () => toolAction(MagnifyTool.toolName));
 document.getElementById('stackScrollTool').addEventListener('click', () => toolAction(StackScrollMouseWheelTool.toolName));
 
-document.getElementById('oneViewport').addEventListener('click', () => updateViewports(1));
-document.getElementById('twoViewports').addEventListener('click', () => updateViewports(2));
-document.getElementById('fourViewports').addEventListener('click', () => updateViewports(4));
-document.getElementById('sixViewports').addEventListener('click', () => updateViewports(6));
-
 document.addEventListener('DOMContentLoaded', init);
 
 const updateViewports = (numViewports) => {
     const mainContent = document.getElementById('mainContent');
     mainContent.innerHTML = '';
-    viewports = Array.from({ length: numViewports }, (_, i) => `viewport${i + 1}`);
-    viewports.forEach((viewportId, i) => {
+    viewports = Array.from({ length: numViewports }, (_, i) => `dicomViewport${i + 1}`);
+    viewports.forEach(viewportId => {
         const viewportElement = document.createElement('div');
         viewportElement.id = viewportId;
         viewportElement.classList.add('viewport');
         mainContent.appendChild(viewportElement);
     });
+
     const keys = extractKeysFromPath();
     if (keys) {
         const { studykey, serieskey } = keys;

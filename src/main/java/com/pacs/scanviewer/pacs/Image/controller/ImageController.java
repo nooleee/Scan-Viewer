@@ -41,6 +41,10 @@ public class ImageController {
     @GetMapping("/{studykey}/{index}")
     public ModelAndView getImagesByStudyKeyAndIndex(@PathVariable Long studykey, @PathVariable Integer index) {
         List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
+        if (seriesKeys.isEmpty()) {
+            return new ModelAndView("redirect:/worklist");
+        }
+
         Map<Integer, List<String>> indexedSeriesImages = seriesKeys.stream()
                 .collect(Collectors.toMap(
                         key -> seriesKeys.indexOf(key) + 1,
@@ -51,7 +55,7 @@ public class ImageController {
 
         List<String> images = indexedSeriesImages.get(index);
         if (images == null) {
-            return new ModelAndView("error/noSeriesFound");
+            return new ModelAndView("redirect:/worklist");
         }
 
         List<Map<String, Object>> seriesList = createThumbnailList(studykey, seriesKeys);
@@ -130,7 +134,7 @@ public class ImageController {
                 .map(key -> {
                     List<Image> imagesForSeries = imageService.findByStudykeyAndSerieskey(studykey, key);
                     String thumbnailUrl = "Z:/" + imagesForSeries.get(0).getPath() + imagesForSeries.get(0).getFname();
-                    System.out.println("thumbnailUrl: " + thumbnailUrl);
+//                    System.out.println("thumbnailUrl: " + thumbnailUrl);
                     Map<String, Object> seriesMap = new HashMap<>();
                     seriesMap.put("seriesKey", key.toString());
                     seriesMap.put("thumbnailUrl", thumbnailUrl);
