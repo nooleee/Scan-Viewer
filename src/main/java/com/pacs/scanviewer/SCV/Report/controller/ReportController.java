@@ -43,7 +43,7 @@ public class ReportController {
         if (report != null) {
             return ResponseEntity.ok(report);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(new Report());
         }
     }
 
