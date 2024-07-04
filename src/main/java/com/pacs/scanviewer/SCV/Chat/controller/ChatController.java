@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,7 +21,6 @@ import java.util.List;
 public class ChatController {
 
     private final ChatMessageRepository chatMessageRepository;
-    private final SimpUserRegistry userRegistry;
     private final SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/sendMessage")
@@ -34,8 +34,12 @@ public class ChatController {
     @GetMapping("/messages/{sender}/{recipient}")
     @ResponseBody
     public List<ChatMessage> getMessages(@PathVariable String sender, @PathVariable String recipient) {
+        System.out.println("sender: " + sender);
+        System.out.println("recipient: " + recipient);
         List<ChatMessage> messages = chatMessageRepository.findBySenderAndRecipient(sender, recipient);
         messages.addAll(chatMessageRepository.findByRecipientAndSender(sender, recipient));
+
+        messages.sort(Comparator.comparing(ChatMessage::getTimestamp));
         return messages;
     }
 

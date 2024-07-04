@@ -2,14 +2,14 @@ package com.pacs.scanviewer.SCV.Chat.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
+@EntityListeners(AuditingEntityListener.class)
 @Setter
 @Getter
 @Entity
@@ -27,6 +27,10 @@ public class ChatMessage {
     private String content;
 
     private MessageType type;
+
+    @CreatedDate
+    private LocalDateTime timestamp; // 또는 Date
+
 
     public enum MessageType {
         CHAT,
