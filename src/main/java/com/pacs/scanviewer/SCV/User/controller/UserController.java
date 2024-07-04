@@ -190,6 +190,19 @@ public class UserController {
         return new ArrayList<>(logOnUserService.getLoggedInUsers());
     }
 
+    @ResponseBody
+    @GetMapping("/allUsers")
+    public List<String> getAllUsers() {
+        System.out.println("전체 회원 리스트 출력 ");
+        List<User> allUsers = userService.findAllUser();
+        List<String> userCodes = new ArrayList<>();
+        for (User user : allUsers) {
+            userCodes.add(user.getUserCode());
+        }
+        userCodes.forEach(System.out::println);
+        return userCodes;
+    }
+
     private static class AuthenticationResponse {
         private final String jwt;
 
