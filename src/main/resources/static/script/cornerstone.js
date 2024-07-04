@@ -12,7 +12,7 @@ const { MouseBindings } = csToolsEnums;
 
 const toolGroupId = 'myToolGroup';
 const renderingEngineId = 'myRenderingEngine';
-const viewportId = 'CT_AXIAL_STACK';
+let viewports = ['viewport1'];
 
 const initializeCornerstone = async () => {
     await cornerstone.init();
@@ -34,25 +34,31 @@ const initializeCornerstone = async () => {
     };
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
     cornerstoneTools.init();
-    cornerstoneTools.addTool(ZoomTool);
-    cornerstoneTools.addTool(PanTool);
-    cornerstoneTools.addTool(LengthTool);
-    cornerstoneTools.addTool(AngleTool);
-    cornerstoneTools.addTool(MagnifyTool);
-    cornerstoneTools.addTool(WindowLevelTool);
-    cornerstoneTools.addTool(StackScrollMouseWheelTool);
 
-    const toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
-    toolGroup.addTool(ZoomTool.toolName);
-    toolGroup.addTool(PanTool.toolName);
-    toolGroup.addTool(LengthTool.toolName);
-    toolGroup.addTool(AngleTool.toolName);
-    toolGroup.addTool(MagnifyTool.toolName);
-    toolGroup.addTool(WindowLevelTool.toolName);
-    toolGroup.addTool(StackScrollMouseWheelTool.toolName);
+    const tools = [
+        { tool: ZoomTool, options: {} },
+        { tool: PanTool, options: {} },
+        { tool: LengthTool, options: {} },
+        { tool: AngleTool, options: {} },
+        { tool: MagnifyTool, options: {} },
+        { tool: WindowLevelTool, options: {} },
+        { tool: StackScrollMouseWheelTool, options: {} }
+    ];
+
+    tools.forEach(({ tool, options }) => {
+        if (!cornerstoneTools.state.tools[tool]) {
+            cornerstoneTools.addTool(tool, options);
+        }
+    });
+
+    let toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
+    if (!toolGroup) {
+        toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
+        tools.forEach(({ tool }) => toolGroup.addTool(tool.toolName));
+    }
 };
 
-const render = async (imageIds, element) => {
+const render = async (imageIds, element, viewportId) => {
     const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
     renderingEngine.disableElement(viewportId);
     const viewportInput = {
@@ -109,16 +115,7 @@ const renderThumbnail = async (imageIds, elementId) => {
     await viewport.render();
 };
 
-// const extractMetaData = async (url) => {
-//     try {
-//         const image = await cornerstone.loadAndCacheImage(url);
-//         console.log(`Extracted metadata for ${url}:`, image.data);
-//     } catch (error) {
-//         console.error(`Failed to extract metadata for ${url}:`, error);
-//     }
-// };
-
-const loadSeries = async (studykey, index, element) => {
+const loadSeries = async (studykey, index, element, viewportId) => {
     try {
         const response = await fetch(`/images/${studykey}/${index}/dicom-urls`);
         if (!response.ok) {
@@ -126,14 +123,9 @@ const loadSeries = async (studykey, index, element) => {
         }
         const dicomUrls = await response.json();
         const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
+        console.log("[126]IMAGE : " + imageIds)
 
-
-        // // Extract metadata for debugging
-        // for (const url of imageIds) {
-        //     await extractMetaData(url);
-        // }
-
-        await render(imageIds, element);
+        await render(imageIds, element, viewportId);
     } catch (error) {
         console.error("Failed to load series:", error);
         alert('잘못된 인덱스입니다. 유효한 시리즈를 선택해주세요.');
@@ -146,6 +138,7 @@ const loadThumbnails = async (seriesList) => {
         if (response.ok) {
             const dicomUrls = await response.json();
             const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
+            // console.log("imageIds : " + imageIds)
             await renderThumbnail(imageIds, `thumbnail-${series.index}`);
         }
     }
@@ -170,8 +163,8 @@ const init = async () => {
     const keys = extractKeysFromPath();
     if (keys) {
         const { studykey, serieskey } = keys;
-        const contentElement = document.getElementById('dicomViewport');
-        await loadSeries(studykey, serieskey, contentElement);
+        const contentElement = document.getElementById('dicomViewport1');
+        await loadSeries(studykey, serieskey, contentElement, 'viewport1');
     } else {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
     }
@@ -186,17 +179,19 @@ const init = async () => {
     document.querySelectorAll('.thumbnail-viewport').forEach(thumbnail => {
         thumbnail.addEventListener('click', async () => {
             const index = thumbnail.getAttribute('data-series-index');
-
-            console.log("index : " + index);
+            console.log("[182]index : " + index);
             const keys = extractKeysFromPath();
             if (keys) {
                 const { studykey } = keys;
-                const contentElement = document.getElementById('dicomViewport');
-                await loadSeries(studykey, index, contentElement);
+                for (const viewportId of viewports) {
+                    const contentElement = document.getElementById(viewportId);
+                    await loadSeries(studykey, index, contentElement, 'viewport1');
+                }
             }
         });
     });
 };
+
 
 document.getElementById('backButton').addEventListener('click', () => {
     window.location.href = '/worklist';
@@ -206,6 +201,45 @@ document.getElementById('toggleThumbnails').addEventListener('click', () => {
     const thumbnails = document.getElementById('thumbnails');
     thumbnails.classList.toggle('hidden');
 });
+
+document.getElementById('layoutButton').addEventListener('click', () => {
+    const layoutMenu = document.getElementById('layoutMenu');
+    layoutMenu.classList.toggle('hidden');
+});
+
+const setLayout = (layout) => {
+    const mainContent = document.getElementById('mainContent');
+    mainContent.innerHTML = '';
+
+    switch (layout) {
+        case 'one':
+            viewports = ['viewport1'];
+            mainContent.innerHTML = '<div id="dicomViewport1" class="viewport"></div>';
+            break;
+        case 'two':
+            viewports = ['viewport1', 'viewport2'];
+            mainContent.innerHTML = `
+                <div id="dicomViewport1" class="viewport"></div>
+                <div id="dicomViewport2" class="viewport"></div>
+            `;
+            break;
+        case 'four':
+            viewports = ['viewport1', 'viewport2', 'viewport3', 'viewport4'];
+            mainContent.innerHTML = `
+                <div id="dicomViewport1" class="viewport"></div>
+                <div id="dicomViewport2" class="viewport"></div>
+                <div id="dicomViewport3" class="viewport"></div>
+                <div id="dicomViewport4" class="viewport"></div>
+            `;
+            break;
+    }
+
+    init();
+};
+
+document.getElementById('layoutOne').addEventListener('click', () => setLayout('one'));
+document.getElementById('layoutTwo').addEventListener('click', () => setLayout('two'));
+document.getElementById('layoutFour').addEventListener('click', () => setLayout('four'));
 
 const toolAction = (tool) => {
     const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
@@ -220,6 +254,7 @@ document.getElementById('magnifyTool').addEventListener('click', () => toolActio
 document.getElementById('stackScrollTool').addEventListener('click', () => toolAction(StackScrollMouseWheelTool.toolName));
 
 document.addEventListener('DOMContentLoaded', init);
+
 
 document.getElementById('report').addEventListener('click', function() {
     // 현재 페이지의 URL에서 studyKey를 추출합니다.
