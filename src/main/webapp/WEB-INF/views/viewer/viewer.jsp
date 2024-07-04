@@ -17,6 +17,10 @@
     <button id="angleTool">Angle</button>
     <button id="magnifyTool">Magnify</button>
     <button id="stackScrollTool">Stack Scroll</button>
+    <button id="oneViewport">1 Viewport</button>
+    <button id="twoViewports">2 Viewports</button>
+    <button id="fourViewports">4 Viewports</button>
+    <button id="sixViewports">6 Viewports</button>
 </div>
 <div id="mainContent">
     <div id="thumbnails" class="thumbnails">

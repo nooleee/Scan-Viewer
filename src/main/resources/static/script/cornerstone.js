@@ -12,7 +12,7 @@ const { MouseBindings } = csToolsEnums;
 
 const toolGroupId = 'myToolGroup';
 const renderingEngineId = 'myRenderingEngine';
-const viewportId = 'CT_AXIAL_STACK';
+let viewports = ['CT_AXIAL_STACK'];
 
 const initializeCornerstone = async () => {
     await cornerstone.init();
@@ -52,7 +52,7 @@ const initializeCornerstone = async () => {
     toolGroup.addTool(StackScrollMouseWheelTool.toolName);
 };
 
-const render = async (imageIds, element) => {
+const render = async (imageIds, element, viewportId) => {
     const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
     renderingEngine.disableElement(viewportId);
     const viewportInput = {
@@ -118,7 +118,7 @@ const renderThumbnail = async (imageIds, elementId) => {
 //     }
 // };
 
-const loadSeries = async (studykey, index, element) => {
+const loadSeries = async (studykey, index, element, viewportId) => {
     try {
         const response = await fetch(`/images/${studykey}/${index}/dicom-urls`);
         if (!response.ok) {
@@ -133,7 +133,7 @@ const loadSeries = async (studykey, index, element) => {
         //     await extractMetaData(url);
         // }
 
-        await render(imageIds, element);
+        await render(imageIds, element, viewportId);
     } catch (error) {
         console.error("Failed to load series:", error);
         alert('잘못된 인덱스입니다. 유효한 시리즈를 선택해주세요.');
@@ -171,7 +171,7 @@ const init = async () => {
     if (keys) {
         const { studykey, serieskey } = keys;
         const contentElement = document.getElementById('dicomViewport');
-        await loadSeries(studykey, serieskey, contentElement);
+        await loadSeries(studykey, serieskey, contentElement, viewports[0]);
     } else {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
     }
@@ -192,7 +192,7 @@ const init = async () => {
             if (keys) {
                 const { studykey } = keys;
                 const contentElement = document.getElementById('dicomViewport');
-                await loadSeries(studykey, index, contentElement);
+                await loadSeries(studykey, index, contentElement, viewports[0]);
             }
         });
     });
@@ -219,4 +219,29 @@ document.getElementById('angleTool').addEventListener('click', () => toolAction(
 document.getElementById('magnifyTool').addEventListener('click', () => toolAction(MagnifyTool.toolName));
 document.getElementById('stackScrollTool').addEventListener('click', () => toolAction(StackScrollMouseWheelTool.toolName));
 
+document.getElementById('oneViewport').addEventListener('click', () => updateViewports(1));
+document.getElementById('twoViewports').addEventListener('click', () => updateViewports(2));
+document.getElementById('fourViewports').addEventListener('click', () => updateViewports(4));
+document.getElementById('sixViewports').addEventListener('click', () => updateViewports(6));
+
 document.addEventListener('DOMContentLoaded', init);
+
+const updateViewports = (numViewports) => {
+    const mainContent = document.getElementById('mainContent');
+    mainContent.innerHTML = '';
+    viewports = Array.from({ length: numViewports }, (_, i) => `viewport${i + 1}`);
+    viewports.forEach((viewportId, i) => {
+        const viewportElement = document.createElement('div');
+        viewportElement.id = viewportId;
+        viewportElement.classList.add('viewport');
+        mainContent.appendChild(viewportElement);
+    });
+    const keys = extractKeysFromPath();
+    if (keys) {
+        const { studykey, serieskey } = keys;
+        viewports.forEach(async (viewportId, i) => {
+            const contentElement = document.getElementById(viewportId);
+            await loadSeries(studykey, serieskey, contentElement, viewportId);
+        });
+    }
+};
