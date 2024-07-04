@@ -46,9 +46,9 @@ const initializeCornerstone = async () => {
     ];
 
     tools.forEach(({ tool, options }) => {
-        // if (!cornerstoneTools.getTool(tool.toolName)) {
+        if (!cornerstoneTools.state.tools[tool]) {
             cornerstoneTools.addTool(tool, options);
-        // }
+        }
     });
 
     let toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
@@ -138,7 +138,7 @@ const loadThumbnails = async (seriesList) => {
         if (response.ok) {
             const dicomUrls = await response.json();
             const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
-            console.log("imageIds : " + imageIds)
+            // console.log("imageIds : " + imageIds)
             await renderThumbnail(imageIds, `thumbnail-${series.index}`);
         }
     }
@@ -179,17 +179,19 @@ const init = async () => {
     document.querySelectorAll('.thumbnail-viewport').forEach(thumbnail => {
         thumbnail.addEventListener('click', async () => {
             const index = thumbnail.getAttribute('data-series-index');
+            console.log("[182]index : " + index);
             const keys = extractKeysFromPath();
             if (keys) {
                 const { studykey } = keys;
-                viewports.forEach(async (viewportId) => {
+                for (const viewportId of viewports) {
                     const contentElement = document.getElementById(viewportId);
-                    await loadSeries(studykey, index, contentElement, viewportId);
-                });
+                    await loadSeries(studykey, index, contentElement, 'viewport1');
+                }
             }
         });
     });
 };
+
 
 document.getElementById('backButton').addEventListener('click', () => {
     window.location.href = '/worklist';
