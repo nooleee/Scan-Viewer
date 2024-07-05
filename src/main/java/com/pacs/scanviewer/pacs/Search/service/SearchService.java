@@ -32,9 +32,40 @@ public class SearchService {
 
     public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
         Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "studydate"));
-        return studyRepository.findAll(SearchSpecification.searchStudies(searchDTO), sortedPageable)
-                .map(this::convertToDTO);
+        Page<Study> studiesPage = studyRepository.findAll(SearchSpecification.searchStudies(searchDTO), sortedPageable);
+
+        return studiesPage.map(this::convertToDTO);
     }
+
+//    public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
+//        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "studydate"));
+//        Page<Study> studyPage = studyRepository.findAll(SearchSpecification.searchStudies(searchDTO), sortedPageable);
+//
+//        List<SearchResponseDTO> dtos = studyPage.getContent().stream()
+//                .map(this::convertToDTO)
+//                .collect(Collectors.toList());
+//
+//        if (searchDTO.getReportStatus() != null) {
+//            dtos = dtos.stream()
+//                    .filter(dto -> {
+//                        Optional<Report> reportOptional = reportRepository.findReportByStudyKey((int)dto.getStudykey());
+//                        if (reportOptional.isPresent()) {
+//                            Report report = reportOptional.get();
+//                            if (report.getVideoReplay().equals(Report.VideoReplay.판독완료) && searchDTO.getReportStatus() == 2) {
+//                                return true;
+//                            } else if (report.getVideoReplay().equals(Report.VideoReplay.판독취소) && searchDTO.getReportStatus() == 1) {
+//                                return true;
+//                            }
+//                        } else {
+//                            return searchDTO.getReportStatus() == 0;
+//                        }
+//                        return false;
+//                    })
+//                    .collect(Collectors.toList());
+//        }
+//
+//        return new PageImpl<>(dtos, sortedPageable, studyPage.getTotalElements());
+//    }
 
     public List<SearchResponseDTO> findStudiesByPid(String pid, String userCode) {
         List<Study> studies = studyRepository.findAllByPid(pid);
@@ -77,6 +108,8 @@ public class SearchService {
         dto.setSeriescnt(study.getSeriescnt());
         dto.setImagecnt(study.getImagecnt());
         dto.setExamstatus(study.getExamstatus());
+        dto.setAiScore(study.getAi_score());
+        dto.setAiFinding(study.getAi_finding());
         return dto;
     }
 }
