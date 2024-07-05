@@ -41,11 +41,9 @@ public class SearchController {
         String token = CookieUtil.getCookieValue(request, "jwt");
         String userCode = jwtUtil.extractUsername(token);
 
-        // 모든 Study를 가져와서 필터링 및 페이징 처리
-        List<SearchResponseDTO> dtos = searchService.searchStudies(searchDTO);
+        Page<SearchResponseDTO> searchResponseDTOS = searchService.searchStudies(searchDTO, PageRequest.of(page, size));
 
-        // Consent와 Report 정보를 추가로 설정
-        dtos.forEach(dto -> {
+        searchResponseDTOS.forEach(dto -> {
             Optional<Consent> consent = consentService.findConsentByStudyKeyAndUserCode((int) dto.getStudykey(), userCode);
             dto.setExamstatus(consent.isPresent() ? 1 : 0);
 
@@ -62,10 +60,6 @@ public class SearchController {
             }
         });
 
-        // 페이징 적용
-        Pageable pageable = PageRequest.of(page, size);
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), dtos.size());
-        return new PageImpl<>(dtos.subList(start, end), pageable, dtos.size());
+        return searchResponseDTOS;
     }
 }

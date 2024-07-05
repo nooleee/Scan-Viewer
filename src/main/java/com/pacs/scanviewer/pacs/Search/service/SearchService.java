@@ -10,10 +10,7 @@ import com.pacs.scanviewer.pacs.Search.domain.SearchResponseDTO;
 import com.pacs.scanviewer.pacs.Study.domain.Study;
 import com.pacs.scanviewer.pacs.Study.domain.StudyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -30,11 +27,11 @@ public class SearchService {
     private final ConsentRepository consentRepository;
     private final ReportRepository reportRepository;
 
-    public List<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO) {
-        // 모든 Study를 가져오기
-        List<Study> studies = studyRepository.findAllByOrderByStudydateDesc();
+    public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
+        // Step 1: 모든 Study를 가져오기
+        List<Study> studies = studyRepository.findAll();
 
-        // Reportstatus 필터링 적용
+        // Step 2: Reportstatus 필터링 적용
         List<Study> filteredStudies = studies.stream().filter(study -> {
             if (searchDTO.getReportStatus() != null) {
                 Optional<Report> reportOptional = reportRepository.findReportByStudyKey((int) study.getStudykey());
@@ -57,8 +54,32 @@ public class SearchService {
             return true; // Reportstatus 조건이 없는 경우 모든 Study를 포함
         }).collect(Collectors.toList());
 
-        // DTO 변환
-        return filteredStudies.stream().map(this::convertToDTO).collect(Collectors.toList());
+        // Step 3: 추가 검색 조건 필터링
+        List<Study> finalFilteredStudies = filteredStudies.stream().filter(study -> {
+            boolean matches = true;
+            if (searchDTO.getPid() != null && !searchDTO.getPid().isEmpty()) {
+                matches = matches && study.getPid().contains(searchDTO.getPid());
+            }
+            if (searchDTO.getPname() != null && !searchDTO.getPname().isEmpty()) {
+                matches = matches && study.getPname().contains(searchDTO.getPname());
+            }
+            if (searchDTO.getStartDate() != null && searchDTO.getEndDate() != null) {
+                matches = matches && (study.getStudydate().compareTo(searchDTO.getStartDate()) >= 0 &&
+                        study.getStudydate().compareTo(searchDTO.getEndDate()) <= 0);
+            }
+            if (searchDTO.getModality() != null && !searchDTO.getModality().isEmpty()) {
+                matches = matches && study.getModality().equals(searchDTO.getModality());
+            }
+            return matches;
+        }).collect(Collectors.toList());
+
+        // Step 4: DTO 변환
+        List<SearchResponseDTO> dtos = finalFilteredStudies.stream().map(this::convertToDTO).collect(Collectors.toList());
+
+        // Step 5: 페이징 처리
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), dtos.size());
+        return new PageImpl<>(dtos.subList(start, end), pageable, dtos.size());
     }
 
 //    public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
