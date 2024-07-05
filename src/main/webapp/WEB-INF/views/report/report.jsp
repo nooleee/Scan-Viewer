@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label for="date">판독 일시</label>
-                <input type="text" id="date" placeholder="리포트 생성 시 실시간 추가" readonly/>
+                <input type="text" id="date" placeholder="리포트 생성 시 자동 추가" readonly/>
             </div>
             <div class="form-group">
                 <label for="diseaseCode">질병 코드</label>
