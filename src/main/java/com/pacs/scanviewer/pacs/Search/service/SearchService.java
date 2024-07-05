@@ -30,11 +30,35 @@ public class SearchService {
     private final ConsentRepository consentRepository;
     private final ReportRepository reportRepository;
 
-    public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
-        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "studydate"));
-        Page<Study> studiesPage = studyRepository.findAll(SearchSpecification.searchStudies(searchDTO), sortedPageable);
+    public List<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO) {
+        // 모든 Study를 가져오기
+        List<Study> studies = studyRepository.findAllByOrderByStudydateDesc();
 
-        return studiesPage.map(this::convertToDTO);
+        // Reportstatus 필터링 적용
+        List<Study> filteredStudies = studies.stream().filter(study -> {
+            if (searchDTO.getReportStatus() != null) {
+                Optional<Report> reportOptional = reportRepository.findReportByStudyKey((int) study.getStudykey());
+                if (reportOptional.isPresent()) {
+                    Report report = reportOptional.get();
+                    String videoReplayStatus = String.valueOf(report.getVideoReplay());
+                    if (videoReplayStatus != null) {
+                        videoReplayStatus = videoReplayStatus.trim();
+                    }
+                    if ("판독완료".equals(videoReplayStatus) && searchDTO.getReportStatus() == 2) {
+                        return true;
+                    } else if ("판독취소".equals(videoReplayStatus) && searchDTO.getReportStatus() == 1) {
+                        return true;
+                    }
+                } else {
+                    return searchDTO.getReportStatus() == 0;
+                }
+                return false;
+            }
+            return true; // Reportstatus 조건이 없는 경우 모든 Study를 포함
+        }).collect(Collectors.toList());
+
+        // DTO 변환
+        return filteredStudies.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
 //    public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
@@ -106,9 +130,8 @@ public class SearchService {
             Report reportEntity = report.get();
             String videoReplayStatus = String.valueOf(reportEntity.getVideoReplay());
             if (videoReplayStatus != null) {
-                videoReplayStatus = videoReplayStatus.trim(); // 문자열을 트리밍
+                videoReplayStatus = videoReplayStatus.trim();
             }
-            System.out.println("reportEntity.getVideoReplay : " + videoReplayStatus);
             if ("판독완료".equals(videoReplayStatus)) {
                 reportStatus = 2;
             } else if ("판독취소".equals(videoReplayStatus)) {
@@ -124,7 +147,6 @@ public class SearchService {
         dto.setStudydesc(study.getStudydesc());
         dto.setStudydate(study.getStudydate());
         dto.setReportstatus(reportStatus);
-        System.out.println("reportStatus: " + reportStatus);
         dto.setSeriescnt(study.getSeriescnt());
         dto.setImagecnt(study.getImagecnt());
         dto.setExamstatus(study.getExamstatus());

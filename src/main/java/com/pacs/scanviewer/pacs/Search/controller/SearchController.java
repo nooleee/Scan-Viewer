@@ -11,11 +11,14 @@ import com.pacs.scanviewer.pacs.Search.domain.SearchResponseDTO;
 import com.pacs.scanviewer.pacs.Search.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -38,32 +41,31 @@ public class SearchController {
         String token = CookieUtil.getCookieValue(request, "jwt");
         String userCode = jwtUtil.extractUsername(token);
 
-        Page<SearchResponseDTO> searchResponseDTOS = searchService.searchStudies(searchDTO, PageRequest.of(page, size));
+        // 모든 Study를 가져와서 필터링 및 페이징 처리
+        List<SearchResponseDTO> dtos = searchService.searchStudies(searchDTO);
 
-        searchResponseDTOS.forEach(dto -> {
-            Optional<Consent> consent = consentService.findConsentByStudyKeyAndUserCode((int)dto.getStudykey(), userCode);
-            if(consent.isPresent()) {
-                dto.setExamstatus(1);
-            }else{
-                dto.setExamstatus(0);
-            }
+        // Consent와 Report 정보를 추가로 설정
+        dtos.forEach(dto -> {
+            Optional<Consent> consent = consentService.findConsentByStudyKeyAndUserCode((int) dto.getStudykey(), userCode);
+            dto.setExamstatus(consent.isPresent() ? 1 : 0);
 
-            Optional<Report> reportOptional = reportService.findReportByStudyKey((int)dto.getStudykey());
-            if(reportOptional.isPresent()) {
+            Optional<Report> reportOptional = reportService.findReportByStudyKey((int) dto.getStudykey());
+            if (reportOptional.isPresent()) {
                 Report report = reportOptional.get();
-                if(report.getVideoReplay().equals(Report.VideoReplay.판독완료)){
+                if (report.getVideoReplay().equals(Report.VideoReplay.판독완료)) {
                     dto.setReportstatus(2);
-                }else{
+                } else {
                     dto.setReportstatus(1);
                 }
-            }else{
+            } else {
                 dto.setReportstatus(0);
             }
-
         });
 
-
-
-        return searchResponseDTOS;
+        // 페이징 적용
+        Pageable pageable = PageRequest.of(page, size);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), dtos.size());
+        return new PageImpl<>(dtos.subList(start, end), pageable, dtos.size());
     }
 }

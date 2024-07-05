@@ -16,6 +16,7 @@ public interface StudyRepository extends JpaRepository<Study, Long> {
 
     Page<Study> findAll(Specification<Study> spec, Pageable pageable);
 
+    List<Study> findAllByOrderByStudydateDesc();
     List<Study> findAllByPid(String pid);
     List<Study> findAllByStudykey(long studykey);
 }
