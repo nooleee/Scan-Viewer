@@ -13,6 +13,7 @@ const { MouseBindings } = csToolsEnums;
 const toolGroupId = 'myToolGroup';
 const renderingEngineId = 'myRenderingEngine';
 let viewports = ['viewport1'];
+let seriesList = [];
 
 const initializeCornerstone = async () => {
     await cornerstone.init();
@@ -46,7 +47,7 @@ const initializeCornerstone = async () => {
     ];
 
     tools.forEach(({ tool, options }) => {
-        if (!cornerstoneTools.state.tools[tool]) {
+        if (!cornerstoneTools.state.tools[tool.toolName]) {
             cornerstoneTools.addTool(tool, options);
         }
     });
@@ -99,10 +100,16 @@ const render = async (imageIds, element, viewportId) => {
 };
 
 const renderThumbnail = async (imageIds, elementId) => {
+    const element = document.getElementById(elementId);
+    if (!element) {
+        console.error(`Element with ID ${elementId} not found`);
+        return;
+    }
+
     const renderingEngine = new cornerstone.RenderingEngine(`${renderingEngineId}-${elementId}`);
     const viewportInput = {
         viewportId: `thumbnail-${elementId}`,
-        element: document.getElementById(elementId),
+        element,
         type: cornerstone.Enums.ViewportType.STACK,
     };
 
@@ -115,31 +122,29 @@ const renderThumbnail = async (imageIds, elementId) => {
     await viewport.render();
 };
 
-const loadSeries = async (studykey, index, element, viewportId) => {
+const loadSeries = async (studykey, serieskey, element, viewportId) => {
     try {
-        const response = await fetch(`/images/${studykey}/${index}/dicom-urls`);
+        const response = await fetch(`/images/${studykey}/${serieskey}/dicom-urls`);
         if (!response.ok) {
-            throw new Error(`Invalid index: ${index}`);
+            throw new Error(`Invalid serieskey: ${serieskey}`);
         }
         const dicomUrls = await response.json();
         const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
-        console.log("[126]IMAGE : " + imageIds)
 
         await render(imageIds, element, viewportId);
     } catch (error) {
         console.error("Failed to load series:", error);
-        alert('잘못된 인덱스입니다. 유효한 시리즈를 선택해주세요.');
+        alert('잘못된 시리즈키입니다. 유효한 시리즈를 선택해주세요.');
     }
 };
 
 const loadThumbnails = async (seriesList) => {
     for (const series of seriesList) {
-        const response = await fetch(`/images/${series.studyKey}/${series.index}/dicom-urls`);
+        const response = await fetch(`/images/${series.studyKey}/${series.seriesKey}/dicom-urls`);
         if (response.ok) {
             const dicomUrls = await response.json();
             const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
-            // console.log("imageIds : " + imageIds)
-            await renderThumbnail(imageIds, `thumbnail-${series.index}`);
+            await renderThumbnail(imageIds, `thumbnail-${series.seriesKey}`);
         }
     }
 };
@@ -164,34 +169,32 @@ const init = async () => {
     if (keys) {
         const { studykey, serieskey } = keys;
         const contentElement = document.getElementById('dicomViewport1');
+        console.log("[172]contentElement : " + contentElement)
         await loadSeries(studykey, serieskey, contentElement, 'viewport1');
     } else {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
     }
 
-    const seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
+    seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
         studyKey: keys.studykey,
-        index: thumbnail.getAttribute('data-series-index')
+        seriesKey: thumbnail.getAttribute('data-series-key')
     }));
+
+    console.log("[178]serieskey : " + seriesList)
 
     await loadThumbnails(seriesList);
 
     document.querySelectorAll('.thumbnail-viewport').forEach(thumbnail => {
         thumbnail.addEventListener('click', async () => {
-            const index = thumbnail.getAttribute('data-series-index');
-            console.log("[182]index : " + index);
+            const seriesKey = thumbnail.getAttribute('data-series-key');
             const keys = extractKeysFromPath();
             if (keys) {
                 const { studykey } = keys;
-                for (const viewportId of viewports) {
-                    const contentElement = document.getElementById(viewportId);
-                    await loadSeries(studykey, index, contentElement, 'viewport1');
-                }
+                window.location.href = `/images/${studykey}/${seriesKey}`;
             }
         });
     });
 };
-
 
 document.getElementById('backButton').addEventListener('click', () => {
     window.location.href = '/worklist';
@@ -234,7 +237,24 @@ const setLayout = (layout) => {
             break;
     }
 
-    init();
+
+    // const seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
+    //     studyKey: keys.studykey,
+    //     seriesKey: thumbnail.getAttribute('data-series-key')
+    // }));
+
+    const keys = extractKeysFromPath();
+    console.log("[244]serieskey : " + JSON.stringify(seriesList))
+    if (keys) {
+        const { studykey, serieskey } = keys;
+        const seriesKeys = seriesList.map(series => series.seriesKey);
+        viewports.forEach(async (viewportId, i) => {
+            const contentElement = document.getElementById(viewportId);
+            console.log("[252]contentElement : " + contentElement)
+            const currentSeriesKey = seriesKeys[(seriesKeys.indexOf(serieskey) + i) % seriesKeys.length];
+            await loadSeries(studykey, currentSeriesKey, contentElement, viewportId);
+        });
+    }
 };
 
 document.getElementById('layoutOne').addEventListener('click', () => setLayout('one'));
@@ -255,13 +275,10 @@ document.getElementById('stackScrollTool').addEventListener('click', () => toolA
 
 document.addEventListener('DOMContentLoaded', init);
 
-
 document.getElementById('report').addEventListener('click', function() {
-    // 현재 페이지의 URL에서 studyKey를 추출합니다.
     const currentUrl = window.location.href;
     const parts = currentUrl.split('/');
-    const studyKey = parts[parts.length - 2]; // studyKey는 URL의 끝에서 두 번째 부분입니다.
+    const studyKey = parts[parts.length - 2];
 
-    // 리포트 생성 페이지로 리디렉션합니다.
     window.location.href = '/report/' + studyKey;
 });

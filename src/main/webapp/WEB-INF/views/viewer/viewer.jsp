@@ -28,9 +28,9 @@
 <div id="mainContent">
     <div id="thumbnails" class="thumbnails">
         <c:forEach var="series" items="${seriesList}">
-            <div class="thumbnail-viewport" data-series-index="${series.index}">
-                <div id="thumbnail-${series.index}" class="thumbnail-element" style="width: 150px; height: 150px;"></div>
-                <p>${series.index}</p>
+            <div class="thumbnail-viewport" data-series-key="${series.seriesKey}">
+                <div id="thumbnail-${series.seriesKey}" class="thumbnail-element" style="width: 150px; height: 150px;"></div>
+                <p>${series.description}</p>
             </div>
         </c:forEach>
     </div>
