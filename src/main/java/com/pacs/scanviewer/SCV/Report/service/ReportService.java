@@ -73,12 +73,6 @@ public class ReportService {
                 JSONObject entity = destinationEntities.getJSONObject(i);
                 String title = entity.getString("title").replaceAll("\\<.*?\\>", ""); // HTML 태그 제거
                 String code = entity.getString("theCode");
-
-                // 'unspecified'가 포함된 항목 처리
-                if (title.contains("unspecified")) {
-                    title = title.replace(", unspecified", " unspecified");
-                }
-
                 results.add(title + "/" + code);
             }
             return results.toString();
