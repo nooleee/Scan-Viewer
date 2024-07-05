@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>의료 보고서</title>
+    <title>Medical Report</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/report.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -10,7 +10,7 @@
 <div class="container">
     <div class="content">
         <div class="header">
-            <h2>의료 보고서</h2>
+            <h2>Medical Report</h2>
         </div>
         <div class="report-info">
             <c:forEach var="study" items="${reports}">
