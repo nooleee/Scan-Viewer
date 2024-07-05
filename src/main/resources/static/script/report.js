@@ -82,7 +82,7 @@ $(document).ready(function () {
                     alert("ICD 코드 검색 결과가 없습니다.");
                 } else {
                     // 검색 결과를 표시합니다.
-                    $('#icdResults').html('<ul>' + response.split(',').map(function(item) {
+                    $('#icdResults').html('<ul>' + response.slice(1, -1).split(',').map(function(item) {
                         return '<li class="icd-result-item">' + item.trim() + '</li>';
                     }).join('') + '</ul>');
 
