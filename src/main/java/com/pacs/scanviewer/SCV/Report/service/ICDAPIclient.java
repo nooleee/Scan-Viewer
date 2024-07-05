@@ -52,7 +52,7 @@ public class ICDAPIclient {
     }
 
     public String getICDCode(String token, String query) throws Exception {
-        String uri = "https://id.who.int/icd/release/11/2019-04/mms/search?q=" + URLEncoder.encode(query, "UTF-8");
+        String uri = "https://id.who.int/icd/release/11/2024-01/mms/search?q=" + URLEncoder.encode(query, "UTF-8");
         URL url = new URL(uri);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
