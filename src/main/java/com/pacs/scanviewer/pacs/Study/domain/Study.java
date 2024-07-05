@@ -22,4 +22,6 @@ public class Study {
     private long seriescnt;
     private long imagecnt;
     private long examstatus;
+    private Float ai_score;
+    private String ai_finding;
 }

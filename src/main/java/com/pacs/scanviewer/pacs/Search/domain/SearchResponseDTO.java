@@ -16,85 +16,16 @@ public class SearchResponseDTO {
     private long seriescnt;
     private long imagecnt;
     private long examstatus;
+    private Float ai_score;
+    private String ai_finding;
 
-//    // Getters and Setters
-//    public long getStudykey() {
-//        return studykey;
-//    }
-//
-//    public void setStudykey(long studykey) {
-//        this.studykey = studykey;
-//    }
-//
-//    public String getPid() {
-//        return pid;
-//    }
-//
-//    public void setPid(String pid) {
-//        this.pid = pid;
-//    }
-//
-//    public String getPname() {
-//        return pname;
-//    }
-//
-//    public void setPname(String pname) {
-//        this.pname = pname;
-//    }
-//
-//    public String getModality() {
-//        return modality;
-//    }
-//
-//    public void setModality(String modality) {
-//        this.modality = modality;
-//    }
-//
-//    public String getStudydesc() {
-//        return studydesc;
-//    }
-//
-//    public void setStudydesc(String studydesc) {
-//        this.studydesc = studydesc;
-//    }
-//
-//    public String getStudydate() {
-//        return studydate;
-//    }
-//
-//    public void setStudydate(String studydate) {
-//        this.studydate = studydate;
-//    }
-//
-//    public long getReportstatus() {
-//        return reportstatus;
-//    }
-//
-//    public void setReportstatus(long reportstatus) {
-//        this.reportstatus = reportstatus;
-//    }
-//
-//    public long getSeriescnt() {
-//        return seriescnt;
-//    }
-//
-//    public void setSeriescnt(long seriescnt) {
-//        this.seriescnt = seriescnt;
-//    }
-//
-//    public long getImagecnt() {
-//        return imagecnt;
-//    }
-//
-//    public void setImagecnt(long imagecnt) {
-//        this.imagecnt = imagecnt;
-//    }
-//
-//    public long getExamstatus() {
-//        return examstatus;
-//    }
-//
-//    public void setExamstatus(long examstatus) {
-//        this.examstatus = examstatus;
-//    }
+
+    // 추가: null일 때 기본 값으로 설정
+    public void setAiScore(Float ai_score) {
+        this.ai_score = ai_score != null ? ai_score : 0.0f;
+    }
+
+    public void setAiFinding(String ai_finding) {
+        this.ai_finding = ai_finding != null ? ai_finding : "";
+    }
 }

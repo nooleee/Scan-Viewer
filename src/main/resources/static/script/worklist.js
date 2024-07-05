@@ -81,6 +81,8 @@ function appendStudies(studies) {
                 break;
         }
 
+        const aiScoreText = study.ai_score === 0 ? '' : study.ai_score;
+
         let examStatusText = '';
         switch (study.examstatus){
             case 1:
@@ -96,6 +98,8 @@ function appendStudies(studies) {
             <td>${study.pname}</td>
             <td>${study.modality}</td>
             <td>${study.studydesc}</td>
+            <td>${aiScoreText}</td>
+            <td>${study.ai_finding}</td>
             <td>${study.studydate}</td>
             <td>${reportStatusText}</td>  
             <td>${study.seriescnt}</td>

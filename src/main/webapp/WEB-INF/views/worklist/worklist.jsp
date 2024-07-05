@@ -142,6 +142,8 @@
                         <th>환자 이름</th>
                         <th>검사장비</th>
                         <th>검사설명</th>
+                        <th>ai score</th>
+                        <th>ai 판독</th>
                         <th>검사일시</th>
                         <th>판독상태</th>
                         <th>시리즈</th>
