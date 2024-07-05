@@ -13,6 +13,7 @@ const { MouseBindings } = csToolsEnums;
 const toolGroupId = 'myToolGroup';
 const renderingEngineId = 'myRenderingEngine';
 let viewports = ['viewport1'];
+let seriesList = [];
 
 const initializeCornerstone = async () => {
     await cornerstone.init();
@@ -168,15 +169,18 @@ const init = async () => {
     if (keys) {
         const { studykey, serieskey } = keys;
         const contentElement = document.getElementById('dicomViewport1');
+        console.log("[172]contentElement : " + contentElement)
         await loadSeries(studykey, serieskey, contentElement, 'viewport1');
     } else {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
     }
 
-    const seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
+    seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
         studyKey: keys.studykey,
         seriesKey: thumbnail.getAttribute('data-series-key')
     }));
+
+    console.log("[178]serieskey : " + seriesList)
 
     await loadThumbnails(seriesList);
 
@@ -233,20 +237,21 @@ const setLayout = (layout) => {
             break;
     }
 
-    init();
 
-    const seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
-        studyKey: keys.studykey,
-        seriesKey: thumbnail.getAttribute('data-series-key')
-    }));
+    // const seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
+    //     studyKey: keys.studykey,
+    //     seriesKey: thumbnail.getAttribute('data-series-key')
+    // }));
 
     const keys = extractKeysFromPath();
+    console.log("[244]serieskey : " + JSON.stringify(seriesList))
     if (keys) {
         const { studykey, serieskey } = keys;
         const seriesKeys = seriesList.map(series => series.seriesKey);
         viewports.forEach(async (viewportId, i) => {
             const contentElement = document.getElementById(viewportId);
-            const currentSeriesKey = seriesKeys[(seriesKeys.indexOf(parseInt(serieskey)) + i) % seriesKeys.length];
+            console.log("[252]contentElement : " + contentElement)
+            const currentSeriesKey = seriesKeys[(seriesKeys.indexOf(serieskey) + i) % seriesKeys.length];
             await loadSeries(studykey, currentSeriesKey, contentElement, viewportId);
         });
     }
