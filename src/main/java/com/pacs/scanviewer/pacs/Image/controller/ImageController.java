@@ -38,23 +38,47 @@ public class ImageController {
         return new ResponseEntity<>(dicomImages, HttpStatus.OK);
     }
 
-    @GetMapping("/{studykey}/{index}")
-    public ModelAndView getImagesByStudyKeyAndIndex(@PathVariable Long studykey, @PathVariable Integer index) {
+//    @GetMapping("/{studykey}/{index}")
+//    public ModelAndView getImagesByStudyKeyAndIndex(@PathVariable Long studykey, @PathVariable Integer index) {
+//        List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
+//        if (seriesKeys.isEmpty()) {
+//            return new ModelAndView("redirect:/worklist");
+//        }
+//
+//        Map<Integer, List<String>> indexedSeriesImages = seriesKeys.stream()
+//                .collect(Collectors.toMap(
+//                        key -> seriesKeys.indexOf(key) + 1,
+//                        key -> imageService.findByStudykeyAndSerieskey(studykey, key).stream()
+//                                .map(image -> "Z:/" + image.getPath() + image.getFname())
+//                                .collect(Collectors.toList())
+//                ));
+//
+//        List<String> images = indexedSeriesImages.get(index);
+//        if (images == null) {
+//            return new ModelAndView("redirect:/worklist");
+//        }
+//
+//        List<Map<String, Object>> seriesList = createThumbnailList(studykey, seriesKeys);
+//
+//        System.out.println("serieslist : " + seriesList);
+//        ModelAndView mv = new ModelAndView("viewer/viewer");
+//        mv.addObject("images", images);
+//        mv.addObject("seriesList", seriesList);
+//        return mv;
+//    }
+
+    @GetMapping("/{studykey}/{serieskey}")
+    public ModelAndView getImagesByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
         List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
         if (seriesKeys.isEmpty()) {
             return new ModelAndView("redirect:/worklist");
         }
 
-        Map<Integer, List<String>> indexedSeriesImages = seriesKeys.stream()
-                .collect(Collectors.toMap(
-                        key -> seriesKeys.indexOf(key) + 1,
-                        key -> imageService.findByStudykeyAndSerieskey(studykey, key).stream()
-                                .map(image -> "Z:/" + image.getPath() + image.getFname())
-                                .collect(Collectors.toList())
-                ));
+        List<String> images = imageService.findByStudykeyAndSerieskey(studykey, serieskey).stream()
+                .map(image -> "Z:/" + image.getPath() + image.getFname())
+                .collect(Collectors.toList());
 
-        List<String> images = indexedSeriesImages.get(index);
-        if (images == null) {
+        if (images.isEmpty()) {
             return new ModelAndView("redirect:/worklist");
         }
 
