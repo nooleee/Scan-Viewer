@@ -42,6 +42,8 @@ body {
 
 #mainContent {
     display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
     height: calc(100vh - 60px); /* Adjust height to your needs */
 }
 
@@ -52,7 +54,7 @@ body {
 }
 
 .viewport {
-    flex-grow: 1;
+    flex: 1 1 calc(50% - 10px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -74,6 +76,3 @@ body {
     height: 180px;
     margin: 10px;
 }
-
-
-
