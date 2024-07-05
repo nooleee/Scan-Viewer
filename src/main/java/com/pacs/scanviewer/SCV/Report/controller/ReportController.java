@@ -19,7 +19,7 @@ public class ReportController {
     private final StudyService studyService;
 
     @GetMapping("/{studyKey}")
-    public ModelAndView getReportByStudyKeys(@PathVariable int studyKey) {
+    public ModelAndView reportByStudyKey(@PathVariable int studyKey) {
         ModelAndView model;
         Report report = reportService.getReportByStudyKey(studyKey);
 
