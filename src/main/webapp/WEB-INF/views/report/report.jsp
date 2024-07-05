@@ -39,7 +39,7 @@
             </div>
             <div class="form-group">
                 <label for="diseaseCode">질병 코드</label>
-                <input type="text" id="diseaseCode" placeholder="질병(영어) 검색"/>
+                <input type="text" id="diseaseCode" placeholder="질병(영어, 숫자) 검색"/>
                 <button type="button" id="searchICDButton">ICD 코드 검색</button>
                 <div id="icdResults"></div>
             </div>
