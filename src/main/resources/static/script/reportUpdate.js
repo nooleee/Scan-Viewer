@@ -83,13 +83,16 @@ $(document).ready(function () {
                     alert("ICD 코드 검색 결과가 없습니다.");
                 } else {
                     // 검색 결과를 표시합니다.
-                    $('#icdResults').html('<ul>' + response.split(',').map(function(item) {
-                        return '<li class="icd-result-item">' + item + '</li>';
+                    $('#icdResults').html('<ul>' + response.slice(1, -1).split(',').map(function(item) {
+                        var parts = item.trim().split('/');
+                        var title = parts[0];
+                        var code = parts[1];
+                        return '<li class="icd-result-item" data-code="' + code + '">' + title + '</li>';
                     }).join('') + '</ul>');
 
                     // 검색 결과 항목에 클릭 이벤트 핸들러 추가
                     $('.icd-result-item').on('click', function () {
-                        $('#diseaseCode').val($(this).text());
+                        $('#diseaseCode').val($(this).data('code'));
                         $('#icdResults').empty();  // 검색 결과 목록 비우기
                     });
                 }
