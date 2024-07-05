@@ -12,16 +12,16 @@
     <title>Title</title>
 </head>
 <body>
-<h1>${sessionScope.user.userCode}님의 mypage</h1>
-<div>${sessionScope.user.name}</div>
-<div>${sessionScope.user.group}</div>
-<div>${sessionScope.user.birth}</div>
+<h1>${user.userCode}님의 mypage</h1>
+<div>${user.name}</div>
+<div>${user.group}</div>
+<div>${user.birth}</div>
 
-<c:if test="${sessionScope.user.group eq 'Admin'}">
+<c:if test="${user.group eq 'Admin'}">
     <button onclick="window.location='/user/manage'">회원관리</button>
 </c:if>
 <form action="/user/delete" method="post">
-    <input type="hidden" name="userCode" value="${sessionScope.user.userCode}">
+    <input type="hidden" name="userCode" value="${user.userCode}">
     <input type="submit" value="회원탈퇴">
 </form>
 <button onclick="window.location='/chat'">채팅 테스트</button>

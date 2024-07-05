@@ -51,8 +51,18 @@ public class UserController {
     }
 
     @GetMapping("/mypage")
-    public String mypage() {
-        return "user/mypage";
+    public ModelAndView mypage(HttpServletRequest request) {
+        User user = null;
+        String token = CookieUtil.getCookieValue(request, "jwt");
+        String userCode = jwtUtil.extractUsername(token);
+        Optional<User> OptionalUser = userService.findUser(userCode);
+        if (OptionalUser.isPresent()) {
+            user = OptionalUser.get();
+        }
+        ModelAndView modelAndView = new ModelAndView("user/mypage");
+        modelAndView.addObject("user", user);
+
+        return modelAndView;
     }
 
     @GetMapping("/manage")
