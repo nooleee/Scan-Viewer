@@ -26,6 +26,10 @@ public class SearchSpecification {
             if (searchDTO.getModality() != null && !searchDTO.getModality().isEmpty()) {
                 predicates.add(criteriaBuilder.equal(root.get("modality"), searchDTO.getModality()));
             }
+            if(searchDTO.getReportstatus() != null){
+                System.out.println("Specification 에서의 searchDTO.getReportstatus : " + searchDTO.getReportstatus());
+                predicates.add(criteriaBuilder.equal(root.get("reportStatus"), searchDTO.getReportstatus()));
+            }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

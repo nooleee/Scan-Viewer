@@ -11,8 +11,8 @@ public class SearchRequestDTO {
     private String startDate;
     private String endDate;
     private String modality;
-    private Integer reportStatus;
-    private long reportstatus;
+//    private Integer reportStatus;
+    private Long reportstatus;
     private Float ai_score;
     private String ai_finding;
 }

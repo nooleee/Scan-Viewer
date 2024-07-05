@@ -97,6 +97,25 @@ public class SearchService {
     }
 
     private SearchResponseDTO convertToDTO(Study study) {
+        long studykey = study.getStudykey();
+
+        Optional<Report> report = reportRepository.findReportByStudyKey((int) studykey);
+        int reportStatus = 0; // 기본값을 0으로 설정
+
+        if (report.isPresent()) {
+            Report reportEntity = report.get();
+            String videoReplayStatus = String.valueOf(reportEntity.getVideoReplay());
+            if (videoReplayStatus != null) {
+                videoReplayStatus = videoReplayStatus.trim(); // 문자열을 트리밍
+            }
+            System.out.println("reportEntity.getVideoReplay : " + videoReplayStatus);
+            if ("판독완료".equals(videoReplayStatus)) {
+                reportStatus = 2;
+            } else if ("판독취소".equals(videoReplayStatus)) {
+                reportStatus = 1;
+            }
+        }
+
         SearchResponseDTO dto = new SearchResponseDTO();
         dto.setStudykey(study.getStudykey());
         dto.setPid(study.getPid());
@@ -104,7 +123,8 @@ public class SearchService {
         dto.setModality(study.getModality());
         dto.setStudydesc(study.getStudydesc());
         dto.setStudydate(study.getStudydate());
-        dto.setReportstatus(study.getReportstatus());
+        dto.setReportstatus(reportStatus);
+        System.out.println("reportStatus: " + reportStatus);
         dto.setSeriescnt(study.getSeriescnt());
         dto.setImagecnt(study.getImagecnt());
         dto.setExamstatus(study.getExamstatus());
