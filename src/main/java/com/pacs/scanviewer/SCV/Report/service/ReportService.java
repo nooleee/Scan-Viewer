@@ -73,7 +73,7 @@ public class ReportService {
                 JSONObject entity = destinationEntities.getJSONObject(i);
                 String title = entity.getString("title").replaceAll("\\<.*?\\>", "").replaceAll(",", "");
                 String code = entity.getString("theCode");
-                results.add(title + "/" + code);
+                results.add(title + "|" + code);
             }
             return results.toString();
         }
