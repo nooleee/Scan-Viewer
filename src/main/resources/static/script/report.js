@@ -83,7 +83,7 @@ $(document).ready(function () {
                 } else {
                     // 검색 결과를 표시합니다.
                     $('#icdResults').html('<ul>' + response.slice(1, -1).split(',').map(function(item) {
-                        var parts = item.trim().split('/');
+                        var parts = item.trim().split('|');
                         var title = parts[0];
                         var code = parts[1];
                         return '<li class="icd-result-item" data-code="' + code + '">' + title + '</li>';
