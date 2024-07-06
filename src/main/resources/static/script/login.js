@@ -20,7 +20,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         })
         .then(data => {
             document.cookie = `jwt=${data.jwt}; path=/;`;
-            window.location.href = '/user/mypage';  // 로그인 성공 시 이동할 페이지
+            window.location.href = '/worklist';  // 로그인 성공 시 이동할 페이지
         })
         .catch(error => {
             alert('Login failed: ' + error.message);
