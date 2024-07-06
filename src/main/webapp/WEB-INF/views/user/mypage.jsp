@@ -9,23 +9,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Mypage</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/mypage.css"/>
 </head>
 <body>
-<h1>${user.userCode}님의 mypage</h1>
-<div>${user.name}</div>
-<div>${user.group}</div>
-<div>${user.birth}</div>
+<div class="container">
+    <h1>${user.userCode}님의 mypage</h1>
+    <div>${user.name}</div>
+    <div>${user.group}</div>
+    <div>${user.birth}</div>
 
-<c:if test="${user.group eq 'Admin'}">
-    <button onclick="window.location='/user/manage'">회원관리</button>
-</c:if>
-<form action="/user/delete" method="post">
-    <input type="hidden" name="userCode" value="${user.userCode}">
-    <input type="submit" value="회원탈퇴">
-</form>
-<button onclick="window.location='/chat'">채팅 테스트</button>
-
-<button onclick="window.location='/worklist'">워크리스트로 이동 </button>
+    <c:if test="${user.group eq 'Admin'}">
+        <button onclick="window.location='/user/manage'">회원관리</button>
+    </c:if>
+    <button onclick="window.location='/worklist'">워크리스트로 이동 </button>
+    <form action="/user/delete" method="post">
+        <input type="hidden" name="userCode" value="${user.userCode}">
+        <input type="submit" value="회원탈퇴">
+    </form>
+</div>
 </body>
 </html>
