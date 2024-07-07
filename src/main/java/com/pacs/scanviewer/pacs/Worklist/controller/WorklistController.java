@@ -44,13 +44,6 @@ public class WorklistController {
     }
 
     @CrossOrigin
-    @GetMapping("/worklistAllSearch")
-    @ResponseBody
-    public Page<Study> getAllStudies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
-        return studyService.findStudiesWithPage(page, size);
-    }
-
-    @CrossOrigin
     @GetMapping("/studiesByPid/{pid}")
     @ResponseBody
     public List<SearchResponseDTO> findStudiesByPid(@PathVariable String pid, HttpServletRequest request) {
