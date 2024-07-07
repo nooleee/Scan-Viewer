@@ -315,6 +315,7 @@ function reset(){
     document.querySelector('input[placeholder="환자 아이디"]').value = '';
     document.querySelector('input[placeholder="환자 이름"]').value = '';
     document.getElementById('modalitySelect').value = '';
+    document.getElementById('reportStatus').value = '';
     document.getElementById('startDate').value = '1990-01-01';
     var today = new Date();
     var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);

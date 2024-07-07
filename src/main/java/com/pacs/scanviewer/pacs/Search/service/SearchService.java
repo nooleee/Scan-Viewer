@@ -4,7 +4,6 @@ import com.pacs.scanviewer.SCV.Consent.domain.Consent;
 import com.pacs.scanviewer.SCV.Consent.domain.ConsentRepository;
 import com.pacs.scanviewer.SCV.Report.domain.Report;
 import com.pacs.scanviewer.SCV.Report.domain.ReportRepository;
-import com.pacs.scanviewer.pacs.Search.domain.SearchSpecification;
 import com.pacs.scanviewer.pacs.Search.domain.SearchRequestDTO;
 import com.pacs.scanviewer.pacs.Search.domain.SearchResponseDTO;
 import com.pacs.scanviewer.pacs.Study.domain.Study;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,7 +27,7 @@ public class SearchService {
 
     public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
         // Step 1: 모든 Study를 가져오기
-        List<Study> studies = studyRepository.findAll();
+        List<Study> studies = studyRepository.findAllByOrderByStudydateDesc();
 
         // Step 2: Reportstatus 필터링 적용
         List<Study> filteredStudies = studies.stream().filter(study -> {
@@ -82,36 +80,6 @@ public class SearchService {
         return new PageImpl<>(dtos.subList(start, end), pageable, dtos.size());
     }
 
-//    public Page<SearchResponseDTO> searchStudies(SearchRequestDTO searchDTO, Pageable pageable) {
-//        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.DESC, "studydate"));
-//        Page<Study> studyPage = studyRepository.findAll(SearchSpecification.searchStudies(searchDTO), sortedPageable);
-//
-//        List<SearchResponseDTO> dtos = studyPage.getContent().stream()
-//                .map(this::convertToDTO)
-//                .collect(Collectors.toList());
-//
-//        if (searchDTO.getReportStatus() != null) {
-//            dtos = dtos.stream()
-//                    .filter(dto -> {
-//                        Optional<Report> reportOptional = reportRepository.findReportByStudyKey((int)dto.getStudykey());
-//                        if (reportOptional.isPresent()) {
-//                            Report report = reportOptional.get();
-//                            if (report.getVideoReplay().equals(Report.VideoReplay.판독완료) && searchDTO.getReportStatus() == 2) {
-//                                return true;
-//                            } else if (report.getVideoReplay().equals(Report.VideoReplay.판독취소) && searchDTO.getReportStatus() == 1) {
-//                                return true;
-//                            }
-//                        } else {
-//                            return searchDTO.getReportStatus() == 0;
-//                        }
-//                        return false;
-//                    })
-//                    .collect(Collectors.toList());
-//        }
-//
-//        return new PageImpl<>(dtos, sortedPageable, studyPage.getTotalElements());
-//    }
-
     public List<SearchResponseDTO> findStudiesByPid(String pid, String userCode) {
         List<Study> studies = studyRepository.findAllByPid(pid);
         return studies.stream()
@@ -135,7 +103,6 @@ public class SearchService {
                     }else{
                         dto.setReportstatus(0);
                     }
-
                     return dto;
                 })
                 .collect(Collectors.toList());

@@ -113,9 +113,9 @@
                 <option value="2">판독완료</option>
             </select>
             <button class="button" id="getAllStudiesBtn">전체</button>
-            <button>1일</button>
-            <button>3일</button>
-            <button>1주일</button>
+<%--            <button>1일</button>--%>
+<%--            <button>3일</button>--%>
+<%--            <button>1주일</button>--%>
             <button class="button reset" id="reset">재설정</button>
             <button class="button search-button" id="searchStudies">검색</button>
         </div>
