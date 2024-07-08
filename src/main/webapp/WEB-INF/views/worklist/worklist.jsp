@@ -174,23 +174,23 @@
                     <div class="report-title">
                         <h2>Report</h2>
                     </div>
+                    <form id="reportForm" method="post">
                     <div class="report-box">
+                        <input type="hidden" id="studyKey" value=""/>
                         <div class="write-box">
                             <h3>의사소견</h3>
                             <textarea class="comment" placeholder="의사소견"></textarea>
                             <h3>결론</h3>
-                            <textarea class="answer" placeholder="결론"></textarea>
+                            <textarea class="patient" placeholder="결론"></textarea>
                         </div>
                         <div class="input-box">
                             <div>
-                                <label>판독의:</label>
-<%--                                <p class="reading" id="reading"></p>--%>
-                                <input type="text" class="reading" readonly/>
+                                <label for="userCode">판독의</label>
+                                <input type="text" id="userCode" class="userCode" readonly/>
                             </div>
                             <div>
-                                <label>판독일시:</label>
-<%--                                <p class="readingDate"></p>--%>
-                                <input type="text" class="readingDate" readonly/>
+                                <label for="date">판독 일시</label>
+                                <input type="text" id="date" class="date" placeholder="리포트 생성 시 자동 추가" readonly/>
                             </div>
                             <div>
                                 <label>질병 코드:</label>
@@ -198,12 +198,22 @@
                                 <button type="button" id="searchICDButton">ICD 코드 검색</button>
                                 <div id="icdResults"></div> <!-- 검색 결과 표시 -->
                             </div>
-                            <div class="reading-box">
-                                <button class="button blue-button">판독</button>
-                                <button class="button">판독취소</button>
+                            <div class="form-group">
+                                <label for="videoReplay">판독 상태</label>
+                                <select id="videoReplay">
+                                    <option value="" selected disabled >판독 상태</option>
+                                    <option value="읽지않음">읽지않음</option>
+                                    <option value="판독완료">판독완료</option>
+                                    <option value="판독취소">판독취소</option>
+                                </select>
+                            </div>
+                            <div class="button-container">
+                                <button class="reportCreate" type="submit">리포트 생성</button>
+                                <button class="reportUpdate" type="submit">리포트 수정</button>
                             </div>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </main>
