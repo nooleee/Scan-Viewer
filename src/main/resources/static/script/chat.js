@@ -117,7 +117,15 @@ $(document).ready(function() {
 
     function displayMessage(sender, content) {
         const chatWindow = $('#chatWindow');
-        chatWindow.append('<div class="message"><strong>' + sender + ':</strong> ' + content + '</div>');
+        const messageElement = $('<div class="message">');
+        const senderElement = $('<strong>').text(sender + ': ');
+
+        if (sender === currentUser) {
+            senderElement.addClass('current-user');
+        }
+
+        messageElement.append(senderElement).append(content);
+        chatWindow.append(messageElement);
         chatWindow.scrollTop(chatWindow.prop("scrollHeight"));
     }
 

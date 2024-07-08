@@ -104,3 +104,7 @@ body {
 .message strong {
     color: #007bff;
 }
+
+.message strong.current-user {
+    color: green;
+}

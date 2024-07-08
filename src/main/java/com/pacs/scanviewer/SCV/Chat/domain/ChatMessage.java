@@ -18,7 +18,7 @@ public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long chatId;
 
     private String sender;
 
@@ -26,17 +26,7 @@ public class ChatMessage {
 
     private String content;
 
-    private MessageType type;
-
     @CreatedDate
     private LocalDateTime timestamp; // 또는 Date
 
-
-    public enum MessageType {
-        CHAT,
-        JOIN,
-        LEAVE
-    }
-
-    // Getters and Setters
 }

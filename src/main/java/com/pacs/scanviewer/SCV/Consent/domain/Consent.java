@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "consent_log")
+@Table(name = "consent")
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Consent {

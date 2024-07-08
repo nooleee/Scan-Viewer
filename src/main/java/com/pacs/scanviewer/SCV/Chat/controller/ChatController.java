@@ -26,7 +26,6 @@ public class ChatController {
     @MessageMapping("/sendMessage")
     @SendToUser("/queue/reply")
     public void sendMessage(ChatMessage chatMessage) {
-        chatMessage.setType(ChatMessage.MessageType.CHAT);
         chatMessageRepository.save(chatMessage);
         messagingTemplate.convertAndSendToUser(chatMessage.getRecipient(), "/queue/reply", chatMessage);
     }
