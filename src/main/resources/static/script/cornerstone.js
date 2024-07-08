@@ -14,6 +14,21 @@ const toolGroupId = 'myToolGroup';
 const renderingEngineId = 'myRenderingEngine';
 let viewports = ['viewport1'];
 let seriesList = [];
+let allImages = {};
+
+// 데이터를 초기화합니다.
+const initializeData = async (studykey) => {
+    try {
+        const response = await fetch(`/images/studies/${studykey}/series`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch series data');
+        }
+        allImages = await response.json();
+        console.log('[DEBUG] allImages: ', allImages);
+    } catch (error) {
+        console.error('Error initializing data:', error);
+    }
+};
 
 const initializeCornerstone = async () => {
     await cornerstone.init();
@@ -60,24 +75,30 @@ const initializeCornerstone = async () => {
 };
 
 const render = async (imageIds, element, viewportId) => {
-    const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
-    renderingEngine.disableElement(viewportId);
+    const renderingEngine = cornerstone.getRenderingEngine(renderingEngineId);
+
+    console.log("[65]viewportId : " + viewportId);
     const viewportInput = {
         viewportId,
         element,
         type: cornerstone.Enums.ViewportType.STACK,
     };
 
+    console.log("[72]element : " + element);
+    // console.dir(element);
+
+    renderingEngine.enableElement(viewportInput);
     const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
     toolGroup.addViewport(viewportId, renderingEngineId);
-    renderingEngine.enableElement(viewportInput);
 
     await renderingEngine.renderViewports([viewportId]);
 
     const viewport = renderingEngine.getViewport(viewportInput.viewportId);
+
+
     await viewport.setStack(imageIds);
 
-    cornerstoneTools.utilities.stackPrefetch.enable(viewport.element);
+    // cornerstoneTools.utilities.stackPrefetch.enable(viewport.element);
 
     await viewport.render();
 
@@ -122,15 +143,12 @@ const renderThumbnail = async (imageIds, elementId) => {
     await viewport.render();
 };
 
-const loadSeries = async (studykey, serieskey, element, viewportId) => {
+const loadSeries = async (serieskey, element, viewportId) => {
     try {
-        const response = await fetch(`/images/${studykey}/${serieskey}/dicom-urls`);
-        if (!response.ok) {
-            throw new Error(`Invalid serieskey: ${serieskey}`);
+        if (!allImages[serieskey]) {
+            throw new Error(`No images found for serieskey: ${serieskey}`);
         }
-        const dicomUrls = await response.json();
-        const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
-
+        const imageIds = allImages[serieskey].map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
         await render(imageIds, element, viewportId);
     } catch (error) {
         console.error("Failed to load series:", error);
@@ -140,12 +158,12 @@ const loadSeries = async (studykey, serieskey, element, viewportId) => {
 
 const loadThumbnails = async (seriesList) => {
     for (const series of seriesList) {
-        const response = await fetch(`/images/${series.studyKey}/${series.seriesKey}/dicom-urls`);
-        if (response.ok) {
-            const dicomUrls = await response.json();
-            const imageIds = dicomUrls.map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
-            await renderThumbnail(imageIds, `thumbnail-${series.seriesKey}`);
+        if (!allImages[series.seriesKey]) {
+            console.warn(`No images found for seriesKey: ${series.seriesKey}`);
+            continue;
         }
+        const imageIds = allImages[series.seriesKey].map(url => `dicomweb:/images/dicom-file?path=${encodeURIComponent(url)}`);
+        await renderThumbnail(imageIds, `thumbnail-${series.seriesKey}`);
     }
 };
 
@@ -164,13 +182,14 @@ const extractKeysFromPath = () => {
 
 const init = async () => {
     await initializeCornerstone();
-
+    const renderingEngine = new cornerstone.RenderingEngine(renderingEngineId);
     const keys = extractKeysFromPath();
     if (keys) {
         const { studykey, serieskey } = keys;
+        await initializeData(studykey);
         const contentElement = document.getElementById('dicomViewport1');
-        console.log("[172]contentElement : " + contentElement)
-        await loadSeries(studykey, serieskey, contentElement, 'viewport1');
+        console.log("[172]contentElement : " + contentElement);
+        await loadSeries(serieskey, contentElement, 'viewport1');
     } else {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
     }
@@ -180,18 +199,15 @@ const init = async () => {
         seriesKey: thumbnail.getAttribute('data-series-key')
     }));
 
-    console.log("[178]serieskey : " + seriesList)
+    console.log("[178]seriesList : " + JSON.stringify(seriesList));
 
     await loadThumbnails(seriesList);
 
     document.querySelectorAll('.thumbnail-viewport').forEach(thumbnail => {
         thumbnail.addEventListener('click', async () => {
             const seriesKey = thumbnail.getAttribute('data-series-key');
-            const keys = extractKeysFromPath();
-            if (keys) {
-                const { studykey } = keys;
-                window.location.href = `/images/${studykey}/${seriesKey}`;
-            }
+            const contentElement = document.getElementById('dicomViewport1');
+            await loadSeries(seriesKey, contentElement, 'viewport1');
         });
     });
 };
@@ -237,22 +253,21 @@ const setLayout = (layout) => {
             break;
     }
 
-
-    // const seriesList = Array.from(document.querySelectorAll('.thumbnail-viewport')).map(thumbnail => ({
-    //     studyKey: keys.studykey,
-    //     seriesKey: thumbnail.getAttribute('data-series-key')
-    // }));
-
     const keys = extractKeysFromPath();
-    console.log("[244]serieskey : " + JSON.stringify(seriesList))
+    console.log("[244]seriesList : " + JSON.stringify(seriesList));
     if (keys) {
         const { studykey, serieskey } = keys;
         const seriesKeys = seriesList.map(series => series.seriesKey);
         viewports.forEach(async (viewportId, i) => {
-            const contentElement = document.getElementById(viewportId);
-            console.log("[252]contentElement : " + contentElement)
+            console.log("viewportId : ", viewportId);
+            const slicedViewportId = `dicomV${viewportId.slice(1, 9)}`;
+            console.log("sliced viewportId : ", slicedViewportId);
+
+            const contentElement = document.getElementById(slicedViewportId);
+            console.log(contentElement);
             const currentSeriesKey = seriesKeys[(seriesKeys.indexOf(serieskey) + i) % seriesKeys.length];
-            await loadSeries(studykey, currentSeriesKey, contentElement, viewportId);
+            console.log("[267]element : " + currentSeriesKey)
+            await loadSeries(currentSeriesKey, contentElement, slicedViewportId);
         });
     }
 };

@@ -32,4 +32,8 @@ public class ImageService {
     public List<Image> findByStudykeyAndSerieskey(Long studykey, Long serieskey) {
         return imageRepository.findByStudykeyAndSerieskey(studykey, serieskey);
     }
+
+    public List<Image> getDicomImagesByStudyKey(Long studykey) {
+        return imageRepository.findByStudykeyAndFnameEndingWith(studykey, ".dcm");
+    }
 }
