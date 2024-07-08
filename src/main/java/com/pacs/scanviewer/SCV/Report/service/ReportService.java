@@ -34,10 +34,10 @@ public class ReportService {
 
     public Report getReportByStudyKey(int studyKey) {
         Report report = reportRepository.findByStudyKey(studyKey);
-        if (report != null && report.getVideoReplay() == Report.VideoReplay.판독취소) {
-            report.setContent("");  // 의사 소견 비우기
-            report.setPatient("");  // 결론 비우기
-        }
+//        if (report != null && report.getVideoReplay() == Report.VideoReplay.판독취소) {
+//            report.setContent("");  // 의사 소견 비우기
+//            report.setPatient("");  // 결론 비우기
+//        }
         return report;
     }
 
