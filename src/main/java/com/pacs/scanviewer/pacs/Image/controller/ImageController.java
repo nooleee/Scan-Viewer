@@ -70,24 +70,33 @@ public class ImageController {
     @GetMapping("/{studykey}/{serieskey}")
     public ModelAndView getImagesByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
         List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
+        Map<Long, List<String>> allSeriesImages = new HashMap<>();
         if (seriesKeys.isEmpty()) {
             return new ModelAndView("redirect:/worklist");
         }
 
-        List<String> images = imageService.findByStudykeyAndSerieskey(studykey, serieskey).stream()
-                .map(image -> "Z:/" + image.getPath() + image.getFname())
-                .collect(Collectors.toList());
+//        List<String> images = imageService.findByStudykeyAndSerieskey(studykey, serieskey).stream()
+//                .map(image -> "Z:/" + image.getPath() + image.getFname())
+//                .collect(Collectors.toList());
 
-        if (images.isEmpty()) {
-            return new ModelAndView("redirect:/worklist");
+        List<Map<String, Object>> thseriesList = createThumbnailList(studykey, seriesKeys);
+
+        for (Long seriesKey : seriesKeys) {
+            List<String> images = imageService.findByStudykeyAndSerieskey(studykey, seriesKey).stream()
+                    .map(image -> formatPathForOS("Z:/" + image.getPath() + image.getFname()))
+                    .collect(Collectors.toList());
+
+            allSeriesImages.put(seriesKey, images);
+
+            System.out.println("[DEBUG] seriesKey: " + seriesKey + ", images: " + images); // 디버그 로그 추가
         }
 
-        List<Map<String, Object>> seriesList = createThumbnailList(studykey, seriesKeys);
 
-        System.out.println("serieslist : " + seriesList);
+
+        System.out.println("serieslist : " + thseriesList);
         ModelAndView mv = new ModelAndView("viewer/viewer");
-        mv.addObject("images", images);
-        mv.addObject("seriesList", seriesList);
+        mv.addObject("images", allSeriesImages);
+        mv.addObject("seriesList", thseriesList);
         return mv;
     }
 
@@ -95,6 +104,17 @@ public class ImageController {
     @ResponseBody
     public ResponseEntity<List<String>> getDicomUrlsByStudyKeyAndSeriesKey(@PathVariable Long studykey, @PathVariable Long serieskey) {
         List<Image> imageList = imageService.getDicomUrlsByStudyKeyAndSeriesKey(studykey, serieskey);
+        List<String> dicomUrls = imageList.stream()
+                .map(image -> "Z:/" + image.getPath() + image.getFname())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(dicomUrls, HttpStatus.OK);
+    }
+
+    @GetMapping("/{studykey}/all-dicom-urls")
+    @ResponseBody
+    public ResponseEntity<List<String>> getAllDicomUrlsByStudyKey(@PathVariable Long studykey) {
+        List<Image> imageList = imageService.getDicomImagesByStudyKey(studykey);
         List<String> dicomUrls = imageList.stream()
                 .map(image -> "Z:/" + image.getPath() + image.getFname())
                 .collect(Collectors.toList());
@@ -166,5 +186,54 @@ public class ImageController {
                     return seriesMap;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/studies")
+    public ModelAndView getImagesByStudyKey(@RequestParam Long studykey) {
+        List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
+        if (seriesKeys.isEmpty()) {
+            return new ModelAndView("redirect:/worklist");
+        }
+
+        List<Map<String, Object>> seriesList = createThumbnailList(studykey, seriesKeys);
+
+        System.out.println("serieslist : " + seriesList);
+        ModelAndView mv = new ModelAndView("viewer/viewer");
+        mv.addObject("seriesList", seriesList);
+        return mv;
+    }
+
+    @GetMapping("/studies/{studykey}/series")
+    @ResponseBody
+    public ResponseEntity<Map<Long, List<String>>> getAllSeriesImages(@PathVariable Long studykey) {
+        System.out.println("[193] 이미지 불러오는중 ");
+        Map<Long, List<String>> allSeriesImages = new HashMap<>();
+        List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
+
+        for (Long seriesKey : seriesKeys) {
+            List<String> images = imageService.findByStudykeyAndSerieskey(studykey, seriesKey).stream()
+                    .map(image -> formatPathForOS("Z:/" + image.getPath() + image.getFname()))
+                    .collect(Collectors.toList());
+
+            allSeriesImages.put(seriesKey, images);
+
+            System.out.println("[DEBUG] seriesKey: " + seriesKey + ", images: " + images); // 디버그 로그 추가
+        }
+
+        return new ResponseEntity<>(allSeriesImages, HttpStatus.OK);
+    }
+
+    private String formatPathForOS(String path) {
+        String os = System.getProperty("os.name").toLowerCase();
+        String sep = System.getProperty("file.separator");
+
+        String rootPath = "Z:\\STS\\";
+
+        if (!os.contains("win")) {
+            rootPath = "/Volumes/STS/";
+            path = path.replace("Z:/", rootPath);
+        }
+
+        return path.replace("\\", sep);
     }
 }

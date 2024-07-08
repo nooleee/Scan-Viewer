@@ -12,4 +12,9 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
 
     @Query("SELECT DISTINCT i.serieskey FROM Image i WHERE i.studykey = :studykey")
     List<Long> findSeriesKeysByStudyKey(Long studykey);
+
+
+    List<Image> findByStudykeyAndFnameEndingWith(Long studykey, String extension);
+
 }
+
