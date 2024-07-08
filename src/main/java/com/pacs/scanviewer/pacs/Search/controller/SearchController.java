@@ -41,28 +41,21 @@ public class SearchController {
         Page<SearchResponseDTO> searchResponseDTOS = searchService.searchStudies(searchDTO, PageRequest.of(page, size));
 
         searchResponseDTOS.forEach(dto -> {
-            Optional<Consent> consent = consentService.findConsentByStudyKeyAndUserCode((int)dto.getStudykey(), userCode);
-            if(consent.isPresent()) {
-                dto.setExamstatus(1);
-            }else{
-                dto.setExamstatus(0);
-            }
+            Optional<Consent> consent = consentService.findConsentByStudyKeyAndUserCode((int) dto.getStudykey(), userCode);
+            dto.setExamstatus(consent.isPresent() ? 1 : 0);
 
-            Optional<Report> reportOptional = reportService.findReportByStudyKey((int)dto.getStudykey());
-            if(reportOptional.isPresent()) {
+            Optional<Report> reportOptional = reportService.findReportByStudyKey((int) dto.getStudykey());
+            if (reportOptional.isPresent()) {
                 Report report = reportOptional.get();
-                if(report.getVideoReplay().equals(Report.VideoReplay.판독완료)){
+                if (report.getVideoReplay().equals(Report.VideoReplay.판독완료)) {
                     dto.setReportstatus(2);
-                }else{
+                } else {
                     dto.setReportstatus(1);
                 }
-            }else{
+            } else {
                 dto.setReportstatus(0);
             }
-
         });
-
-
 
         return searchResponseDTOS;
     }

@@ -16,22 +16,6 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-    <style>
-        .hidden {
-            display: none;
-        }
-        .search-detail {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        .search-detail label {
-            display: block;
-            margin-bottom: 5px;
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -113,9 +97,9 @@
                 <option value="2">판독완료</option>
             </select>
             <button class="button" id="getAllStudiesBtn">전체</button>
-            <button>1일</button>
-            <button>3일</button>
-            <button>1주일</button>
+<%--            <button>1일</button>--%>
+<%--            <button>3일</button>--%>
+<%--            <button>1주일</button>--%>
             <button class="button reset" id="reset">재설정</button>
             <button class="button search-button" id="searchStudies">검색</button>
         </div>

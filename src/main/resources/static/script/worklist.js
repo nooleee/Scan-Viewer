@@ -1,6 +1,6 @@
 let currentPage = 0;
 let pageSize = 5;
-let currentSearch = { pid: '', pname: '', modality: '' };
+let currentSearch = { pid: '', pname: '', modality: '', reportStatus: '' };
 
 document.getElementById('loadMoreBtn').addEventListener('click', function() {
     currentPage++;
@@ -8,14 +8,14 @@ document.getElementById('loadMoreBtn').addEventListener('click', function() {
     const endDate = document.getElementById('endDate').value;
     const start = startDate.replaceAll("-","");
     const end = endDate.replaceAll("-","");
-    searchStudies(currentSearch.pid, currentSearch.pname,start,end, currentPage, pageSize, currentSearch.modality);
+    searchStudies(currentSearch.pid, currentSearch.pname,start,end, currentPage, pageSize, currentSearch.modality, currentSearch.reportStatus);
 });
 
 document.getElementById('getAllStudiesBtn').addEventListener('click', function() {
     reset();
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
-    searchStudies( '','',startDate,endDate,currentPage,pageSize, '');
+    searchStudies( '','',startDate,endDate,currentPage,pageSize, '', '');
 });
 
 document.querySelectorAll('.search-button').forEach(button => {
@@ -29,7 +29,7 @@ document.querySelectorAll('.search-button').forEach(button => {
         const modality = document.getElementById('modalitySelect').value;
         const reportStatus = document.getElementById('reportStatus').value;
         currentPage = 0;  // Reset page count for new search
-        currentSearch = {pid, pname, modality};  // Store current search
+        currentSearch = {pid, pname, modality, reportStatus};  // Store current search
         searchStudies(pid, pname, start, end, currentPage, pageSize, modality, reportStatus);
     })
 });
@@ -315,11 +315,25 @@ function reset(){
     document.querySelector('input[placeholder="환자 아이디"]').value = '';
     document.querySelector('input[placeholder="환자 이름"]').value = '';
     document.getElementById('modalitySelect').value = '';
+    document.getElementById('reportStatus').value = '';
     document.getElementById('startDate').value = '1990-01-01';
     var today = new Date();
     var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
     document.getElementById('endDate').value = formattedToday;
     document.querySelector('#searchDetail select').value = '';
+
+    // previous 섹션 초기화
+    const previousTable = document.getElementById('previous-table').getElementsByTagName('tbody')[0];
+    previousTable.innerHTML = '';
+    document.querySelector('.previous-id').textContent = '환자 아이디: ';
+    document.querySelector('.previous-name').textContent = '환자 이름: ';
+
+    // report 섹션 초기화
+    document.querySelector('.reading').value = '';
+    document.querySelector('.readingDate').value = '';
+    document.querySelector('.diseaseCode').value = '';
+    document.querySelector('.comment').value = '';
+    document.querySelector('.answer').value = '';
 
     // 달력 초기화
     const calendarInstance = flatpickr("#calendar", {

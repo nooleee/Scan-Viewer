@@ -1,10 +1,8 @@
 package com.pacs.scanviewer.pacs.Worklist.controller;
 
-import com.pacs.scanviewer.SCV.Consent.domain.Consent;
 import com.pacs.scanviewer.SCV.Consent.service.ConsentService;
 import com.pacs.scanviewer.Util.CookieUtil;
 import com.pacs.scanviewer.Util.JwtUtil;
-import com.pacs.scanviewer.pacs.Search.domain.SearchRequestDTO;
 import com.pacs.scanviewer.pacs.Search.domain.SearchResponseDTO;
 import com.pacs.scanviewer.pacs.Search.service.SearchService;
 import com.pacs.scanviewer.pacs.Study.domain.Study;
@@ -19,7 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -30,7 +27,6 @@ public class WorklistController {
     private final StudyService studyService;
     private final JwtUtil jwtUtil;
     private final SearchService searchService;
-    private final ConsentService consentService;
 
     @GetMapping("/studies")
     public ModelAndView viewStudies(@RequestParam(defaultValue = "0") int page,
@@ -48,13 +44,6 @@ public class WorklistController {
     }
 
     @CrossOrigin
-    @GetMapping("/worklistAllSearch")
-    @ResponseBody
-    public Page<Study> getAllStudies(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
-        return studyService.findStudiesWithPage(page, size);
-    }
-
-    @CrossOrigin
     @GetMapping("/studiesByPid/{pid}")
     @ResponseBody
     public List<SearchResponseDTO> findStudiesByPid(@PathVariable String pid, HttpServletRequest request) {
@@ -63,5 +52,4 @@ public class WorklistController {
 
         return searchService.findStudiesByPid(pid, userCode);
     }
-
 }

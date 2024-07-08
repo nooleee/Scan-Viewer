@@ -12,7 +12,7 @@ public class SearchRequestDTO {
     private String endDate;
     private String modality;
 //    private Integer reportStatus;
-    private Long reportstatus;
+    private Long reportStatus;
     private Float ai_score;
     private String ai_finding;
 }
