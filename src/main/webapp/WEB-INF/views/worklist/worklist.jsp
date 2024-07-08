@@ -26,6 +26,9 @@
         </div>
         <div class="Settingwrapper">
             <button id="logout">Logout</button>
+            <button onclick="window.location='/chat'">채팅</button>
+        </div>
+        <div>
         </div>
     </div>
     <div class="content">
