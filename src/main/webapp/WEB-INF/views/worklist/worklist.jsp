@@ -87,7 +87,7 @@
                 </select>
             </div>
         </div>
-
+        <div>
         <div class="search">
             <h3>검색</h3>
             <input type="text" placeholder="환자 아이디" id="pid">
@@ -220,6 +220,7 @@
                 </div>
             </div>
         </main>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
