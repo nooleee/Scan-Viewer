@@ -194,6 +194,7 @@ body {
 .previous, .report {
     width: 48%;
     flex-grow: 1;
+    margin : 5px;
 }
 
 .previous-table, .report-box {

@@ -496,7 +496,6 @@ function populateReportSection(study) {
             return response.json();
         })
         .then(report => {
-
                 document.querySelector('.userCode').value = report.userCode || '';
                 document.querySelector('.date').value = report.date || '';
                 document.querySelector('.diseaseCode').value = report.diseaseCode || '';
@@ -506,13 +505,10 @@ function populateReportSection(study) {
                 if(report.videoReplay === null){
                     $('.reportCreate').removeClass('hidden');
                     $('.reportUpdate').addClass('hidden');
-                    console.log("report.videoReplay = 공백" + report.videoReplay);
                 }else{
                      $('.reportCreate').addClass('hidden');
                      $('.reportUpdate').removeClass('hidden');
-                    console.log("report.videoReplay = 공백아님" + report.videoReplay);
                 }
-
             document.querySelector('#studyKey').value = study.studykey;
         })
         .catch(error => {
