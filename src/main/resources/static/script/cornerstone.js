@@ -50,9 +50,7 @@ const initializeCornerstone = async () => {
     };
     cornerstoneDICOMImageLoader.webWorkerManager.initialize(config);
     cornerstoneTools.init();
-};
 
-const setupViewportTools = (viewportId) => {
     const tools = [
         { tool: ZoomTool, options: {} },
         { tool: PanTool, options: {} },
@@ -72,13 +70,8 @@ const setupViewportTools = (viewportId) => {
     let toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
     if (!toolGroup) {
         toolGroup = ToolGroupManager.createToolGroup(toolGroupId);
+        tools.forEach(({ tool }) => toolGroup.addTool(tool.toolName));
     }
-
-    tools.forEach(({ tool }) => toolGroup.addTool(tool.toolName));
-    toolGroup.addViewport(viewportId, renderingEngineId);
-
-    // 초기에는 StackScrollMouseWheelTool만 활성화합니다.
-    toolGroup.setToolActive(StackScrollMouseWheelTool.toolName, { bindings: [{ mouseButton: MouseBindings.Primary }] });
 };
 
 const render = async (imageIds, element, viewportId) => {
@@ -92,17 +85,39 @@ const render = async (imageIds, element, viewportId) => {
     };
 
     console.log("[72]element : " + element);
+    // console.dir(element);
 
     renderingEngine.enableElement(viewportInput);
-    setupViewportTools(viewportId);
+    const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
+    toolGroup.addViewport(viewportId, renderingEngineId);
 
     await renderingEngine.renderViewports([viewportId]);
 
     const viewport = renderingEngine.getViewport(viewportInput.viewportId);
 
+
     await viewport.setStack(imageIds);
 
+    // cornerstoneTools.utilities.stackPrefetch.enable(viewport.element);
+
     await viewport.render();
+
+    toolGroup.setToolActive(ZoomTool.toolName, {
+        bindings: [{ mouseButton: MouseBindings.Primary }],
+    });
+    toolGroup.setToolActive(MagnifyTool.toolName, {
+        bindings: [{ mouseButton: MouseBindings.Secondary }],
+    });
+    toolGroup.setToolActive(AngleTool.toolName, {
+        bindings: [{ mouseButton: MouseBindings.Auxiliary }],
+    });
+    toolGroup.setToolActive(PanTool.toolName, {
+        bindings: [{ mouseButton: MouseBindings.Primary_And_Secondary }],
+    });
+    toolGroup.setToolActive(WindowLevelTool.toolName, {
+        bindings: [{ mouseButton: MouseBindings.Primary_And_Auxiliary }],
+    });
+    toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
 };
 
 const renderThumbnail = async (imageIds, elementId) => {
@@ -157,7 +172,8 @@ const extractKeysFromPath = () => {
     const pathParts = path.split('/');
     if (pathParts.length >= 4) {
         const studykey = pathParts[2];
-          return { studykey, serieskey };
+        const serieskey = pathParts[3];
+        return { studykey, serieskey };
     } else {
         console.error('올바른 경로 형식이 아닙니다. 예: /images/{studykey}/{serieskey}');
         return null;
@@ -194,17 +210,7 @@ const init = async () => {
             await loadSeries(seriesKey, contentElement, 'viewport1');
         });
     });
-
-    document.getElementById('zoomTool').addEventListener('click', () => toolAction(ZoomTool.toolName));
-    document.getElementById('panTool').addEventListener('click', () => toolAction(PanTool.toolName));
-    document.getElementById('lengthTool').addEventListener('click', () => toolAction(LengthTool.toolName));
-    document.getElementById('angleTool').addEventListener('click', () => toolAction(AngleTool.toolName));
-    document.getElementById('magnifyTool').addEventListener('click', () => toolAction(MagnifyTool.toolName));
-    document.getElementById('stackScrollTool').addEventListener('click', () => toolAction(StackScrollMouseWheelTool.toolName));
-    // document.getElementById('windowLevelTool').addEventListener('click', () => toolAction(WindowLevelTool.toolName));
 };
-
-document.addEventListener('DOMContentLoaded', init);
 
 document.getElementById('backButton').addEventListener('click', () => {
     window.location.href = '/worklist';
@@ -253,9 +259,14 @@ const setLayout = (layout) => {
         const { studykey, serieskey } = keys;
         const seriesKeys = seriesList.map(series => series.seriesKey);
         viewports.forEach(async (viewportId, i) => {
+            console.log("viewportId : ", viewportId);
             const slicedViewportId = `dicomV${viewportId.slice(1, 9)}`;
+            console.log("sliced viewportId : ", slicedViewportId);
+
             const contentElement = document.getElementById(slicedViewportId);
+            console.log(contentElement);
             const currentSeriesKey = seriesKeys[(seriesKeys.indexOf(serieskey) + i) % seriesKeys.length];
+            console.log("[267]element : " + currentSeriesKey)
             await loadSeries(currentSeriesKey, contentElement, slicedViewportId);
         });
     }
@@ -269,6 +280,15 @@ const toolAction = (tool) => {
     const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
     toolGroup.setToolActive(tool, { bindings: [{ mouseButton: MouseBindings.Primary }] });
 };
+
+document.getElementById('zoomTool').addEventListener('click', () => toolAction(ZoomTool.toolName));
+document.getElementById('panTool').addEventListener('click', () => toolAction(PanTool.toolName));
+document.getElementById('lengthTool').addEventListener('click', () => toolAction(LengthTool.toolName));
+document.getElementById('angleTool').addEventListener('click', () => toolAction(AngleTool.toolName));
+document.getElementById('magnifyTool').addEventListener('click', () => toolAction(MagnifyTool.toolName));
+document.getElementById('stackScrollTool').addEventListener('click', () => toolAction(StackScrollMouseWheelTool.toolName));
+
+document.addEventListener('DOMContentLoaded', init);
 
 document.getElementById('report').addEventListener('click', function() {
     const currentUrl = window.location.href;
