@@ -42,7 +42,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/css/**", "/script/**", "/images/**", "/webjars/**", "/favicon.ico", "/user/**", "/ws/**").permitAll()
+                .antMatchers( "/css/**","/script/login.js","/script/join.js",
+                        "/webjars/**", "/favicon.ico", "/user/login","/user/join", "/ws/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
