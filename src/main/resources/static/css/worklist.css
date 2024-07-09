@@ -125,7 +125,7 @@ body {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    max-height: 300px; /* Fixed height for the table */
+    max-height: 400px; /* Fixed height for the table */
     overflow-y: auto; /* Scrollable area */
     display: block;
     table-layout: fixed;
@@ -148,17 +148,29 @@ body {
 }
 
 .data-table td {
-    /*padding: 12px 15px;*/
+    padding: 12px 15px;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.data-table tbody {
-    display: block;
-    max-height: 200px; /* Adjust based on your requirement */
+.data-table thead {
+    /*display: table;*/
+    max-height: 200px;
     overflow-y: auto;
+}
+
+.data-table tbody {
+    /*display: table-row-group;*/
+    max-height: 400px; /* Adjust based on your requirement */
+    overflow-y: auto;
+}
+
+.data-table thead tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 
 .data-table tbody tr {
