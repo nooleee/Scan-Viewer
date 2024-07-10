@@ -15,49 +15,49 @@
     <title>Consent Form</title>
 </head>
 <body>
-<h2>Consent Form</h2>
+<%--<h2>Consent Form</h2>--%>
 <form id="consentForm" action="/consent/submit" method="post">
     <div class="form-group">
         <input type="hidden" id="studyKey" name="studyKey" value="${studyKey}">
     </div>
     <div class="form-group">
-        <label for="userCode">User Code:</label>
+        <label for="userCode">유저코드:</label>
         <input type="text" id="userCode" name="userCode" readonly>
     </div>
     <div class="form-group">
-        <label for="name">Name:</label>
+        <label for="name">이름:</label>
         <input type="text" id="name" name="name" readonly>
     </div>
     <div class="form-group">
-        <label for="birth">Birth:</label>
+        <label for="birth">생년월일:</label>
         <input type="date" id="birth" name="birth" readonly>
     </div>
     <div class="form-group">
-        <label for="phone">Phone:</label>
+        <label for="phone">연락처:</label>
         <input type="text" id="phone" name="phone" readonly>
     </div>
     <div class="form-group">
-        <label for="position">Position:</label>
+        <label for="position">직책:</label>
         <input type="text" id="position" name="position" required>
     </div>
     <div class="form-group">
-        <label for="address">Address:</label>
+        <label for="address">주소:</label>
         <input type="text" id="address" name="address" required>
     </div>
     <div class="form-group">
-        <label for="department">Department:</label>
+        <label for="department">소속부서:</label>
         <input type="text" id="department" name="department" required>
     </div>
     <div class="form-group">
-        <label for="user">User:</label>
+        <label for="user">검사자:</label>
         <input type="text" id="user" name="user" required>
     </div>
     <div class="form-group">
-        <label for="detail">Detail:</label>
+        <label for="detail">환자와의 관계:</label>
         <textarea id="detail" name="detail" required></textarea>
     </div>
     <div class="form-group">
-        <label for="purpose">Purpose:</label>
+        <label for="purpose">목적:</label>
         <textarea id="purpose" name="purpose" required></textarea>
     </div>
     <div class="form-group">
