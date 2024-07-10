@@ -4,7 +4,9 @@ import * as cornerstoneDICOMImageLoader from '@cornerstonejs/dicom-image-loader'
 import * as dicomParser from 'dicom-parser';
 
 const {
-    ZoomTool, PanTool, LengthTool, AngleTool, MagnifyTool, ToolGroupManager, StackScrollMouseWheelTool,
+    ZoomTool, PanTool, LengthTool, AngleTool,
+    MagnifyTool, ToolGroupManager,
+    StackScrollMouseWheelTool,
     WindowLevelTool,
     Enums: csToolsEnums
 } = cornerstoneTools;
