@@ -132,7 +132,7 @@ $(document).ready(function() {
     $('#messageInputContainer').hide();
 
     // 1분마다 fetchLogOnUsers 실행
-    setInterval(fetchLogOnUsers, 60000);  // 60000 ms = 1 minute
+    setInterval(fetchLogOnUsers, 1000);  // 60000 ms = 1 minute
 
     // 페이지를 떠날 때 소켓 연결 해지
     window.onbeforeunload = function() {
