@@ -36,6 +36,18 @@
     </div>
     <div id="dicomViewport1" class="viewport"></div>
 </div>
+
+<!-- 모달창 HTML -->
+<div id="reportModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="container">
+            <jsp:include page="/WEB-INF/views/report/report.jsp" />
+        </div>
+    </div>
+</div>
+
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
 </body>
 </html>
