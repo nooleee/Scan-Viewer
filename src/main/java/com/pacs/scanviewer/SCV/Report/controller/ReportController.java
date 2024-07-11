@@ -2,38 +2,15 @@ package com.pacs.scanviewer.SCV.Report.controller;
 
 import com.pacs.scanviewer.SCV.Report.domain.Report;
 import com.pacs.scanviewer.SCV.Report.service.ReportService;
-import com.pacs.scanviewer.pacs.Study.domain.Study;
-import com.pacs.scanviewer.pacs.Study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/report")
 public class ReportController {
     private final ReportService reportService;
-    private final StudyService studyService;
-
-    @GetMapping("/{studyKey}")
-    public ModelAndView reportByStudyKey(@PathVariable int studyKey) {
-        ModelAndView model;
-        Report report = reportService.getReportByStudyKey(studyKey);
-
-        if (report == null) {
-            model = new ModelAndView("report/report");
-        } else {
-            model = new ModelAndView("report/reportUpdate");
-            model.addObject("report", report);
-        }
-
-        List<Study> reportList = studyService.findByStudykey(studyKey);
-        model.addObject("reports", reportList);
-        return model;
-    }
 
     @GetMapping("/ByStudyKey")
     @ResponseBody
@@ -48,13 +25,15 @@ public class ReportController {
     }
 
     @PostMapping("/{studyKey}")
-    public void createReport(@ModelAttribute Report report) {
+    public ResponseEntity<?> createReport(@ModelAttribute Report report) {
         reportService.save(report);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{studyKey}")
-    public void updateReport(@ModelAttribute Report report) {
+    public ResponseEntity<?> updateReport(@ModelAttribute Report report) {
         reportService.update(report);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/searchICD")

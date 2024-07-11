@@ -217,7 +217,7 @@ document.getElementById('toggleThumbnails').addEventListener('click', () => {
 //     const layoutMenu = document.getElementById('layoutMenu');
 //     layoutMenu.classList.toggle('hidden');
 // });
-
+//
 // const setLayout = (layout) => {
 //     const mainContent = document.getElementById('mainContent');
 //     mainContent.innerHTML = '';
@@ -244,7 +244,7 @@ document.getElementById('toggleThumbnails').addEventListener('click', () => {
 //             `;
 //             break;
 //     }
-//
+
 //     const keys = extractKeysFromPath();
 //     console.log("[244]seriesList : " + JSON.stringify(seriesList));
 //     if (keys) {
@@ -281,68 +281,18 @@ document.getElementById("toolbar").addEventListener('click', (e)=>{
         toolGroup.setToolActive(selectedToolName, { bindings: [{ mouseButton: MouseBindings.Primary }] });
     }
 })
-
 document.addEventListener('DOMContentLoaded', init);
 
 document.getElementById('report').addEventListener('click', function() {
-    const currentUrl = window.location.href;
-    const parts = currentUrl.split('/');
-    const studyKey = parts[parts.length - 2];
-
-    window.location.href = '/report/' + studyKey;
+    document.getElementById('reportModal').style.display = 'block';
 });
 
-// 모달 및 그리드 컨테이너 요소
-const modal = document.getElementById("gridSelectionModal");
-const gridContainer = document.querySelector(".grid-container");
-
-// 모달 닫기 버튼
-const closeButton = document.querySelector(".close");
-
-// 모달 열기 버튼
-document.getElementById('layoutButton').addEventListener('click', () => {
-    modal.style.display = "block";
+document.querySelector('.close').addEventListener('click', function() {
+    document.getElementById('reportModal').style.display = 'none';
 });
 
-// 모달 닫기
-closeButton.addEventListener('click', () => {
-    modal.style.display = "none";
-});
-
-// 모달 외부 클릭 시 닫기
-window.addEventListener('click', (event) => {
-    if (event.target == modal) {
-        modal.style.display = "none";
+window.onclick = function(event) {
+    if (event.target == document.getElementById('reportModal')) {
+        document.getElementById('reportModal').style.display = 'none';
     }
-});
-
-// 그리드 버튼 생성 (3x3 예시)
-for (let rows = 1; rows <= 5; rows++) {
-    for (let cols = 1; cols <= 5; cols++) {
-        const gridButton = document.createElement('button');
-        gridButton.classList.add('grid-button');
-        gridButton.innerText = `${rows}x${cols}`;
-        gridButton.addEventListener('click', () => setGridLayout(rows, cols));
-        gridContainer.appendChild(gridButton);
-    }
-}
-
-function setGridLayout(rows, cols) {
-    const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = '';
-
-    const totalViewports = rows * cols;
-    for (let i = 0; i < totalViewports; i++) {
-        const viewport = document.createElement('div');
-        viewport.classList.add('viewport');
-        viewport.id = `dicomViewport${i + 1}`;
-        mainContent.appendChild(viewport);
-    }
-
-    // Flexbox를 이용하여 그리드 배치
-    mainContent.style.display = 'grid';
-    mainContent.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
-    mainContent.style.gridTemplateCols = `repeat(${cols}, 1fr)`;
-
-    modal.style.display = "none";  // 모달 닫기
-}
+};

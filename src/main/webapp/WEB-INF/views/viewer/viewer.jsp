@@ -5,11 +5,9 @@
 <head>
     <title>Detail</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/viewer.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/header.css">
 </head>
 <body>
 <h1>DICOM Viewer</h1>
-<%--<%@ include file="/main/webapp/WEB-INF/webapp/views/header.jsp" %>--%>
 <div id ="toolbar" class="toolbar">
     <button id="report">Report</button>
     <button id="backButton">Worklist</button>
@@ -22,7 +20,6 @@
     <button class="tools" id="Magnify">Magnify</button>
     <button class="tools" id="StackScroll">Stack Scroll</button>
     <button class="tools" id="WindowLevel">Window Level</button>
-<%--    <button id="invertTool">Invert</button>--%>
 </div>
 <div id="gridSelectionModal" class="modal">
     <div class="modal-content">
@@ -43,14 +40,18 @@
     </div>
     <div id="dicomViewport1" class="viewport"></div>
 </div>
-<div id="gridSelectionModal" class="modal">
+
+<!-- 모달창 HTML -->
+<div id="reportModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <div class="grid-container">
-            <!-- JavaScript에서 동적으로 그리드 버튼 생성 -->
+        <div class="container">
+            <jsp:include page="/WEB-INF/views/report/report.jsp" />
         </div>
     </div>
 </div>
+
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
 </body>
 </html>

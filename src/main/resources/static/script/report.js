@@ -36,13 +36,27 @@ $(document).ready(function () {
         $('#date').val(formattedDateTime);
     }
 
-    $('.button').on('click', function (e) {
+    function getStudyKeyFromUrl() {
+        var pathParts = window.location.pathname.split('/');
+        if (pathParts.length >= 3) {
+            return pathParts[2]; // 예: /images/17/1에서 17 추출
+        }
+        return null;
+    }
+
+    $('.button').off('click').on('click', function (e) {
         e.preventDefault();
 
         setCurrentDateTime();
 
+        var studyKey = getStudyKeyFromUrl();
+        if (!studyKey) {
+            alert('유효한 studykey를 추출할 수 없습니다.');
+            return;
+        }
+
         var reportData = {
-            studyKey: $('#studyKey').val(),
+            studyKey: studyKey,
             userCode: $('#userCode').val(),
             date: $('#date').val(),
             diseaseCode: $('#diseaseCode').val(),
@@ -55,7 +69,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/report/"+$('#studyKey').val(),
+            url: "/report/" + studyKey,
             contentType: "application/x-www-form-urlencoded",
             data: $.param(reportData),
             success: function (response) {
