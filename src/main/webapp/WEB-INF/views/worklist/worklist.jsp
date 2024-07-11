@@ -87,7 +87,7 @@
                 </select>
             </div>
         </div>
-        <div>
+        <div class="mainBox">
         <div class="search">
             <h3>검색</h3>
             <input type="text" placeholder="환자 아이디" id="pid">
@@ -100,9 +100,6 @@
                 <option value="2">판독완료</option>
             </select>
             <button class="button" id="getAllStudiesBtn">전체</button>
-<%--            <button>1일</button>--%>
-<%--            <button>3일</button>--%>
-<%--            <button>1주일</button>--%>
             <button class="button reset" id="reset">재설정</button>
             <button class="button search-button" id="searchStudies">검색</button>
         </div>
@@ -123,7 +120,7 @@
         <main class="main-content">
             <div class="all-info">
                 <table class="data-table" id="data-table">
-                    <thead>
+                    <thead class="table-header">
                     <tr>
                         <th>환자 아이디</th>
                         <th>환자 이름</th>
