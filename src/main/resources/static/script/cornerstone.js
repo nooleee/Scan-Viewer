@@ -7,6 +7,7 @@ const {
     ZoomTool, PanTool, LengthTool, AngleTool,
     MagnifyTool, ToolGroupManager,
     StackScrollMouseWheelTool,
+    StackScrollTool,
     WindowLevelTool,
     Enums: csToolsEnums
 } = cornerstoneTools;
@@ -17,7 +18,7 @@ const renderingEngineId = 'myRenderingEngine';
 let viewports = ['viewport1'];
 let seriesList = [];
 let allImages = {};
-
+let selectedToolName = PanTool.toolName;
 // 데이터를 초기화합니다.
 const initializeData = async (studykey) => {
     try {
@@ -60,7 +61,8 @@ const initializeCornerstone = async () => {
         { tool: AngleTool, options: {} },
         { tool: MagnifyTool, options: {} },
         { tool: WindowLevelTool, options: {} },
-        { tool: StackScrollMouseWheelTool, options: {} }
+        { tool: StackScrollMouseWheelTool, options: {} },
+        { tool: StackScrollTool, options: {} }
     ];
 
     tools.forEach(({ tool, options }) => {
@@ -104,20 +106,8 @@ const render = async (imageIds, element, viewportId) => {
 
     await viewport.render();
 
-    toolGroup.setToolActive(ZoomTool.toolName, {
+    toolGroup.setToolActive(selectedToolName, {
         bindings: [{ mouseButton: MouseBindings.Primary }],
-    });
-    toolGroup.setToolActive(MagnifyTool.toolName, {
-        bindings: [{ mouseButton: MouseBindings.Secondary }],
-    });
-    toolGroup.setToolActive(AngleTool.toolName, {
-        bindings: [{ mouseButton: MouseBindings.Auxiliary }],
-    });
-    toolGroup.setToolActive(PanTool.toolName, {
-        bindings: [{ mouseButton: MouseBindings.Primary_And_Secondary }],
-    });
-    toolGroup.setToolActive(WindowLevelTool.toolName, {
-        bindings: [{ mouseButton: MouseBindings.Primary_And_Auxiliary }],
     });
     toolGroup.setToolActive(StackScrollMouseWheelTool.toolName);
 };
@@ -223,72 +213,74 @@ document.getElementById('toggleThumbnails').addEventListener('click', () => {
     thumbnails.classList.toggle('hidden');
 });
 
-document.getElementById('layoutButton').addEventListener('click', () => {
-    const layoutMenu = document.getElementById('layoutMenu');
-    layoutMenu.classList.toggle('hidden');
-});
+// document.getElementById('layoutButton').addEventListener('click', () => {
+//     const layoutMenu = document.getElementById('layoutMenu');
+//     layoutMenu.classList.toggle('hidden');
+// });
 
-const setLayout = (layout) => {
-    const mainContent = document.getElementById('mainContent');
-    mainContent.innerHTML = '';
+// const setLayout = (layout) => {
+//     const mainContent = document.getElementById('mainContent');
+//     mainContent.innerHTML = '';
+//
+//     switch (layout) {
+//         case 'one':
+//             viewports = ['viewport1'];
+//             mainContent.innerHTML = '<div id="dicomViewport1" class="viewport"></div>';
+//             break;
+//         case 'two':
+//             viewports = ['viewport1', 'viewport2'];
+//             mainContent.innerHTML = `
+//                 <div id="dicomViewport1" class="viewport"></div>
+//                 <div id="dicomViewport2" class="viewport"></div>
+//             `;
+//             break;
+//         case 'four':
+//             viewports = ['viewport1', 'viewport2', 'viewport3', 'viewport4'];
+//             mainContent.innerHTML = `
+//                 <div id="dicomViewport1" class="viewport"></div>
+//                 <div id="dicomViewport2" class="viewport"></div>
+//                 <div id="dicomViewport3" class="viewport"></div>
+//                 <div id="dicomViewport4" class="viewport"></div>
+//             `;
+//             break;
+//     }
+//
+//     const keys = extractKeysFromPath();
+//     console.log("[244]seriesList : " + JSON.stringify(seriesList));
+//     if (keys) {
+//         const { studykey, serieskey } = keys;
+//         const seriesKeys = seriesList.map(series => series.seriesKey);
+//         viewports.forEach(async (viewportId, i) => {
+//             console.log("viewportId : ", viewportId);
+//             const slicedViewportId = `dicomV${viewportId.slice(1, 9)}`;
+//             console.log("sliced viewportId : ", slicedViewportId);
+//
+//             const contentElement = document.getElementById(slicedViewportId);
+//             console.log(contentElement);
+//             const currentSeriesKey = seriesKeys[(seriesKeys.indexOf(serieskey) + i) % seriesKeys.length];
+//             console.log("[267]element : " + currentSeriesKey)
+//             await loadSeries(currentSeriesKey, contentElement, slicedViewportId);
+//         });
+//     }
+// };
 
-    switch (layout) {
-        case 'one':
-            viewports = ['viewport1'];
-            mainContent.innerHTML = '<div id="dicomViewport1" class="viewport"></div>';
-            break;
-        case 'two':
-            viewports = ['viewport1', 'viewport2'];
-            mainContent.innerHTML = `
-                <div id="dicomViewport1" class="viewport"></div>
-                <div id="dicomViewport2" class="viewport"></div>
-            `;
-            break;
-        case 'four':
-            viewports = ['viewport1', 'viewport2', 'viewport3', 'viewport4'];
-            mainContent.innerHTML = `
-                <div id="dicomViewport1" class="viewport"></div>
-                <div id="dicomViewport2" class="viewport"></div>
-                <div id="dicomViewport3" class="viewport"></div>
-                <div id="dicomViewport4" class="viewport"></div>
-            `;
-            break;
-    }
-
-    const keys = extractKeysFromPath();
-    console.log("[244]seriesList : " + JSON.stringify(seriesList));
-    if (keys) {
-        const { studykey, serieskey } = keys;
-        const seriesKeys = seriesList.map(series => series.seriesKey);
-        viewports.forEach(async (viewportId, i) => {
-            console.log("viewportId : ", viewportId);
-            const slicedViewportId = `dicomV${viewportId.slice(1, 9)}`;
-            console.log("sliced viewportId : ", slicedViewportId);
-
-            const contentElement = document.getElementById(slicedViewportId);
-            console.log(contentElement);
-            const currentSeriesKey = seriesKeys[(seriesKeys.indexOf(serieskey) + i) % seriesKeys.length];
-            console.log("[267]element : " + currentSeriesKey)
-            await loadSeries(currentSeriesKey, contentElement, slicedViewportId);
-        });
-    }
-};
-
-document.getElementById('layoutOne').addEventListener('click', () => setLayout('one'));
-document.getElementById('layoutTwo').addEventListener('click', () => setLayout('two'));
-document.getElementById('layoutFour').addEventListener('click', () => setLayout('four'));
+// document.getElementById('layoutOne').addEventListener('click', () => setLayout('one'));
+// document.getElementById('layoutTwo').addEventListener('click', () => setLayout('two'));
+// document.getElementById('layoutFour').addEventListener('click', () => setLayout('four'));
 
 const toolAction = (tool) => {
     const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
     toolGroup.setToolActive(tool, { bindings: [{ mouseButton: MouseBindings.Primary }] });
 };
 
-document.getElementById('zoomTool').addEventListener('click', () => toolAction(ZoomTool.toolName));
-document.getElementById('panTool').addEventListener('click', () => toolAction(PanTool.toolName));
-document.getElementById('lengthTool').addEventListener('click', () => toolAction(LengthTool.toolName));
-document.getElementById('angleTool').addEventListener('click', () => toolAction(AngleTool.toolName));
-document.getElementById('magnifyTool').addEventListener('click', () => toolAction(MagnifyTool.toolName));
-document.getElementById('stackScrollTool').addEventListener('click', () => toolAction(StackScrollMouseWheelTool.toolName));
+document.getElementById("toolbar").addEventListener('click', (e)=>{
+    if(e.target.className === "tools"){
+        const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
+        toolGroup.setToolPassive(selectedToolName);
+        selectedToolName = e.target.id;
+        toolGroup.setToolActive(selectedToolName, { bindings: [{ mouseButton: MouseBindings.Primary }] });
+    }
+})
 
 document.addEventListener('DOMContentLoaded', init);
 
@@ -299,3 +291,58 @@ document.getElementById('report').addEventListener('click', function() {
 
     window.location.href = '/report/' + studyKey;
 });
+
+// 모달 및 그리드 컨테이너 요소
+const modal = document.getElementById("gridSelectionModal");
+const gridContainer = document.querySelector(".grid-container");
+
+// 모달 닫기 버튼
+const closeButton = document.querySelector(".close");
+
+// 모달 열기 버튼
+document.getElementById('layoutButton').addEventListener('click', () => {
+    modal.style.display = "block";
+});
+
+// 모달 닫기
+closeButton.addEventListener('click', () => {
+    modal.style.display = "none";
+});
+
+// 모달 외부 클릭 시 닫기
+window.addEventListener('click', (event) => {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+});
+
+// 그리드 버튼 생성 (3x3 예시)
+for (let rows = 1; rows <= 5; rows++) {
+    for (let cols = 1; cols <= 5; cols++) {
+        const gridButton = document.createElement('button');
+        gridButton.classList.add('grid-button');
+        gridButton.innerText = `${rows}x${cols}`;
+        gridButton.addEventListener('click', () => setGridLayout(rows, cols));
+        gridContainer.appendChild(gridButton);
+    }
+}
+
+function setGridLayout(rows, cols) {
+    const mainContent = document.getElementById('mainContent');
+    mainContent.innerHTML = '';
+
+    const totalViewports = rows * cols;
+    for (let i = 0; i < totalViewports; i++) {
+        const viewport = document.createElement('div');
+        viewport.classList.add('viewport');
+        viewport.id = `dicomViewport${i + 1}`;
+        mainContent.appendChild(viewport);
+    }
+
+    // Flexbox를 이용하여 그리드 배치
+    mainContent.style.display = 'grid';
+    mainContent.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    mainContent.style.gridTemplateCols = `repeat(${cols}, 1fr)`;
+
+    modal.style.display = "none";  // 모달 닫기
+}

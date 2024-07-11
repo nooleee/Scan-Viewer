@@ -5,24 +5,31 @@
 <head>
     <title>Detail</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/viewer.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/header.css">
 </head>
 <body>
 <h1>DICOM Viewer</h1>
-<div class="toolbar">
+<%--<%@ include file="/main/webapp/WEB-INF/webapp/views/header.jsp" %>--%>
+<div id ="toolbar" class="toolbar">
     <button id="report">Report</button>
     <button id="backButton">Worklist</button>
     <button id="toggleThumbnails">Toggle Thumbnails</button>
     <button id="layoutButton">Layout</button>
-    <button id="zoomTool">Zoom</button>
-    <button id="panTool">Pan</button>
-    <button id="lengthTool">Length</button>
-    <button id="angleTool">Angle</button>
-    <button id="magnifyTool">Magnify</button>
-    <button id="stackScrollTool">Stack Scroll</button>
-    <div id="layoutMenu" class="layout-menu hidden">
-        <button id="layoutOne">1 Viewport</button>
-        <button id="layoutTwo">2 Viewports</button>
-        <button id="layoutFour">4 Viewports</button>
+    <button class="tools" id="Zoom">Zoom</button>
+    <button class="tools" id="Pan">Pan</button>
+    <button class="tools" id="Length">Length</button>
+    <button class="tools" id="Angle">Angle</button>
+    <button class="tools" id="Magnify">Magnify</button>
+    <button class="tools" id="StackScroll">Stack Scroll</button>
+    <button class="tools" id="WindowLevel">Window Level</button>
+<%--    <button id="invertTool">Invert</button>--%>
+</div>
+<div id="gridSelectionModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="grid-container">
+            <!-- JavaScript에서 동적으로 그리드 버튼 생성 -->
+        </div>
     </div>
 </div>
 <div id="mainContent">
@@ -35,6 +42,14 @@
         </c:forEach>
     </div>
     <div id="dicomViewport1" class="viewport"></div>
+</div>
+<div id="gridSelectionModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="grid-container">
+            <!-- JavaScript에서 동적으로 그리드 버튼 생성 -->
+        </div>
+    </div>
 </div>
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
 </body>
