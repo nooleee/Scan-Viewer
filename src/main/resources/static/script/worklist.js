@@ -51,9 +51,9 @@ document.getElementById('logout').addEventListener('click', function() {
 
 document.getElementById('pageSizeSelect').addEventListener('change', function() {
     pageSize = parseInt(this.value);
+    currentPage = 0;
     const pid = document.querySelector('input[placeholder="환자 아이디"]').value;
     const pname = document.querySelector('input[placeholder="환자 이름"]').value;
-    currentPage = 0;
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
     const start = startDate.replaceAll("-", "");
@@ -156,13 +156,6 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#searchDetail').toggleClass('hidden');
     });
 
-    // 날짜로 검색 버튼 클릭 시 처리
-    $('#searchByDate').click(function() {
-        var startDate = $('#startDate').val();
-        var endDate = $('#endDate').val();
-        // 여기에 날짜로 검색하는 기능을 추가하세요.
-        console.log('Searching from', startDate, 'to', endDate);
-    });
 
     flatpickr("#calendar", {
         inline: true,
@@ -207,8 +200,6 @@ document.addEventListener('DOMContentLoaded', function () {
             videoReplay: $('#videoReplay').val(),
         };
 
-        console.log('전송할 데이터:', reportData);
-
         $.ajax({
             type: "POST",
             url: "/report/"+$('#studyKey').val(),
@@ -240,8 +231,6 @@ document.addEventListener('DOMContentLoaded', function () {
             patient: $('.patient').val(),
             videoReplay: $('#videoReplay').val(),
         };
-
-        console.log('전송할 데이터:', reportData);
 
         $.ajax({
             type: "PUT",
@@ -317,7 +306,6 @@ function fetchStudiesByPid(pid) {
         })
         .catch(error => {
             console.error('오류 발생:', error);
-            alert('데이터를 불러오는 중 오류가 발생했습니다.');
         });
 }
 
@@ -447,6 +435,8 @@ function reset(){
     var formattedToday = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
     document.getElementById('endDate').value = formattedToday;
     document.querySelector('#searchDetail select').value = '';
+    const pageSizeSelect = document.getElementById('pageSizeSelect');
+    pageSizeSelect.value = '5';
 
     // previous 섹션 초기화
     const previousTable = document.getElementById('previous-table').getElementsByTagName('tbody')[0];
