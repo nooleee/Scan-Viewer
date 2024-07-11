@@ -293,9 +293,15 @@ document.getElementById('stackScrollTool').addEventListener('click', () => toolA
 document.addEventListener('DOMContentLoaded', init);
 
 document.getElementById('report').addEventListener('click', function() {
-    const currentUrl = window.location.href;
-    const parts = currentUrl.split('/');
-    const studyKey = parts[parts.length - 2];
-
-    window.location.href = '/report/' + studyKey;
+    document.getElementById('reportModal').style.display = 'block';
 });
+
+document.querySelector('.close').addEventListener('click', function() {
+    document.getElementById('reportModal').style.display = 'none';
+});
+
+window.onclick = function(event) {
+    if (event.target == document.getElementById('reportModal')) {
+        document.getElementById('reportModal').style.display = 'none';
+    }
+};
