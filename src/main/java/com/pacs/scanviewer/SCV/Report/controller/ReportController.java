@@ -2,7 +2,6 @@ package com.pacs.scanviewer.SCV.Report.controller;
 
 import com.pacs.scanviewer.SCV.Report.domain.Report;
 import com.pacs.scanviewer.SCV.Report.service.ReportService;
-import com.pacs.scanviewer.pacs.Study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
