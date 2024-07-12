@@ -295,7 +295,7 @@ document.querySelectorAll('.close').forEach(function(element) {
 
 
 window.onclick = function(event) {
-    if (event.target == document.getElementById('reportModal')) {
+    if (event.target === document.getElementById('reportModal')) {
         document.getElementById('reportModal').style.display = 'none';
     }
 };
