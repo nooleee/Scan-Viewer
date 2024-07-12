@@ -52,6 +52,5 @@
 </div>
 
 <script src="${pageContext.request.contextPath}/dist/bundle.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/script/report.js"></script>
 </body>
 </html>
