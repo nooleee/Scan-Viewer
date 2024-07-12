@@ -287,9 +287,12 @@ document.getElementById('report').addEventListener('click', function() {
     document.getElementById('reportModal').style.display = 'block';
 });
 
-document.querySelector('.close').addEventListener('click', function() {
-    document.getElementById('reportModal').style.display = 'none';
+document.querySelectorAll('.close').forEach(function(element) {
+    element.addEventListener('click', function() {
+        document.getElementById('reportModal').style.display = 'none';
+    });
 });
+
 
 window.onclick = function(event) {
     if (event.target == document.getElementById('reportModal')) {
