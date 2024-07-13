@@ -19,6 +19,7 @@ let viewports = ['viewport1'];
 let seriesList = [];
 let allImages = {};
 let selectedToolName = PanTool.toolName;
+
 // 데이터를 초기화합니다.
 const initializeData = async (studykey) => {
     try {
@@ -81,15 +82,11 @@ const initializeCornerstone = async () => {
 const render = async (imageIds, element, viewportId) => {
     const renderingEngine = cornerstone.getRenderingEngine(renderingEngineId);
 
-    console.log("[65]viewportId : " + viewportId);
     const viewportInput = {
         viewportId,
         element,
         type: cornerstone.Enums.ViewportType.STACK,
     };
-
-    console.log("[72]element : " + element);
-    // console.dir(element);
 
     renderingEngine.enableElement(viewportInput);
     const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
@@ -98,11 +95,7 @@ const render = async (imageIds, element, viewportId) => {
     await renderingEngine.renderViewports([viewportId]);
 
     const viewport = renderingEngine.getViewport(viewportInput.viewportId);
-
-
     await viewport.setStack(imageIds);
-
-    // cornerstoneTools.utilities.stackPrefetch.enable(viewport.element);
 
     await viewport.render();
 
@@ -180,7 +173,6 @@ const init = async () => {
         const { studykey, serieskey } = keys;
         await initializeData(studykey);
         const contentElement = document.getElementById('dicomViewport1');
-        console.log("[172]contentElement : " + contentElement);
         await loadSeries(serieskey, contentElement, 'viewport1');
     } else {
         console.error('studykey와 serieskey를 추출할 수 없습니다.');
@@ -190,8 +182,6 @@ const init = async () => {
         studyKey: keys.studykey,
         seriesKey: thumbnail.getAttribute('data-series-key')
     }));
-
-    console.log("[178]seriesList : " + JSON.stringify(seriesList));
 
     await loadThumbnails(seriesList);
 
@@ -213,61 +203,6 @@ document.getElementById('toggleThumbnails').addEventListener('click', () => {
     thumbnails.classList.toggle('hidden');
 });
 
-// document.getElementById('layoutButton').addEventListener('click', () => {
-//     const layoutMenu = document.getElementById('layoutMenu');
-//     layoutMenu.classList.toggle('hidden');
-// });
-//
-// const setLayout = (layout) => {
-//     const mainContent = document.getElementById('mainContent');
-//     mainContent.innerHTML = '';
-//
-//     switch (layout) {
-//         case 'one':
-//             viewports = ['viewport1'];
-//             mainContent.innerHTML = '<div id="dicomViewport1" class="viewport"></div>';
-//             break;
-//         case 'two':
-//             viewports = ['viewport1', 'viewport2'];
-//             mainContent.innerHTML = `
-//                 <div id="dicomViewport1" class="viewport"></div>
-//                 <div id="dicomViewport2" class="viewport"></div>
-//             `;
-//             break;
-//         case 'four':
-//             viewports = ['viewport1', 'viewport2', 'viewport3', 'viewport4'];
-//             mainContent.innerHTML = `
-//                 <div id="dicomViewport1" class="viewport"></div>
-//                 <div id="dicomViewport2" class="viewport"></div>
-//                 <div id="dicomViewport3" class="viewport"></div>
-//                 <div id="dicomViewport4" class="viewport"></div>
-//             `;
-//             break;
-//     }
-
-//     const keys = extractKeysFromPath();
-//     console.log("[244]seriesList : " + JSON.stringify(seriesList));
-//     if (keys) {
-//         const { studykey, serieskey } = keys;
-//         const seriesKeys = seriesList.map(series => series.seriesKey);
-//         viewports.forEach(async (viewportId, i) => {
-//             console.log("viewportId : ", viewportId);
-//             const slicedViewportId = `dicomV${viewportId.slice(1, 9)}`;
-//             console.log("sliced viewportId : ", slicedViewportId);
-//
-//             const contentElement = document.getElementById(slicedViewportId);
-//             console.log(contentElement);
-//             const currentSeriesKey = seriesKeys[(seriesKeys.indexOf(serieskey) + i) % seriesKeys.length];
-//             console.log("[267]element : " + currentSeriesKey)
-//             await loadSeries(currentSeriesKey, contentElement, slicedViewportId);
-//         });
-//     }
-// };
-
-// document.getElementById('layoutOne').addEventListener('click', () => setLayout('one'));
-// document.getElementById('layoutTwo').addEventListener('click', () => setLayout('two'));
-// document.getElementById('layoutFour').addEventListener('click', () => setLayout('four'));
-
 const toolAction = (tool) => {
     const toolGroup = ToolGroupManager.getToolGroup(toolGroupId);
     toolGroup.setToolActive(tool, { bindings: [{ mouseButton: MouseBindings.Primary }] });
@@ -280,7 +215,8 @@ document.getElementById("toolbar").addEventListener('click', (e)=>{
         selectedToolName = e.target.id;
         toolGroup.setToolActive(selectedToolName, { bindings: [{ mouseButton: MouseBindings.Primary }] });
     }
-})
+});
+
 document.addEventListener('DOMContentLoaded', init);
 
 document.getElementById('report').addEventListener('click', function() {
@@ -296,3 +232,63 @@ window.onclick = function(event) {
         document.getElementById('reportModal').style.display = 'none';
     }
 };
+
+// 그리드 선택 모달창
+const modal = document.getElementById("gridModal");
+const gridOptions = document.querySelectorAll(".grid-option");
+
+document.getElementById('layoutButton').addEventListener('click', () => {
+    modal.style.display = "block";
+});
+
+gridOptions.forEach(option => {
+    option.addEventListener('click', () => {
+        const [rows, cols] = option.getAttribute('data-grid').split('x').map(Number);
+        setGridLayout(rows, cols);
+    });
+});
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+};
+
+// 그리드 레이아웃 설정 함수
+const setGridLayout = (rows, cols) => {
+    const mainContent = document.getElementById('mainContent');
+    mainContent.innerHTML = '';
+
+    viewports = [];
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
+            const viewportId = `dicomViewport${i * cols + j + 1}`;
+            viewports.push(viewportId);
+            const viewportDiv = document.createElement('div');
+            viewportDiv.id = viewportId;
+            viewportDiv.className = 'viewport';
+            mainContent.appendChild(viewportDiv);
+        }
+    }
+
+    const keys = extractKeysFromPath();
+    if (keys) {
+        const { studykey, serieskey } = keys;
+        const seriesKeys = seriesList.map(series => series.seriesKey);
+        viewports.forEach(async (viewportId, i) => {
+            const contentElement = document.getElementById(viewportId);
+            const currentSeriesKey = seriesKeys[(seriesKeys.indexOf(serieskey) + i) % seriesKeys.length];
+            await loadSeries(currentSeriesKey, contentElement, viewportId);
+        });
+    }
+
+    modal.style.display = "none";
+};
+
+document.getElementById('grid-container').addEventListener('click', (e) => {
+    if(e.target.className === "grid-option" ){
+        const row = parseInt(e.target.dataset.row);
+        const col = parseInt(e.target.dataset.col);
+        setGridLayout(row,col);
+    }
+});
