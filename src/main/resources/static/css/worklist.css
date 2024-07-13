@@ -13,9 +13,12 @@ body {
 }
 
 .container {
-    display: flex;
     width: 100%;
     height: 960px;
+}
+
+#allBox {
+    display: flex;
 }
 
 .aside {
@@ -126,7 +129,7 @@ body {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    max-height: 400px; /* Fixed height for the table */
+    max-height: 300px; /* Fixed height for the table */
     overflow-y: auto; /* Scrollable area */
     display: block;
     table-layout: fixed;
@@ -160,12 +163,17 @@ body {
     /*display: table;*/
     max-height: 200px;
     overflow-y: auto;
+    position: sticky;
+    top: 0;
 }
 
 .data-table tbody {
     /*display: table-row-group;*/
-    max-height: 400px; /* Adjust based on your requirement */
+    max-height: 300px; /* Adjust based on your requirement */
     overflow-y: auto;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
 }
 
 .data-table thead tr {
@@ -193,7 +201,7 @@ body {
 }
 
 .all-info {
-    height: 430px;
+    height: 350px;
 }
 
 .previous, .report {
