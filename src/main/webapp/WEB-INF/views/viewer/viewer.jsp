@@ -5,6 +5,7 @@
 <head>
     <title>Detail</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/viewer.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>DICOM Viewer</h1>
@@ -45,8 +46,7 @@
 <div id="reportModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <div class="container">
-            <jsp:include page="/WEB-INF/views/report/report.jsp" />
+        <div id="reportContainer" class="container">
         </div>
     </div>
 </div>
