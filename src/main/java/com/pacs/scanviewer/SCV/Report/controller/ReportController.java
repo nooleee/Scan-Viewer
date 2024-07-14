@@ -2,15 +2,22 @@ package com.pacs.scanviewer.SCV.Report.controller;
 
 import com.pacs.scanviewer.SCV.Report.domain.Report;
 import com.pacs.scanviewer.SCV.Report.service.ReportService;
+import com.pacs.scanviewer.pacs.Study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/report")
 public class ReportController {
     private final ReportService reportService;
+    private final StudyService studyService;
 
     @GetMapping("/ByStudyKey")
     @ResponseBody
@@ -21,6 +28,26 @@ public class ReportController {
             return ResponseEntity.ok(report);
         } else {
             return ResponseEntity.ok(new Report());
+        }
+    }
+
+    @GetMapping("/check/{studyKey}")
+    public ResponseEntity<Map<String, Boolean>> checkReportExists(@PathVariable int studyKey) {
+        boolean exists = reportService.checkIfStudyKeyExists(studyKey);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("exists", exists);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/view/{studyKey}")
+    public ModelAndView viewReport(@PathVariable int studyKey, Model model) {
+        boolean exists = reportService.checkIfStudyKeyExists(studyKey);
+        if (exists) {
+            Report report = reportService.getReportByStudyKey(studyKey);
+            model.addAttribute("report", report);
+            return new ModelAndView("report/reportUpdate", model.asMap());
+        } else {
+            return new ModelAndView("report/report", model.asMap());
         }
     }
 
