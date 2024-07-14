@@ -2,6 +2,7 @@ package com.pacs.scanviewer.SCV.Report.controller;
 
 import com.pacs.scanviewer.SCV.Report.domain.Report;
 import com.pacs.scanviewer.SCV.Report.service.ReportService;
+import com.pacs.scanviewer.pacs.Study.domain.Study;
 import com.pacs.scanviewer.pacs.Study.service.StudyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -42,8 +44,11 @@ public class ReportController {
     @GetMapping("/view/{studyKey}")
     public ModelAndView viewReport(@PathVariable int studyKey, Model model) {
         boolean exists = reportService.checkIfStudyKeyExists(studyKey);
+        List<Study> study = studyService.findByStudykey(studyKey);
+        Report report = reportService.getReportByStudyKey(studyKey);
+
+        model.addAttribute("study", study);
         if (exists) {
-            Report report = reportService.getReportByStudyKey(studyKey);
             model.addAttribute("report", report);
             return new ModelAndView("report/reportUpdate", model.asMap());
         } else {
