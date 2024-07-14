@@ -23,11 +23,11 @@
         <form id="reportForm" method="post">
             <div class="form-group">
                 <label for="content">의사 소견</label>
-                <textarea id="content" rows="4">${report.content}</textarea>
+                <textarea id="content" rows="4"></textarea>
             </div>
             <div class="form-group">
                 <label for="patient">결론</label>
-                <textarea id="patient" rows="4">${report.patient}</textarea>
+                <textarea id="patient" rows="4"></textarea>
             </div>
             <div class="form-group">
                 <label for="userCode">판독의</label>
