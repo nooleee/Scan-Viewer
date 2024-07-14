@@ -45,6 +45,10 @@ public class ReportService {
         return reportRepository.findReportByStudyKey(studyKey);
     }
 
+    public boolean checkIfStudyKeyExists(int studyKey) {
+        return reportRepository.existsByStudyKey(studyKey);
+    }
+
     private void createReportLog(Report report) {
         ReportLog reportLog = new ReportLog();
         reportLog.setStudyKey(report.getStudyKey());
