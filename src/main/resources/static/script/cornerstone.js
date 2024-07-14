@@ -283,19 +283,31 @@ document.getElementById("toolbar").addEventListener('click', (e)=>{
 })
 document.addEventListener('DOMContentLoaded', init);
 
-document.getElementById('report').addEventListener('click', function() {
-    document.getElementById('reportModal').style.display = 'block';
-});
+$(document).ready(function() {
+    $('#report').click(function() {
+        const studyKey = window.location.pathname.split('/')[2];
+        $.ajax({
+            url: `/report/check/${studyKey}`,
+            method: 'GET',
+            success: function(response) {
+                const modalContent = $('#reportContainer');
+                modalContent.empty();
+                modalContent.load(`/report/view/${studyKey}`);
+                $('#reportModal').show();
+            },
+            error: function() {
+                alert('리포트를 불러오는 도중 에러가 발생했습니다.');
+            }
+        });
+    });
 
-document.querySelectorAll('.close').forEach(function(element) {
-    element.addEventListener('click', function() {
-        document.getElementById('reportModal').style.display = 'none';
+    $('.close').click(function() {
+        $('#reportModal').hide();
+    });
+
+    $(window).click(function(event) {
+        if (event.target === $('#reportModal')[0]) {
+            $('#reportModal').hide();
+        }
     });
 });
-
-
-window.onclick = function(event) {
-    if (event.target === document.getElementById('reportModal')) {
-        document.getElementById('reportModal').style.display = 'none';
-    }
-};
