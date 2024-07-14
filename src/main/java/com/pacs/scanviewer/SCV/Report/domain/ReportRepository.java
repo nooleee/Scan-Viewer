@@ -10,4 +10,5 @@ public interface ReportRepository extends JpaRepository<Report, ReportId> {
 
     Report findByStudyKey(int studyKey);
     Optional<Report> findReportByStudyKey(int studykey);
+    boolean existsByStudyKey(int studyKey);
 }
