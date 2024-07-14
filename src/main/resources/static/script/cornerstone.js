@@ -292,7 +292,9 @@ $(document).ready(function() {
             success: function(response) {
                 const modalContent = $('#reportContainer');
                 modalContent.empty();
-                modalContent.load(`/report/view/${studyKey}`);
+                modalContent.load(`/report/view/${studyKey}`, function() {
+                    fetchUserInfo(); // 유저 코드 가져오기 함수 호출
+                });
                 $('#reportModal').show();
             },
             error: function() {
