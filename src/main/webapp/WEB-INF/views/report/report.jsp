@@ -13,11 +13,12 @@
             <h2>Medical Report</h2>
         </div>
         <div class="report-info">
-            <p>환자명: <span id="pname"></span></p>
-            <p>환자 아이디: <span id="pid"></span></p>
-            <p>스터디번호: <span id="studykey"></span></p>
-            <p>검사 날짜: <span id="studydate"></span></p>
-            <p>검사명: <span id="studydesc"></span></p>
+            <c:forEach var="study" items="${study}">
+                <p>환자명: ${study.pname} / 환자 아이디: ${study.pid} / 스터디번호: ${study.studykey}</p>
+                <p>검사 날짜: ${study.studydate}</p>
+                <p>검사명: ${study.studydesc}</p>
+                <input type="hidden" id="studyKey" value="${study.studykey}"/>
+            </c:forEach>
         </div>
         <form id="reportForm" method="post">
             <div class="form-group">
