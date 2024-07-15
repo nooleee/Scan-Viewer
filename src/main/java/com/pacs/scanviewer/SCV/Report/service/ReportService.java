@@ -18,7 +18,7 @@ import java.util.Optional;
 public class ReportService {
     private final ReportRepository reportRepository;
     private final ICDAPIclient icdAPIclient;
-    private final ReportLogService reportLogService; // 로그 서비스를 주입받습니다.
+    private final ReportLogService reportLogService;
 
     public Report save(Report report) {
         Report savedReport = reportRepository.save(report);
@@ -34,10 +34,6 @@ public class ReportService {
 
     public Report getReportByStudyKey(int studyKey) {
         Report report = reportRepository.findByStudyKey(studyKey);
-//        if (report != null && report.getVideoReplay() == Report.VideoReplay.판독취소) {
-//            report.setContent("");  // 의사 소견 비우기
-//            report.setPatient("");  // 결론 비우기
-//        }
         return report;
     }
 
