@@ -1,7 +1,7 @@
 # Scan Viewer 🏥
 
 ## 💡프로젝트 개요
-Scan Viewer는 
+Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 다양한 의료 영상을 빠르고 정확하게 판독할 수 있고 이를 효과적으로 처리하고 뷰잉 할 수 있는 웹 프로젝트입니다.
 
 ## 🐼 팀원 소개
 - 팀장 : 전누리 [@nooleee](https://github.com/nooleee)
