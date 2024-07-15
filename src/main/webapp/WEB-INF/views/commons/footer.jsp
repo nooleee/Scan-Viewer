@@ -15,19 +15,19 @@
 <footer>
     <div>
         <span>김경현</span>
-        <a href="www.github.com">깃허브 주소 </a>
+        <a href="https://github.com/k0gang">https://github.com/k0gang</a>
     </div>
     <div>
         <span>전누리</span>
-        <a href="www.github.com">깃허브 주소 </a>
+        <a href="https://github.com/nooleee">https://github.com/nooleee</a>
     </div>
     <div>
         <span>김민기</span>
-        <a href="www.github.com">깃허브 주소 </a>
+        <a href="https://github.com/mingikim-giv">https://github.com/mingikim-giv</a>
     </div>
     <div>
         <span>박인혁</span>
-        <a href="www.github.com">깃허브 주소 </a>
+        <a href="https://github.com/ryuuki98">https://github.com/ryuuki98</a>
     </div>
 </footer>
 
