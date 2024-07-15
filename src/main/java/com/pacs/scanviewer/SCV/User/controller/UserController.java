@@ -40,16 +40,20 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
     private final LogOnUserService logOnUserService;
 
+
+    //로그인 페이지로 이동
     @GetMapping("/login")
     public String login() {
         return "user/login";
     }
 
+    //회원가입 페이지로 이동
     @GetMapping("/signup")
     public String signup() {
         return "user/signup";
     }
 
+    //마이페이지로 이동
     @GetMapping("/mypage")
     public ModelAndView mypage(HttpServletRequest request) {
         User user = null;
@@ -65,6 +69,7 @@ public class UserController {
         return modelAndView;
     }
 
+    //그룹 관리 페이지로 이동
     @GetMapping("/manage")
     public ModelAndView manage() {
         ModelAndView modelAndView = new ModelAndView("user/manage");
@@ -73,6 +78,7 @@ public class UserController {
         return modelAndView;
     }
 
+    //회원정보 설정페이지로 이동
     @GetMapping("/edit/{userCode}")
     public ModelAndView editUser(@PathVariable String userCode) {
         ModelAndView modelAndView = new ModelAndView("user/editUser");
@@ -81,6 +87,7 @@ public class UserController {
         return modelAndView;
     }
 
+    //업데이트 후 그룹관리 페이지로 이동
     @PostMapping("/update")
     public String updateUser(@ModelAttribute UserDto userDto) {
         Optional<User> optionalUser = userService.findUser(userDto.getUserCode());
@@ -95,6 +102,7 @@ public class UserController {
         return "redirect:/user/manage";
     }
 
+    //회원 탈퇴후 로그인 페이지로 이동
     @PostMapping("/delete")
     public String deleteUser(HttpServletRequest request, HttpServletResponse response) {
         String token = CookieUtil.getCookieValue(request, "jwt");
@@ -111,6 +119,7 @@ public class UserController {
         return "redirect:/user/login";
     }
 
+    //로그아웃 처리 후 로그인 페이지로 이동
     @GetMapping("/logout")
     public String logout(HttpServletRequest request ,HttpServletResponse response) {
         String token = CookieUtil.getCookieValue(request, "jwt");
@@ -129,28 +138,7 @@ public class UserController {
         return "user/login";
     }
 
-
-    @PostMapping("/loginProcess")
-    public ResponseEntity<?> loginprocess(@RequestBody UserDto userDto) {
-        System.out.println("userCode: " + userDto.getUserCode());
-        System.out.println("password: " + userDto.getPassword());
-
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userDto.getUserCode(), userDto.getPassword())
-            );
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("Invalid credentials");
-        }
-
-        final UserDetails userDetails = myUserDetailsService.loadUserByUsername(userDto.getUserCode());
-        final String jwt = jwtUtil.generateToken(userDetails);
-
-        logOnUserService.addUser(userDto.getUserCode());
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
-    }
-
+    //회원가입 처리 후 로그인 페이지로 이동
     @PostMapping("/joinProcess")
     public ModelAndView joinprocess(@ModelAttribute UserDto userDto) {
         ModelAndView modelAndView = new ModelAndView();
@@ -166,63 +154,6 @@ public class UserController {
         }
 
         return modelAndView;
-    }
-
-
-    @GetMapping("/checkUserCode")
-    public ResponseEntity<Boolean> checkUserCode(@RequestParam String userCode) {
-        System.out.println("userCode: " + userCode);
-        boolean isDuplicate = userService.isUserCodeDuplicate(userCode);
-        System.out.println("isduplicate: " + isDuplicate);
-        return ResponseEntity.ok(isDuplicate);
-    }
-
-    @GetMapping("/userInfo")
-    public ResponseEntity<User> getUserInfo(HttpServletRequest request) {
-        String token = CookieUtil.getCookieValue(request, "jwt");
-        String userCode = jwtUtil.extractUsername(token);
-        Optional<User> user = userService.findUser(userCode);
-
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @ResponseBody
-    @GetMapping("/logOnUsers")
-    public List<String> getLoggedInUsers() {
-        System.out.println("현재 로그인중인 회원 리스트 출력 ");
-        // logOnUserService.getLoggedInUsers()가 Set<String>을 반환하는 경우 List<String>으로 변환하여 반환
-        Set<String> loggedInUsers = logOnUserService.getLoggedInUsers();
-        loggedInUsers.forEach(System.out::println);
-        return new ArrayList<>(logOnUserService.getLoggedInUsers());
-    }
-
-    @ResponseBody
-    @GetMapping("/allUsers")
-    public List<String> getAllUsers() {
-        System.out.println("전체 회원 리스트 출력 ");
-        List<User> allUsers = userService.findAllUser();
-        List<String> userCodes = new ArrayList<>();
-        for (User user : allUsers) {
-            userCodes.add(user.getUserCode());
-        }
-        userCodes.forEach(System.out::println);
-        return userCodes;
-    }
-
-    private static class AuthenticationResponse {
-        private final String jwt;
-
-        public AuthenticationResponse(String jwt) {
-            this.jwt = jwt;
-        }
-
-        public String getJwt() {
-            return jwt;
-        }
     }
 
 
