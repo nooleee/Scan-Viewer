@@ -21,7 +21,7 @@
 <body>
 
 <div id="page-container">
-<%@include file="../commons/header.jsp"%>
+    <jsp:include page="../commons/header.jsp"></jsp:include>
 <div id="app">
     <div class="container">
         <div id="allBox" >
@@ -223,10 +223,10 @@
         </div>
     </div>
 </div>
+<jsp:include page="../commons/footer.jsp"></jsp:include>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/worklist.js"></script>
-
-</div>
 </body>
 </html>
