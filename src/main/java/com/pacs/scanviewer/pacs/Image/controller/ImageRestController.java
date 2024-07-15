@@ -76,14 +76,9 @@ public class ImageRestController {
         // 전체 파일 경로 생성
         File file = new File(fullPath);
 
-        // 디버깅을 위한 로그 추가
-        System.out.println("Requested path: " + path);
-        System.out.println("Decoded path: " + decodedPath);
-        System.out.println("Full file path: " + file.getAbsolutePath());
 
         // 파일이 존재하지 않을 경우 404 응답
         if (!file.exists()) {
-            System.out.println("File not found: " + file.getAbsolutePath()); // 파일이 존재하지 않을 경우 로그 추가
             return ResponseEntity.notFound().build();
         }
 
@@ -96,7 +91,6 @@ public class ImageRestController {
 
     @GetMapping("/studies/{studykey}/series")
     public ResponseEntity<Map<Long, List<String>>> getAllSeriesImages(@PathVariable Long studykey) {
-        System.out.println("[193] 이미지 불러오는중 ");
         Map<Long, List<String>> allSeriesImages = new HashMap<>();
         List<Long> seriesKeys = imageService.findSeriesKeysByStudyKey(studykey);
 
@@ -107,7 +101,6 @@ public class ImageRestController {
 
             allSeriesImages.put(seriesKey, images);
 
-            System.out.println("[DEBUG] seriesKey: " + seriesKey + ", images: " + images); // 디버그 로그 추가
         }
 
         return new ResponseEntity<>(allSeriesImages, HttpStatus.OK);

@@ -28,7 +28,6 @@ const initializeData = async (studykey) => {
             throw new Error('Failed to fetch series data');
         }
         allImages = await response.json();
-        console.log('[DEBUG] allImages: ', allImages);
     } catch (error) {
         console.error('Error initializing data:', error);
     }

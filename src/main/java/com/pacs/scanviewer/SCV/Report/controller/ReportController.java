@@ -24,7 +24,6 @@ public class ReportController {
     @GetMapping("/ByStudyKey")
     @ResponseBody
     public ResponseEntity<Report> getReportByStudyKey(@RequestParam("studyKey") int studyKey) {
-        System.out.println(studyKey);
         Report report = reportService.getReportByStudyKey(studyKey);
         if (report != null) {
             return ResponseEntity.ok(report);

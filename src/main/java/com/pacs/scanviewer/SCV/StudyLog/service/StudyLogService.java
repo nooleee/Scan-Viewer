@@ -28,7 +28,6 @@ public class StudyLogService {
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minus(3, ChronoUnit.MONTHS);
         Timestamp threeMonthsAgoTimestamp = Timestamp.valueOf(threeMonthsAgo);
         studyLogRepository.deleteByRegDateBefore(threeMonthsAgoTimestamp);
-        System.out.println("Logs older than three months deleted at " + LocalDateTime.now());
     }
 
 
