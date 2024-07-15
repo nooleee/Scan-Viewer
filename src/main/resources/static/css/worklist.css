@@ -4,6 +4,7 @@ body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, input, select, button {
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    border : none;
 }
 
 body {
@@ -12,10 +13,15 @@ body {
     background-color: #f0f0f0;
 }
 
+
+
 .container {
-    display: flex;
     width: 100%;
     height: 960px;
+}
+
+#allBox {
+    display: flex;
 }
 
 .aside {
@@ -126,19 +132,19 @@ body {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    max-height: 400px; /* Fixed height for the table */
+    max-height: 300px; /* Fixed height for the table */
     overflow-y: auto; /* Scrollable area */
     display: block;
     table-layout: fixed;
 }
 
-.data-table th, .data-table td {
+.data-table th, .data-table td , .previous-table th, .previous-table td{
     border: 1px solid #bdc3c7;
     padding: 10px;
     text-align: left;
 }
 
-.data-table th {
+.data-table th, .previous-table th {
     background-color: #3498db;
     color: #fff;
     font-weight: bold;
@@ -148,7 +154,7 @@ body {
     width: auto;
 }
 
-.data-table td {
+.data-table td, .previous-table td {
     padding: 12px 15px;
     text-align: center;
     white-space: nowrap;
@@ -156,25 +162,30 @@ body {
     text-overflow: ellipsis;
 }
 
-.data-table thead {
+.data-table thead, .previous-table thead {
     /*display: table;*/
     max-height: 200px;
     overflow-y: auto;
+    position: sticky;
+    top: 0;
 }
 
-.data-table tbody {
+.data-table tbody, .previous-table tbody {
     /*display: table-row-group;*/
-    max-height: 400px; /* Adjust based on your requirement */
+    max-height: 300px; /* Adjust based on your requirement */
     overflow-y: auto;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
 }
 
-.data-table thead tr {
+.data-table thead tr, .previous-table thead tr {
     display: table;
     width: 100%;
     table-layout: fixed;
 }
 
-.data-table tbody tr {
+.data-table tbody tr, .previous-table tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
@@ -193,7 +204,7 @@ body {
 }
 
 .all-info {
-    height: 430px;
+    height: 350px;
 }
 
 .previous, .report {
@@ -206,9 +217,28 @@ body {
     width: 100%;
 }
 
+.report-box {
+    display: flex;
+}
+
+#reportForm {
+    display: flex;
+}
+
+.write-box {
+    margin-right: 50px;
+    width: 300px;
+}
+
+.input-box {
+    margin-right: 0px;
+    width: 300px;
+}
+
 .button-set {
     text-align: right;
 }
+
 
 .button-set .loadMoreBtn {
     background-color: #3498db;
@@ -255,7 +285,7 @@ body {
 }
 
 .input-box input[type="text"] {
-    width: calc(100% - 120px);
+    width: 300px;
     padding: 8px;
     margin-right: 10px;
     border: 1px solid #bdc3c7;
@@ -328,4 +358,14 @@ body {
     text-align: center;
     height: 100%;
     cursor: pointer;
+}
+
+.previous-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    max-height: 300px; /* Fixed height for the table */
+    overflow-y: auto; /* Scrollable area */
+    display: block;
+    table-layout: fixed;
 }
