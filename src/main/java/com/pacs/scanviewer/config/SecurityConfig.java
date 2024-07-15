@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers( "/css/**","/script/login.js","/script/checkUserCode.js", "/images/**",
                         "/webjars/**", "/favicon.ico", "/user/login","/user/signup","/user/joinProcess",
-                        "/user/loginProcess","/user/checkUserCode","/ws/**").permitAll()
+                        "/user/loginProcess","/user/checkUserCode","/ws/**","/webapp/WEB-INF/views/commons/**").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
