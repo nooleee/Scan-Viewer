@@ -250,7 +250,7 @@ gridOptions.forEach(option => {
 
 window.onclick = function(event) {
     if (event.target == gridModal) {
-        modal.style.display = "none";
+        gridModal.style.display = "none";
     }
 };
 

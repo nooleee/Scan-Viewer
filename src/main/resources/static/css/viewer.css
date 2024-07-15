@@ -77,7 +77,7 @@ body {
     margin: 10px;
 }
 
- 모달창 스타일
+/* 그리드 모달창 스타일 */
 .gridModal {
     display: none;
     position: fixed;
@@ -145,45 +145,11 @@ body {
     border: 2px solid #ffffff;
 }
 
-/* 모달창 스타일 */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-    padding-top: 60px;
-}
 
-.gridModal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    border-radius: 5px;
-    width: 80%;
-}
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
 
-/* 모달창 스타일 */
+/* 리포트 모달창 스타일 */
 .reportModal {
     display: none;
     position: fixed;
