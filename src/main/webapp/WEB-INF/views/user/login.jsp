@@ -15,6 +15,7 @@
 
 </head>
 <body>
+<%@include file="../commons/header.jsp"%>
 <div class="login-container">
     <h2>Login</h2>
     <form action="/user/loginProcess" method="post" id="login-form">

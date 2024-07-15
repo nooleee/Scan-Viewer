@@ -1,22 +1,70 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    margin: 0;
     background-color: #f0f0f0;
 }
+
+header {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header .header-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+header img {
+    height: 40px;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    margin: 0 10px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
 .login-container {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
+    margin-top: 80px; /* 헤더 아래에 로그인 컨테이너가 위치하도록 마진 추가 */
 }
+
 .login-container h2 {
     text-align: center;
     margin-bottom: 20px;
 }
+
 .login-container input[type="text"],
 .login-container input[type="password"] {
     width: 100%;
@@ -25,6 +73,7 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
 .login-container button {
     width: 100%;
     padding: 10px;
@@ -35,9 +84,11 @@ body {
     border-radius: 4px;
     cursor: pointer;
 }
+
 .login-container button.signup {
     background-color: #28a745;
 }
+
 .login-container button:hover {
     opacity: 0.9;
 }
