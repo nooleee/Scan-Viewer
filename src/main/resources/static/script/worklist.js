@@ -201,6 +201,11 @@ document.addEventListener('DOMContentLoaded', function () {
             videoReplay: $('#videoReplay').val(),
         };
 
+        if (!reportData.content || !reportData.patient || !reportData.diseaseCode) {
+            alert('리포트 내용을 작성해주세요.');
+            return;
+        }
+
         $.ajax({
             type: "POST",
             url: "/report/"+$('#studyKey').val(),
@@ -232,6 +237,11 @@ document.addEventListener('DOMContentLoaded', function () {
             patient: $('.patient').val(),
             videoReplay: $('#videoReplay').val(),
         };
+
+        if (!reportData.content || !reportData.patient || !reportData.diseaseCode) {
+            alert('리포트 내용을 작성해주세요.');
+            return;
+        }
 
         $.ajax({
             type: "PUT",
