@@ -19,13 +19,16 @@
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
 </head>
 <body>
+
+<div id="page-container">
+<jsp:include page="../commons/header.jsp"></jsp:include>
 <div id="app">
     <div class="container">
-        <header>
-            <button id="mainBtn">
-                <img src="${pageContext.request.contextPath}/images/logo.png" width="115px" height="60px">
-            </button>
-        </header>
+<%--        <header>--%>
+<%--            <button id="mainBtn">--%>
+<%--                <img src="${pageContext.request.contextPath}/images/logo.png" width="115px" height="60px">--%>
+<%--            </button>--%>
+<%--        </header>--%>
         <div id="allBox" >
             <div class="aside">
                 <div class="Menuwrapper">
@@ -229,8 +232,6 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/worklist.js"></script>
 
-<script>
-    console.log(localStorage.getItem('jwt'));
-</script>
+</div>
 </body>
 </html>

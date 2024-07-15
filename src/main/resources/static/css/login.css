@@ -6,17 +6,14 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
 }
 
 header {
     width: 100%;
     background-color: #ffffff;
-    padding: 10px 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     top: 0;
     left: 0;
-    z-index: 1000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,32 +21,12 @@ header {
 
 header .header-container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 100%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 0 20px;
 }
 
-header img {
-    height: 40px;
-}
-
-header nav ul {
-    list-style: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-}
-
-header nav ul li {
-    margin: 0 10px;
-}
-
-header nav ul li a {
-    text-decoration: none;
-    color: #333;
-}
 
 .login-container {
     background-color: white;
