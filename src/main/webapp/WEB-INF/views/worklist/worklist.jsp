@@ -22,19 +22,19 @@
 <div id="app">
     <div class="container">
         <header>
-            <button>
-                <img src="${pageContext.request.contextPath}/images/logo.png" width="107px" height="55px">
+            <button id="mainBtn">
+                <img src="${pageContext.request.contextPath}/images/logo.png" width="115px" height="60px">
             </button>
         </header>
         <div id="allBox" >
             <div class="aside">
                 <div class="Menuwrapper">
-                    <button id="mypage">mypage</button>
+                    <button id="mypage">내 정보</button>
                     <button id="toggleSearchDetail">세부검색</button>
                 </div>
                 <div class="Settingwrapper">
-                    <button id="logout">Logout</button>
                     <button onclick="window.location='/chat'">채팅</button>
+                    <button id="logout">로그아웃</button>
                 </div>
             </div>
             <div class="content">
