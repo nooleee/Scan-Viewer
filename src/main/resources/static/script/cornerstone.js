@@ -227,11 +227,11 @@ document.querySelector('.close').addEventListener('click', function() {
     document.getElementById('reportModal').style.display = 'none';
 });
 
-window.onclick = function(event) {
-    if (event.target == document.getElementById('reportModal')) {
-        document.getElementById('reportModal').style.display = 'none';
-    }
-};
+// window.onclick = function(event) {
+//     if (event.target == document.getElementById('reportModal')) {
+//         document.getElementById('reportModal').style.display = 'none';
+//     }
+// };
 
 // 그리드 선택 모달창
 const modal = document.getElementById("gridModal");
@@ -291,4 +291,35 @@ document.getElementById('grid-container').addEventListener('click', (e) => {
         const col = parseInt(e.target.dataset.col);
         setGridLayout(row,col);
     }
+});
+
+$(document).ready(function() {
+    $('#report').click(function() {
+        const studyKey = window.location.pathname.split('/')[2];
+        $.ajax({
+            url: `/report/check/${studyKey}`,
+            method: 'GET',
+            success: function(response) {
+                const modalContent = $('#reportContainer');
+                modalContent.empty();
+                modalContent.load(`/report/view/${studyKey}`, function() {
+                    fetchUserInfo(); // 유저 코드 가져오기 함수 호출
+                });
+                $('#reportModal').show();
+            },
+            error: function() {
+                alert('리포트를 불러오는 도중 에러가 발생했습니다.');
+            }
+        });
+    });
+
+    $('.close').click(function() {
+        $('#reportModal').hide();
+    });
+
+    $(window).click(function(event) {
+        if (event.target === $('#reportModal')[0]) {
+            $('#reportModal').hide();
+        }
+    });
 });
