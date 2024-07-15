@@ -8,7 +8,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<h1>DICOM Viewer</h1>
+<%@include file="../commons/header.jsp"%>
 <div id ="toolbar" class="toolbar">
     <button id="report">Report</button>
     <button id="backButton">Worklist</button>

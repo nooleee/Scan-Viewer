@@ -2,8 +2,26 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #2c2c2c;
+    background-color: #ffffff;
     color: black;
+}
+
+header {
+    width: 100%;
+    background-color: #ffffff;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header .header-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
 }
 
 .header {
@@ -21,7 +39,7 @@ body {
 
 .toolbar {
     padding: 10px;
-    background-color: #3c3c3c;
+    background-color: #2980b9; /* 파스텔톤 하늘색으로 변경 */
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -29,7 +47,7 @@ body {
 
 .toolbar button {
     padding: 10px 20px;
-    background-color: #4c4c4c;
+    background-color: #3498db; /* 파스텔톤 파란색으로 변경 */
     border: none;
     color: white;
     cursor: pointer;
@@ -37,7 +55,7 @@ body {
 }
 
 .toolbar button:hover {
-    background-color: #5c5c5c;
+    background-color: #b0e0e6; /* 파스텔톤 밝은 파란색으로 변경 */
 }
 
 #mainContent {
@@ -45,11 +63,12 @@ body {
     flex-wrap: wrap;
     gap: 10px;
     height: calc(100vh - 60px); /* Adjust height to your needs */
+    background-color: #ffffff; /* 흰색 배경으로 변경 */
 }
 
 #thumbnails {
     width: 200px;
-    background-color: #3c3c3c;
+    background-color: #336699; /* 아주 밝은 파란색으로 변경 */
     overflow-y: auto;
 }
 
@@ -103,7 +122,6 @@ body {
     box-sizing: border-box;
 }
 
-
 .close {
     color: #aaa;
     float: right;
@@ -144,10 +162,6 @@ body {
 .grid-selected {
     border: 2px solid #ffffff;
 }
-
-
-
-
 
 /* 리포트 모달창 스타일 */
 .reportModal {
