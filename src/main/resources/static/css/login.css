@@ -34,7 +34,7 @@ header .header-container {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
-    margin-top: 80px; /* 헤더 아래에 로그인 컨테이너가 위치하도록 마진 추가 */
+    margin: 150px;
 }
 
 .login-container h2 {

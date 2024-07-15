@@ -25,6 +25,8 @@ header .header-container {
     padding: 0 20px;
 }
 
+
+
 body {
     display: flex;
     min-height: 100vh;
@@ -80,8 +82,8 @@ body {
     flex-wrap: wrap;
     align-items: center;
     padding: 10px;
-    background-color: #ecf0f1;
     border-radius: 5px;
+    background: #ffffff;
     margin-bottom: 20px;
 }
 
@@ -144,6 +146,7 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding-top: 10px;
 }
 
 .data-table {
@@ -214,7 +217,7 @@ body {
 }
 
 .all-info, .previous, .report {
-    background-color: #ecf0f1;
+    background-color: #ecf0f16b;
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -392,4 +395,8 @@ body {
     overflow-y: auto; /* Scrollable area */
     display: block;
     table-layout: fixed;
+}
+
+#pageSizeSelect, #videoReplay {
+    border : solid 1px;
 }

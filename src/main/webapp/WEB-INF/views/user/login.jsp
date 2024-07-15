@@ -15,7 +15,7 @@
 
 </head>
 <body>
-<%@include file="../commons/header.jsp"%>
+<jsp:include page="../commons/header.jsp"></jsp:include>
 <div class="login-container">
     <h2>Login</h2>
     <form action="/user/loginProcess" method="post" id="login-form">
@@ -25,6 +25,8 @@
     </form>
     <button class="signup" onclick="window.location = '/user/signup'">Sign Up</button>
 </div>
+<jsp:include page="../commons/footer.jsp"></jsp:include>
+
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/login.js"></script>
 </body>

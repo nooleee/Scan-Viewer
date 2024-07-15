@@ -16,6 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+<jsp:include page="../commons/header.jsp"></jsp:include>
 <div class="chat-container">
     <div class="user-list">
         <h2>All Users</h2>
@@ -30,7 +31,7 @@
         </div>
     </div>
 </div>
-
+<jsp:include page="../commons/footer.jsp"></jsp:include>
 <script type="text/javascript" src="${pageContext.request.contextPath}/script/chat.js"></script>
 
 </body>

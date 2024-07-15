@@ -108,3 +108,21 @@ body {
 .message strong.current-user {
     color: green;
 }
+
+header {
+    width: 100%;
+    background-color: #ffffff;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header .header-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
