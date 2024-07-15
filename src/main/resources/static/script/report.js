@@ -65,6 +65,11 @@ $(document).ready(function () {
             videoReplay: $('#videoReplay').val(),
         };
 
+        if (!reportData.content || !reportData.patient || !reportData.diseaseCode) {
+            alert('리포트 내용을 작성해주세요.');
+            return;
+        }
+
         console.log('전송할 데이터:', reportData);
 
         $.ajax({
