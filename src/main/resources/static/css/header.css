@@ -1,0 +1,15 @@
+.header-container {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust the height as needed */
+    width: 100%;
+    background-color: #ffffff; /* Background color of the header */
+    grid-template-columns: 1fr; /* Single column layout */
+}
+
+.logo {
+    max-height: 100px;
+    height: 100px;
+    width: auto;
+}

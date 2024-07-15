@@ -21,14 +21,9 @@
 <body>
 
 <div id="page-container">
-<jsp:include page="../commons/header.jsp"></jsp:include>
+<%@include file="../commons/header.jsp"%>
 <div id="app">
     <div class="container">
-<%--        <header>--%>
-<%--            <button id="mainBtn">--%>
-<%--                <img src="${pageContext.request.contextPath}/images/logo.png" width="115px" height="60px">--%>
-<%--            </button>--%>
-<%--        </header>--%>
         <div id="allBox" >
             <div class="aside">
                 <div class="Menuwrapper">
