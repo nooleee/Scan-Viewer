@@ -26,6 +26,7 @@ body {
 .header {
     text-align: center;
     margin-bottom: 20px;
+    background-color: white;
 }
 
 .header h2 {
