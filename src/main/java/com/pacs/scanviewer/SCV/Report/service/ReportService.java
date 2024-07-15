@@ -66,7 +66,6 @@ public class ReportService {
         String response = icdAPIclient.getICDCode(token, query);
 
         JSONObject jsonResponse = new JSONObject(response);
-        System.out.println("ICD API 응답 데이터: " + jsonResponse.toString(2));
         JSONArray destinationEntities = jsonResponse.optJSONArray("destinationEntities");
 
         if (destinationEntities == null || destinationEntities.length() == 0) {

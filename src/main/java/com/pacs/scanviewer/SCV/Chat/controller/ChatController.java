@@ -33,8 +33,7 @@ public class ChatController {
     @GetMapping("/messages/{sender}/{recipient}")
     @ResponseBody
     public List<ChatMessage> getMessages(@PathVariable String sender, @PathVariable String recipient) {
-        System.out.println("sender: " + sender);
-        System.out.println("recipient: " + recipient);
+
         List<ChatMessage> messages = chatMessageRepository.findBySenderAndRecipient(sender, recipient);
         messages.addAll(chatMessageRepository.findByRecipientAndSender(sender, recipient));
 

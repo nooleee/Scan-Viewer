@@ -46,10 +46,8 @@ public class ImageController {
 
             allSeriesImages.put(seriesKey, images);
 
-            System.out.println("[DEBUG] seriesKey: " + seriesKey + ", images: " + images); // 디버그 로그 추가
         }
 
-        System.out.println("serieslist : " + thseriesList);
         ModelAndView mv = new ModelAndView("viewer/viewer");
         mv.addObject("images", allSeriesImages);
         mv.addObject("seriesList", thseriesList);
@@ -79,7 +77,6 @@ public class ImageController {
 
         List<Map<String, Object>> seriesList = createThumbnailList(studykey, seriesKeys);
 
-        System.out.println("serieslist : " + seriesList);
         ModelAndView mv = new ModelAndView("viewer/viewer");
         mv.addObject("seriesList", seriesList);
         return mv;

@@ -56,8 +56,6 @@ $(document).ready(function() {
     }
 
     async function fetchChatHistory(sender, recipient) {
-        console.log("sender: ", sender);
-        console.log("recipient: ", recipient);
 
         try {
             const response = await fetch(`/messages/${sender}/${recipient}`);
@@ -80,7 +78,6 @@ $(document).ready(function() {
     }
 
     stompClient.connect({}, (frame) => {
-        console.log('Connected: ' + frame);
 
         stompClient.subscribe('/user/queue/reply', (message) => {
             const chatMessage = JSON.parse(message.body);
@@ -138,7 +135,6 @@ $(document).ready(function() {
     window.onbeforeunload = function() {
         if (stompClient) {
             stompClient.disconnect(() => {
-                console.log('Disconnected');
             });
         }
     };

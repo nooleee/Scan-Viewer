@@ -34,6 +34,5 @@ public class ConsentService {
         LocalDateTime threeMonthsAgo = LocalDateTime.now().minus(3, ChronoUnit.MONTHS);
         Timestamp threeMonthsAgoTimestamp = Timestamp.valueOf(threeMonthsAgo);
         consentRepository.deleteByRegDateBefore(threeMonthsAgoTimestamp);
-        System.out.println("Logs older than three months deleted at " + LocalDateTime.now());
     }
 }

@@ -36,7 +36,6 @@ public class ConsentController {
         String token = CookieUtil.getCookieValue(request, "jwt");
         String userCode = jwtUtil.extractUsername(token);
         Optional<Consent> consent = consentService.findConsentByStudyKeyAndUserCode(studykey, userCode);
-        System.out.println("study key: " + studykey);
         if (consent.isPresent()) {
             // 검색 결과가 있을 경우 다른 페이지로 리디렉션
             // 주어진 studykey에 대한 모든 serieskey를 가져옵니다.
@@ -63,7 +62,6 @@ public class ConsentController {
     @PostMapping("/submit")
     public ModelAndView submitConsent(@ModelAttribute ConsentDto consentDto, HttpSession session) {
         Consent consent = new Consent(consentDto);
-        System.out.println("studykey: " + consentDto.getStudyKey());
         consentService.createConsent(consent);
 
         return new ModelAndView("redirect:/consent/" + consentDto.getStudyKey());

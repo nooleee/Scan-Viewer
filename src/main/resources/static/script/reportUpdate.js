@@ -65,7 +65,6 @@ $(document).ready(function () {
             videoReplay: $('#videoReplay').val(),  // 필요에 따라 적절한 값을 넣어줍니다.
         };
 
-        console.log('전송할 데이터:', reportData);
 
         $.ajax({
             type: "PUT",
@@ -73,7 +72,6 @@ $(document).ready(function () {
             contentType: "application/x-www-form-urlencoded",
             data: $.param(reportData),
             success: function (response) {
-                console.log('성공 응답:', response);
                 alert("리포트가 수정 되었습니다.");
                 location.href="/worklist";
                 // 필요한 경우 UI를 업데이트합니다.
@@ -92,7 +90,6 @@ $(document).ready(function () {
             url: "/report/searchICD",
             data: { query: query },
             success: function (response) {
-                console.log('ICD 코드 검색 결과:', response);
                 if (response === "검색 결과가 없습니다.") {
                     alert("ICD 코드 검색 결과가 없습니다.");
                 } else {

@@ -34,9 +34,7 @@ public class UserRestController {
     //중복 아이디인지 검증하는 api
     @GetMapping("/checkUserCode")
     public ResponseEntity<Boolean> checkUserCode(@RequestParam String userCode) {
-        System.out.println("userCode: " + userCode);
         boolean isDuplicate = userService.isUserCodeDuplicate(userCode);
-        System.out.println("isduplicate: " + isDuplicate);
         return ResponseEntity.ok(isDuplicate);
     }
 
@@ -57,7 +55,6 @@ public class UserRestController {
     //전체 유저의 아이디를 반환하는 api
     @GetMapping("/allUsers")
     public List<String> getAllUsers() {
-        System.out.println("전체 회원 리스트 출력 ");
         List<User> allUsers = userService.findAllUser();
         List<String> userCodes = new ArrayList<>();
         for (User user : allUsers) {
@@ -70,8 +67,7 @@ public class UserRestController {
     //로그인 성공 여부와 함께 토큰을 발행해주는 api
     @PostMapping("/loginProcess")
     public ResponseEntity<?> loginprocess(@RequestBody UserDto userDto) {
-        System.out.println("userCode: " + userDto.getUserCode());
-        System.out.println("password: " + userDto.getPassword());
+
 
         try {
             authenticationManager.authenticate(
@@ -92,7 +88,6 @@ public class UserRestController {
     //현재 로그인중인  유저의 목록을 반환하는 api
     @GetMapping("/logOnUsers")
     public List<String> getLoggedInUsers() {
-        System.out.println("현재 로그인중인 회원 리스트 출력 ");
         // logOnUserService.getLoggedInUsers()가 Set<String>을 반환하는 경우 List<String>으로 변환하여 반환
         Set<String> loggedInUsers = logOnUserService.getLoggedInUsers();
         loggedInUsers.forEach(System.out::println);

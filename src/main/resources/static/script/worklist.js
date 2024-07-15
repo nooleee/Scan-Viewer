@@ -207,7 +207,6 @@ document.addEventListener('DOMContentLoaded', function () {
             contentType: "application/x-www-form-urlencoded",
             data: $.param(reportData),
             success: function (response) {
-                console.log('성공 응답:', response);
                 alert("리포트가 생성되었습니다.");
                 location.href="/worklist";
             },
@@ -239,7 +238,6 @@ document.addEventListener('DOMContentLoaded', function () {
             contentType: "application/x-www-form-urlencoded",
             data: $.param(reportData),
             success: function (response) {
-                console.log('성공 응답:', response);
                 alert("리포트가 수정 되었습니다.");
                 location.href="/worklist";
                 // 필요한 경우 UI를 업데이트합니다.
@@ -258,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function () {
             url: "/report/searchICD",
             data: { query: query },
             success: function (response) {
-                console.log('ICD 코드 검색 결과:', response);
                 if (response === "검색 결과가 없습니다.") {
                     alert("ICD 코드 검색 결과가 없습니다.");
                 } else {
@@ -389,7 +386,6 @@ function searchStudies(pid, pname, startDate, endDate, page, size, modality, rep
     if (reportStatus) {
         url += `&reportStatus=${reportStatus}`;
     }
-    console.log("url : " + url);
 
     fetch(url)
         .then(response => {
@@ -505,7 +501,6 @@ function populateReportSection(study) {
         .catch(error => {
             if (error.message.includes('서버 응답 오류: 404')) {
                 // 404 에러는 별도의 처리 없이 무시
-                console.log('리포트를 찾을 수 없습니다.');
             } else {
                 console.error('오류 발생:', error);
                 alert('데이터를 불러오는 중 오류가 발생했습니다.');

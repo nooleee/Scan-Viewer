@@ -10,7 +10,6 @@ async function checkUserCode() {
     const response = await fetch(`/user/checkUserCode?userCode=${userCode}`);
     const isDuplicate = await response.json();
     isDuplicateUserCode = isDuplicate;  // 중복 여부 저장
-    console.log("isDuplicate : ",isDuplicate);
 
     const userCodeMessage = document.getElementById('userCodeMessage');
     if (isDuplicate) {
