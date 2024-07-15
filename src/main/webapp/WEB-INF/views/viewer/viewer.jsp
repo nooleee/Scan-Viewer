@@ -22,8 +22,8 @@
     <button class="tools" id="WindowLevel">Window Level</button>
     <button id="layoutButton">Layout</button>
 </div>
-<div id="gridModal" class="modal">
-    <div class="modal-content">
+<div id="gridModal" class="gridModal">
+    <div class="gridModal-content">
 <%--        <span class="close">&times;</span>--%>
         <div id="grid-container" class="grid-container" style="grid-template-columns: repeat(5, 1fr);">
             <c:forEach begin="1" end="5" step="1" var="i">
@@ -48,8 +48,8 @@
 </div>
 
 <!-- 모달창 HTML -->
-<div id="reportModal" class="modal">
-    <div class="modal-content">
+<div id="reportModal" class="reportModal">
+    <div class="reportModal-content">
         <span class="close">&times;</span>
         <div id="reportContainer" class="container">
         </div>

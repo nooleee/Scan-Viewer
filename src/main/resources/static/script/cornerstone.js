@@ -249,7 +249,7 @@ gridOptions.forEach(option => {
 });
 
 window.onclick = function(event) {
-    if (event.target == modal) {
+    if (event.target == gridModal) {
         modal.style.display = "none";
     }
 };
