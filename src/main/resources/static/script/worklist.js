@@ -63,6 +63,10 @@ document.getElementById('pageSizeSelect').addEventListener('change', function() 
     searchStudies(pid, pname, start, end, currentPage, pageSize, modality);
 });
 
+document.getElementById('mainBtn').addEventListener('click', function () {
+    window.location.href = '/worklist';
+})
+
 function appendStudies(studies) {
     const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
 
