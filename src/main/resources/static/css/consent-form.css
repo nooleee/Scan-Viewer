@@ -1,4 +1,48 @@
 /* consent-form.css */
+header {
+    width: 100%;
+    background-color: #ffffff;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*position: fixed; !* 고정 위치로 변경 *!*/
+    /*z-index: 1000; !* 다른 요소들 위에 표시되도록 *!*/
+    /*padding: 10px 0;*/
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+}
+
+header .header-container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+footer {
+    width: 100%;
+    background-color: #ffffff;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 1000; /* 다른 요소들 위에 표시되도록 */
+    padding: 10px 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 추가 */
+}
+
+footer .footer-container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: center; /* 가운데 정렬 */
+}
 
 body {
     font-family: Arial, sans-serif;
@@ -11,6 +55,7 @@ body {
     align-items: center;
     min-height: 100vh;
     box-sizing: border-box;
+    flex-direction: column;
 }
 
 h2 {
@@ -19,14 +64,25 @@ h2 {
     margin-top: 0;
 }
 
+.consent {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #consentForm {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
+    width: 70%;
+    max-width: 500px;
     box-sizing: border-box;
+    margin-top: 80px; /* header 높이만큼 여백 추가 */
+    margin-bottom: 80px;
+    justify-content: center;
+
 }
 
 .form-group {
