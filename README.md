@@ -101,7 +101,7 @@ Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 �
 <img src = "https://github.com/user-attachments/assets/8241a770-f2d1-4f60-bb42-749605e64a86" width = "650px" height = "500px">
 
 ### 채팅
-<img src = "" width = "650px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/dee206c3-009a-41db-9217-d0cc5ecc43a8" width = "650px" height = "500px">
 
 ## 📁 관련 서류
 - [요구사항 정의서](https://docs.google.com/spreadsheets/d/1-tI0E_GarMRn_contiOOuk-Shl9YqmpH/edit?usp=drive_link&ouid=110736728495168816564&rtpof=true&sd=true)
