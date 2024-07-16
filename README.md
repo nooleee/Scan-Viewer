@@ -92,7 +92,13 @@ Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 �
 <img src = "https://github.com/user-attachments/assets/308c14e7-4775-4b94-8328-fec8cf98bec3" width = "650px" height = "500px">
 
 ### 리포트
-<img src = "" width = "650px" height = "500px">
+- 리포트 생성
+
+<img src = "https://github.com/user-attachments/assets/1e3376ee-b25e-4ff3-b89a-2c81e73f8515" width = "650px" height = "500px">
+
+- 워크 리스트에서 리포트 생성 확인
+
+<img src = "https://github.com/user-attachments/assets/8241a770-f2d1-4f60-bb42-749605e64a86" width = "650px" height = "500px">
 
 ### 채팅
 <img src = "" width = "650px" height = "500px">
