@@ -71,7 +71,7 @@ Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 �
 
 ## 🎥 데모 영상
 - 로그인
-<img src = "" width = "500px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/09ade18e-6da0-462c-beee-96260147d301" width = "650px" height = "500px">
 
 - 워크 리스트
 <img src = "" width = "500px" height = "500px">
