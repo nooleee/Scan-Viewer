@@ -83,7 +83,13 @@ Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 �
 <img src = "https://github.com/user-attachments/assets/6e59c4dd-aeed-458e-853b-747beadae0c4" width = "650px" height = "500px">
 
 ### DICOM 뷰어
-<img src = "" width = "650px" height = "500px">
+- DICOM 뷰어 썸네일 및 스크롤
+
+<img src = "https://github.com/user-attachments/assets/57a5a68e-bc45-43d8-85e7-7006046009e9" width = "650px" height = "500px">
+
+- DICOM 뷰어 툴 기능
+
+<img src = "https://github.com/user-attachments/assets/308c14e7-4775-4b94-8328-fec8cf98bec3" width = "650px" height = "500px">
 
 ### 리포트
 <img src = "" width = "650px" height = "500px">
