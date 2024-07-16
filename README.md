@@ -70,19 +70,25 @@ Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 �
 ![KakaoTalk](https://img.shields.io/badge/kakaotalk-ffcd00.svg?style=for-the-badge&logo=kakaotalk&logoColor=000000)
 
 ## 🎥 데모 영상
-- 로그인
+### 로그인
 <img src = "https://github.com/user-attachments/assets/09ade18e-6da0-462c-beee-96260147d301" width = "650px" height = "500px">
 
-- 워크 리스트
+### 워크 리스트
+- 워크 리스트 검색
+
 <img src = "https://github.com/user-attachments/assets/3128245d-c6de-4f94-9cef-fdba2f1c364f" width = "650px" height = "500px">
 
-- DICOM 뷰어
+- 워크 리스트 상세 검색
+
+<img src = "https://github.com/user-attachments/assets/6e59c4dd-aeed-458e-853b-747beadae0c4" width = "650px" height = "500px">
+
+### DICOM 뷰어
 <img src = "" width = "650px" height = "500px">
 
-- 리포트
+### 리포트
 <img src = "" width = "650px" height = "500px">
 
-- 채팅
+### 채팅
 <img src = "" width = "650px" height = "500px">
 
 ## 📁 관련 서류
