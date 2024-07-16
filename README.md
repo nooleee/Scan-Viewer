@@ -71,10 +71,15 @@ Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 �
 
 ## 🎥 데모 영상
 - 로그인
+<img src = "" width = "500px" height = "500px">
 - 워크 리스트
+<img src = "" width = "500px" height = "500px">
 - DICOM 뷰어
+<img src = "" width = "500px" height = "500px">
 - 리포트
+<img src = "" width = "500px" height = "500px">
 - 채팅
+<img src = "" width = "500px" height = "500px">
 
 ## 📁 관련 서류
 - [요구사항 정의서](https://docs.google.com/spreadsheets/d/1-tI0E_GarMRn_contiOOuk-Shl9YqmpH/edit?usp=drive_link&ouid=110736728495168816564&rtpof=true&sd=true)
