@@ -38,7 +38,7 @@ body {
 .container {
     width: 100%;
     height: 960px;
-    margin-bottom: 20px;
+    margin-bottom: 100px;
 }
 
 #allBox {
@@ -278,6 +278,7 @@ body {
 .box {
     display: flex;
     justify-content: space-between;
+    height: 470px;
 }
 
 .report-title {
@@ -400,4 +401,30 @@ body {
 
 #pageSizeSelect, #videoReplay {
     border : solid 1px;
+}
+
+#icdResults ul {
+    list-style: none;
+    padding: 0;
+}
+
+#icdResults li {
+    background-color: #f9f9f9;
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#icdResults li:hover {
+    background-color: #e9e9e9;
+}
+
+#icdResults {
+    max-height: 50px; /* Set the desired max height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ddd; /* Optional: add a border */
+    padding: 10px; /* Optional: add some padding */
+    margin-top: 10px; /* Optional: add some margin at the top */
 }
