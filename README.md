@@ -41,16 +41,6 @@ Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 �
 - 유저 간 채팅
 - 실시간 업데이트
 
-## 🔫 트러블 슈팅
-- 문제
-
-
-- 해결 방안
-
-
-## 🎥 데모 영상
-???
-
 ## 🛠 기술 스택
 ### Front-End
 
@@ -76,6 +66,13 @@ Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 �
 
 ![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)
 ![Slack](https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white)
+
+## 🎥 데모 영상
+- 로그인
+- 워크 리스트
+- DICOM 뷰어
+- 리포트
+- 채팅
 
 ## 📁 관련 서류
 - [요구사항 정의서](https://docs.google.com/spreadsheets/d/1-tI0E_GarMRn_contiOOuk-Shl9YqmpH/edit?usp=drive_link&ouid=110736728495168816564&rtpof=true&sd=true)
