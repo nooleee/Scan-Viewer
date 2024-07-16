@@ -71,37 +71,37 @@ Scan Viewer는 의료 분야에서 빠르고 정확한 진단과 의료진이 �
 
 ## 🎥 데모 영상
 ### 로그인
-<img src = "https://github.com/user-attachments/assets/09ade18e-6da0-462c-beee-96260147d301" width = "650px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/09ade18e-6da0-462c-beee-96260147d301" width = "800px" height = "500px">
 
 ### 워크 리스트
 - 워크 리스트 검색
 
-<img src = "https://github.com/user-attachments/assets/3128245d-c6de-4f94-9cef-fdba2f1c364f" width = "650px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/3128245d-c6de-4f94-9cef-fdba2f1c364f" width = "800px" height = "500px">
 
 - 워크 리스트 상세 검색
 
-<img src = "https://github.com/user-attachments/assets/6e59c4dd-aeed-458e-853b-747beadae0c4" width = "650px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/6e59c4dd-aeed-458e-853b-747beadae0c4" width = "800px" height = "500px">
 
 ### DICOM 뷰어
 - DICOM 뷰어 썸네일 및 스크롤
 
-<img src = "https://github.com/user-attachments/assets/57a5a68e-bc45-43d8-85e7-7006046009e9" width = "650px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/57a5a68e-bc45-43d8-85e7-7006046009e9" width = "800px" height = "500px">
 
 - DICOM 뷰어 툴 기능
 
-<img src = "https://github.com/user-attachments/assets/308c14e7-4775-4b94-8328-fec8cf98bec3" width = "650px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/308c14e7-4775-4b94-8328-fec8cf98bec3" width = "800px" height = "500px">
 
 ### 리포트
 - 리포트 생성
 
-<img src = "https://github.com/user-attachments/assets/1e3376ee-b25e-4ff3-b89a-2c81e73f8515" width = "650px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/1e3376ee-b25e-4ff3-b89a-2c81e73f8515" width = "800px" height = "500px">
 
 - 워크 리스트에서 리포트 생성 확인
 
-<img src = "https://github.com/user-attachments/assets/8241a770-f2d1-4f60-bb42-749605e64a86" width = "650px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/8241a770-f2d1-4f60-bb42-749605e64a86" width = "800px" height = "500px">
 
 ### 채팅
-<img src = "https://github.com/user-attachments/assets/dee206c3-009a-41db-9217-d0cc5ecc43a8" width = "650px" height = "500px">
+<img src = "https://github.com/user-attachments/assets/dee206c3-009a-41db-9217-d0cc5ecc43a8" width = "800px" height = "500px">
 
 ## 📁 관련 서류
 - [요구사항 정의서](https://docs.google.com/spreadsheets/d/1-tI0E_GarMRn_contiOOuk-Shl9YqmpH/edit?usp=drive_link&ouid=110736728495168816564&rtpof=true&sd=true)
